@@ -1,0 +1,93 @@
+version: "3"
+services:
+  redis:
+    image: business_platform/redis
+    container_name: redis_service
+    build: ./compose/redis
+    command: ["redis-server", "/etc/redis/redis.conf"]  # start redis service after redis container runs
+    volumes:
+      - webapp_redis_volume:/data
+      - ./compose/redis/redis.conf:/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - service_network
+  # This is MySQL
+  db:
+    image: business_platform/mysql
+    container_name: mysql_service
+    build: ./compose/mysql
+    # no need to specify environment alias
+    env_file:
+      - ./webapp/webapp/webapp/settings/.env
+    volumes:
+      - webapp_db_volume:/var/lib/mysql:rw
+      - ./compose/mysql/conf/mysql.conf:/etc/mysql/my.cnf
+      - ./compose/mysql/init:/docker-entrypoint-initdb.d/
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    restart: always
+    networks:
+      - service_network
+  # This is Django project + uWSGI server
+  web:
+    image: business_platform/web
+    container_name: webapp_service
+    build: ./webapp/webapp
+    ports:
+      - "8001:8001"
+    expose:
+      - "8001"
+    volumes:
+      - ./webapp:/business_platform/webapp
+      - webapp_media_volume:/business_platform/webapp/webapp/webapp/media
+      - webapp_static_volume:/business_platform/webapp/webapp/webapp/static
+#    links:
+#      - db
+#      - redis
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DEBUG=False
+    restart: always
+    tty: true
+    stdin_open: true
+    networks:
+      - service_network
+  # nginx container depends on django+uwsgi container only
+  nginx:
+    image: business_platform/nginx
+    container_name: nginx_service
+    build: ./compose/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "80"
+      - "443"
+    volumes:
+      - ./webapp/webapp/webapp/static:/usr/share/nginx/html/static
+      - webapp_media_volume:/usr/share/nginx/html/media
+      - ./compose/nginx/ssl:/usr/share/nginx/ssl
+      - ./compose/nginx/log:/var/log/nginx
+#    links:
+#      - web
+    depends_on:
+      - web
+    restart: always
+    networks:
+      - service_network
+volumes:
+  webapp_media_volume:
+  webapp_db_volume:
+  webapp_static_volume:
+  webapp_redis_volume:
+networks:
+  service_network:
+    driver: bridge

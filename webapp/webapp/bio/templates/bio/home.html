@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Yunxiao Wang's home page</title>
+</head>
+<body>
+    <h1>Hello, I am Yunxiao Wang. My English name is Jerry.</h1>
+    <p>My work experience:</p>
+    <div>
+        {% if data_list %}
+        <ul>
+            {% for data in data_list %}
+            <li></b>Company: <strong>{{ data.company }}</strong></b></li>
+<!--                <li></b>{{ forloop.counter }}. Company: {{ data.company }}</b></li>-->
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
