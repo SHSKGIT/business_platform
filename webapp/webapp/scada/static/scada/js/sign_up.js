@@ -47,7 +47,7 @@ $('#sign-up-button').click(function () {
                 type: 'POST',
                 url: $('#sign-up-form').attr('action'),
                 data: dataString,
-                timeout: 6000,
+                timeout: 60000,  // EC2 containers responds slow, so set 60s
                 error: function (request, error) {
                     alert("An error occurred");
                 },

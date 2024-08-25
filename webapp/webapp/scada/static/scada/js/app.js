@@ -218,7 +218,7 @@
                 type: 'POST',
                 url: $('#subscribe-form').attr('action'),
                 data: dataString,
-                timeout: 6000,
+                timeout: 60000,  // EC2 containers responds slow, so set 60s
                 error: function (request, error) {
                     alert("An error occurred");
                 },
@@ -278,7 +278,7 @@ $('#sign-in-button').click(function () {
                 type: 'POST',
                 url: $('#sign-in-form').attr('action'),
                 data: dataString,
-                timeout: 6000,
+                timeout: 60000,  // EC2 containers responds slow, so set 60s
                 error: function (request, error) {
                     alert("An error occurred");
                 },
@@ -363,7 +363,7 @@ $("#send-mail").click(function () {
                 type: "POST",
                 url: $('#contact-form').attr('action'),
                 data: dataString,
-                timeout: 6000,
+                timeout: 60000,  // EC2 containers responds slow, so set 60s
                 error: function (request, error) {
                     alert("An error occurred");
                 },
