@@ -214,5 +214,19 @@ LOGGING = {
     },
 }
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# only use the following when using HTTPS. If using HTTP, please comment them out.
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "https://localhost",
+    "http://127.0.0.1",
+    "https://127.0.0.1",
+    "http://18.144.65.184",
+    "https://18.144.65.184",
+]
+if env("DJANGO_ENV") == "dev":
+    CSRF_COOKIE_DOMAIN = None
+elif env("DJANGO_ENV") == "prod":
+    # don't have a domain now, will need to apply one.
+    CSRF_COOKIE_DOMAIN = ".example.com"
