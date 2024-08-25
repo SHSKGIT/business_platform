@@ -2,7 +2,7 @@
 
 set -e  # Exit on error
 
-export DJANGO_SETTINGS_MODULE=webapp.settings.dev
+export DJANGO_SETTINGS_MODULE=webapp.settings.prod
 
 # Load environment variables from the .env file
 set -a
@@ -27,4 +27,8 @@ alembic upgrade head
 echo "Alembic migrations finished."
 
 #python -m pip install --upgrade pip
+
+chown -R www-data:www-data /business_platform/webapp/webapp
+chmod -R 755 /business_platform/webapp/webapp
+
 uwsgi --ini /business_platform/webapp/webapp/uwsgi.ini
