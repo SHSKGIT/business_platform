@@ -17,3 +17,5 @@ bcrypt==4.2.0
 werkzeug==3.0.3
 uwsgi==2.0.26
 python-dotenv==1.0.1
+cython==3.0.11
+setuptools==73.0.1
