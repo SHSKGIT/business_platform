@@ -5,7 +5,7 @@ from django.conf import settings
 
 import os
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'webapp.settings.dev'
+os.environ["DJANGO_SETTINGS_MODULE"] = "webapp.settings.prod"
 
 engine = create_engine(settings.DATABASE_URL)
 
@@ -38,4 +38,3 @@ def create_tables():
     # Import all modules here that might define models
     # from models import contact
     Base.metadata.create_all(bind=engine)
-
