@@ -2,7 +2,7 @@
 
 set -e  # Exit on error
 
-export DJANGO_SETTINGS_MODULE=webapp.settings.dev
+export DJANGO_SETTINGS_MODULE=webapp.settings.prod
 
 # Load environment variables from the .env file
 set -a
