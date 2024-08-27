@@ -5,7 +5,7 @@ from django.conf import settings
 
 import os
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "webapp.settings.prod"
+os.environ["DJANGO_SETTINGS_MODULE"] = "webapp.settings.dev"
 
 engine = create_engine(settings.DATABASE_URL)
 

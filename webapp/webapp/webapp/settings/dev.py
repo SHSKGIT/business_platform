@@ -28,9 +28,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = ["*"]
 
 
@@ -217,6 +214,9 @@ LOGGING = {
 # only use the following when using HTTPS. If using HTTP, please comment them out.
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
+
+# by default None
+CSRF_COOKIE_DOMAIN = None
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
     "https://localhost",
@@ -225,8 +225,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://18.144.65.184",
     "https://18.144.65.184",
 ]
-if env("DJANGO_ENV") == "dev":
-    CSRF_COOKIE_DOMAIN = None
-elif env("DJANGO_ENV") == "prod":
-    # don't have a domain now, will need to apply one.
-    CSRF_COOKIE_DOMAIN = ".example.com"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True

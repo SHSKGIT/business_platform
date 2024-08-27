@@ -53,6 +53,7 @@ $('#sign-up-button').click(function () {
                 },
                 success: function (response) {
                     if (response.success) {
+                        alert("You have successfully signed up. This window will close.");
                         window.close();
                     } else {
 //                        alert("An error occurred");
