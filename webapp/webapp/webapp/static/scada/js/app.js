@@ -562,15 +562,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // social network not available alert when click the button
-var notAvailableLinks = document.querySelectorAll('.not-available-link');
+var notAvailableLinks = document.querySelectorAll('.not-available-link-about');
 // Loop through each element and add an event listener
 notAvailableLinks.forEach(function(link) {
     link.addEventListener('click', function(event) {
         event.preventDefault(); // Prevent the link from navigating
         setTimeout(function() {
-            $('#err-social-icon-message').show(500);
-            $('#err-social-icon-message').delay(2000);
-            $('#err-social-icon-message').animate({
+            $('#err-social-icon-message-about').show(500);
+            $('#err-social-icon-message-about').delay(2000);
+            $('#err-social-icon-message-about').animate({
                 height: 'toggle'
             }, 500, function () {
                 // Animation complete.
@@ -579,3 +579,19 @@ notAvailableLinks.forEach(function(link) {
     });
 });
 
+var notAvailableLinks = document.querySelectorAll('.not-available-link-contact');
+// Loop through each element and add an event listener
+notAvailableLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the link from navigating
+        setTimeout(function() {
+            $('#err-social-icon-message-contact').show(500);
+            $('#err-social-icon-message-contact').delay(2000);
+            $('#err-social-icon-message-contact').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+                });
+        });
+    });
+});
