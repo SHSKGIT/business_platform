@@ -17,3 +17,6 @@ In docker-compose.yml, I set data persist `./webapp:/business_platform/webapp`, 
 The same on any update in folder `business_platform/webapp`, just need to restart container, then execute start.sh, the update will take effect in container.
 
 
+Switch environment needs to update:
+manage.py, wsgi.py, asgi.py, start.sh, sqlalchemy_setup.py
+
