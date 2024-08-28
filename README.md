@@ -20,7 +20,7 @@
   * ```openssl genpkey -algorithm RSA -out ssl_private.key```
   * ```openssl req -new -x509 -key ssl_private.key -out ssl_certificate.crt -days 36500```
 * Currently, I'm using self-signed certificate which is not trusted by most browsers. `Let's Encrypt` can generate a free trusted certificate with a valid domain. 
-* Now I don't have a domain name (need to purchase), so just keep HTTP request only. Later on, once a trusted certificate is ready, put them to `compose/nginx/ssl/`, and use `nginx_ssl.conf` instead.
+* Now I don't have a domain name (need to purchase), so just keep HTTP request only. Later on, once a trusted certificate is ready, put them to `compose/nginx/ssl/`, and use `nginx_ssl.conf` instead in `compose/nginx/Dockerfile`.
 
 
 * Any update in static folder of an app, do `python manage.py collectstatic --noinput` on local, so the update can be applied to `STATIC_ROOT` on local.
