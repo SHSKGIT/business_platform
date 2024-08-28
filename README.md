@@ -4,6 +4,15 @@
 ## Overview
 
 
+### Stacks
+* Python 3.12
+* Django 5.0
+* ORM: SQLAlchemy with alembic data migration
+* MySQL 9.0
+* Nginx 1.27.1
+* Redis 7.2.1
+
+
 ### There are 2 apps/services in this project: scada and bio
 
 
