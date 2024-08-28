@@ -7,7 +7,7 @@
 ### There are 2 apps/services in this project: scada and bio
 
 
-* (Will add more for extending business logic)
+(Will add more for extending business logic)
 * App scada: website 
 * App bio: my profile
 
@@ -36,5 +36,5 @@
 
 
 * YouTube link: (HTTPS on localhost)
-* https://youtu.be/IhuqY_uwLeA
+  * https://youtu.be/IhuqY_uwLeA
 
