@@ -39,12 +39,26 @@
                     <div class="title">
                         <h1>You have signed in. New features will be updated soon.</h1>
                     </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div id="user-name"></div>
+                            {% if user_id %}
+                                <p>Your User ID is: {{ user_id }}</p>
+                                <div id="user-id" data-user-id="{{ user_id }}"></div>
+                            {% else %}
+                                <p>No User ID provided.</p>
+                            {% endif %}
+                            <button id="purchase-button" class="button button-sp">Purchase</button>
+                            <br><br>
+<!--                            <div class="error left" id="err-sign-in"></div>-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Include javascript -->
-        <script src="{% static 'scada/js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/jquery.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.mixitup.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/bootstrap.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/modernizr.custom.js' %}"></script>
@@ -53,6 +67,7 @@
         <script type="text/javascript" src="{% static 'scada/js/jquery.placeholder.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.inview.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/sign_up.js' %}"></script>
-        <script src="{% static 'scada/js/respond.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/respond.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/websocket.js' %}"></script>
     </body>
 </html>

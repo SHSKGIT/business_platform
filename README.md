@@ -32,7 +32,7 @@
 * Now I don't have a domain name (need to purchase), so just keep HTTP request only. Later on, once a trusted certificate is ready, put them to `compose/nginx/ssl/`, and use `nginx_ssl.conf` instead in `compose/nginx/Dockerfile`.
 
 
-* Any update in static folder of an app, do `python manage.py collectstatic --noinput` on local, so the update can be applied to `STATIC_ROOT` on local.
+* Any update in static folder of an app, do `python manage.py collectstatic --noinput` on local, so the update can be applied to `STATIC_ROOT` on local. execute start.sh again. Don't need to restart container.
 * In docker-compose.yml, I set data persist `./webapp:/business_platform/webapp`, so the update in `STATIC_ROOT` on local can be synced to `STATIC_ROOT` in container.
 * The same on any update in folder `business_platform/webapp`, just need to restart container, then execute `start.sh` which contains `python manage.py collectstatic --noinput` for taking effect to static `volume`.
 

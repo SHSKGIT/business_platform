@@ -44,6 +44,7 @@ PREREQ_APPS = [
     "bootstrap_datepicker_plus",
     # 'crispy_forms',
     "mathfilters",
+    "channels",
 ]
 
 PROJECT_APPS = [
@@ -83,6 +84,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "webapp.wsgi.application"
 
+ASGI_APPLICATION = "webapp.asgi.application"
+
+# Channel layers configuration (for WebSocket communication)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                {
+                    "address": f"redis://{env('REDIS_CHANNELS_HOST')}:{env('REDIS_CHANNELS_PORT')}",
+                    "password": env("REDIS_PASS"),
+                }
+            ],
+        },
+    },
+}
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development, use Redis in production
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
