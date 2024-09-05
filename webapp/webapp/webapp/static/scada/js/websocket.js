@@ -11,15 +11,22 @@ $('#purchase-button').click(function () {
 
     socket.onopen = function(event) {
         // Optionally send a message to the server
-        socket.send(JSON.stringify({type: 'greeting', user_id: user_id}));
+        socket.send(JSON.stringify({"action": "process_purchase", user_id: user_id}));
     };
 
     // once receive a message from websocket server
     socket.onmessage = function(event) {
         var data = JSON.parse(event.data);
-        if (data.message) {
-//            alert('Your purchase status is now: ' + data.message);
-            document.getElementById('user-name').innerHTML = data.message;
+        var statusMessage = document.getElementById("websocket-status-message");
+
+        if (data) {
+            if (data.status === "processing") {
+                statusMessage.innerText = data.message;
+            } else if (data.status === "finished") {
+                statusMessage.innerText = data.message;
+            }
+        } else {
+            alert("missing purchase status.")
         }
     };
 

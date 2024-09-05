@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+import asyncio
 
 from .sqlalchemy_setup import get_dbsession
 from .models.auth_entity import AuthEntity
@@ -20,16 +21,38 @@ class PurchaseConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        message_type = data.get("type")
+        action = data.get("action")
 
-        # Handle message based on type
-        if message_type == "greeting":
-            user_id = data.get("user_id")
+        if action == "process_purchase":
+            await self.process_purchase(data)
 
-            # Query the database for the user
-            dbsession = next(get_dbsession())  # Get the SQLAlchemy session
-            user = dbsession.query(AuthEntity).filter_by(id=user_id).one_or_none()
-            dbsession.close()
+    async def process_purchase(self, data):
+        user_id = data.get("user_id")
 
-            response_message = f"Thank you for your purchase, {user.username}!"
-            await self.send(text_data=json.dumps({"message": response_message}))
+        # Query the database for the user
+        dbsession = next(get_dbsession())  # Get the SQLAlchemy session
+        user = dbsession.query(AuthEntity).filter_by(id=user_id).one_or_none()
+        dbsession.close()
+
+        # Send processing message immediately
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "status": "processing",
+                    "message": f"Processing purchase for user {user.username}...",
+                }
+            )
+        )
+
+        # Simulate processing time (3 seconds delay)
+        await asyncio.sleep(3)
+
+        # Send finished message after processing
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "status": "finished",
+                    "message": f"Purchase completed for user {user.username}!",
+                }
+            )
+        )

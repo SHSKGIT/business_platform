@@ -38,7 +38,7 @@
 
 
 * Switch environment needs to update:
-  * `manage.py`, `wsgi.py`, `asgi.py`, `start.sh`, `sqlalchemy_setup.py` (change setting path either `dev.py` pr `prod.py`)
+  * `manage.py`, `wsgi.py`, `asgi.py`, `start.sh`, `sqlalchemy_setup.py` (change setting path either `dev.py` or `prod.py`)
 
 
 ### Demo

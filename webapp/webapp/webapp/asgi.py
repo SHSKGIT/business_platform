@@ -16,7 +16,7 @@ from channels.auth import AuthMiddlewareStack
 from scada.routing import websocket_urlpatterns
 
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapp.settings.prod")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapp.settings.dev")
 
 application = ProtocolTypeRouter(
     {

@@ -10,8 +10,9 @@ RUN rm /etc/nginx/conf.d/default.conf \
 RUN chown -R www-data:www-data /usr/share/nginx/html/media \
 && chmod -R 775 /usr/share/nginx/html/media
 
-#ADD ./nginx.conf /etc/nginx/conf.d/
-ADD ./nginx_ssl.conf /etc/nginx/conf.d/
+# websocket only recognize trusted CA, not self-signed certificate, so don't use SSL for dev
+ADD ./nginx.conf /etc/nginx/conf.d/
+#ADD ./nginx_ssl.conf /etc/nginx/conf.d/
 
 RUN sed -i '/user/{s/nginx/root/}' /etc/nginx/nginx.conf
 
