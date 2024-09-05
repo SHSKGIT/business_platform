@@ -41,8 +41,10 @@ services:
     build: ./webapp/webapp
     ports:
       - "8001:8001"
+      - "8002:8002"
     expose:
       - "8001"
+      - "8002"
     volumes:
       - ./webapp:/business_platform/webapp
       - webapp_media_volume:/business_platform/webapp/webapp/webapp/media

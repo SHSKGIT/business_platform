@@ -18,7 +18,11 @@ class SignInView(View):
     @staticmethod
     def get(request):
         template = "scada/main.html"
-        return render(request, template)
+        user_id = request.GET.get("user_id")
+        context = {
+            "user_id": user_id,
+        }
+        return render(request, template, context)
 
     @staticmethod
     def post(request):
@@ -39,6 +43,7 @@ class SignInView(View):
                 return JsonResponse(
                     {
                         "success": True,
+                        "user_id": user.id,  # user object is not JSON serializable
                     }
                 )
             else:

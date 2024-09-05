@@ -44,6 +44,7 @@ PREREQ_APPS = [
     "bootstrap_datepicker_plus",
     # 'crispy_forms',
     "mathfilters",
+    "channels",
 ]
 
 PROJECT_APPS = [
@@ -83,6 +84,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "webapp.wsgi.application"
 
+ASGI_APPLICATION = "webapp.asgi.application"
+
+# Channel layers configuration (for WebSocket communication)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development, use Redis in production
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

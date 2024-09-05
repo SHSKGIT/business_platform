@@ -286,7 +286,10 @@ $('#sign-in-button').click(function () {
                     if (response.success) {
                         $('#username').val('');
                         $('#password').val('');
-                        window.location.href = $('#sign-in-form').attr('action');
+                        var user_id = response.user_id;
+                        var actionUrl = $('#sign-in-form').attr('action');
+                        actionUrl += '?user_id=' + encodeURIComponent(user_id);
+                        window.location.href = actionUrl;
                     } else {
                         $('#err-sign-in').html(response.sign_in_form_invalid_error);
                         $('#err-sign-in').show(500);
