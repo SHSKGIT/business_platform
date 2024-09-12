@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0px;
+    background: #fff;
+    position: relative;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 0px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+th {
+    text-align: left;
+    background-color: #f2f2f2;
+}
+td {
+    text-align: right;
+}
+
+/* Style for the container holding the title and logo */
+.title-logo-container {
+    display: flex;
+    align-items: center;  /* Align items vertically in the center */
+    justify-content: flex-start;  /* Align both to the left */
+    margin-bottom: 0px;  /* Space between the title and table */
+}
+
+/* Style for the title */
+.report-title {
+    font-size: 18px;  /* Adjust as per your needs */
+    font-weight: bold;
+    margin-left: 0px;
+    margin-bottom: 15px;
+}
+
+/* Style for the logo */
+.report-logo {
+    width: auto;
+    height: 20px;  /* Adjust the height of the logo */
+    margin-right: 0px;
+}
+
+/* Style for the table */
+.report-table {
+    margin-left: 0;  /* Aligns the table to the same left margin as the logo and title */
+    width: 100%;  /* Ensure the table takes full width */
+}
+
+.chart-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Style for the scatter plot image */
+.scatter-plot, .line-plot, .bar-plot {
+    max-width: 100%;  /* Ensures the image scales down to fit within the container */
+    height: auto;  /* Maintains aspect ratio of the image */
+}
+
+.line-separator-thick {
+    border: 5px solid grey;
+}
+
+.line-separator-thin {
+    border: 1px solid grey;
+}
+
+.span-text {
+    text-align: left;
+    font-size: 10px;
+}
+
+.watermark {
+    position: fixed; /* or absolute */
+    font-size: 5rem; /* Adjust as needed */
+    color: rgba(0, 0, 0, 0.1); /* Light gray color with transparency */
+    z-index: -1; /* Ensure the watermark is behind the content */
+    pointer-events: none; /* Prevent the watermark from interfering with user interactions */
+    user-select: none; /* Prevent the watermark from being selected */
+    white-space: nowrap;
+    transform: rotate(-30deg); /* Optional: rotate the watermark */
+}
+
+
+.watermark-1 {
+    top: 10%;
+    left: 10%;
+}
+
+.watermark-2 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+}
+
+.watermark-3 {
+    bottom: 10%;
+    right: 10%;
+    transform: rotate(-30deg);
+}
