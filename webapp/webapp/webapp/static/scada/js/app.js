@@ -318,6 +318,17 @@ $("#sign-up-link").click(function (event) {
     );
 });
 /*
+click forgot password link
+**********************************************************************/
+$("#reset-password-link").click(function (event) {
+    event.preventDefault(); // Prevents the default action of the link
+    window.open(
+        $(this).attr('href'),
+        "ResetPasswordWindow",
+        "width=600,height=550,left=100,top=100"
+    );
+});
+/*
 contact form
 **********************************************************************/
 $("#send-mail").click(function () {
