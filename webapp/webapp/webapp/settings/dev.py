@@ -62,6 +62,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "scada.middleware.SessionTimeoutMiddleware",
+    "scada.middleware.NoCacheMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = "webapp.urls"
@@ -89,9 +95,23 @@ ASGI_APPLICATION = "webapp.asgi.application"
 # Channel layers configuration (for WebSocket communication)
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development, use Redis in production
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                {
+                    "address": f"redis://{env('REDIS_CHANNELS_HOST')}:{env('REDIS_CHANNELS_PORT')}",
+                    "password": env("REDIS_PASS"),
+                }
+            ],
+        },
     },
 }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",  # For development, use Redis in production
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -180,6 +200,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOGIN_URL = "/scada/home/"  # This is the default URL Django will redirect to
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -234,6 +255,26 @@ CSRF_TRUSTED_ORIGINS = [
     "http://18.144.65.184",
     "https://18.144.65.184",
 ]
+
+# Set session to expire after 5 minutes (300 seconds)
+SESSION_COOKIE_AGE = 300
+# Expire session on browser close
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# Ensure session data is cleared after expiration
+SESSION_SAVE_EVERY_REQUEST = False
+# Configure session engine to use Redis
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+# Configure Redis as cache backend
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{env('REDIS_CHANNELS_HOST')}:{env('REDIS_CHANNELS_PORT')}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
