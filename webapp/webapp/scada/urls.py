@@ -5,6 +5,7 @@ from .views import (
     subscribe,
     sign_in,
     sign_up,
+    sign_out,
     generate_pdf_report,
     reset_password,
 )
@@ -17,6 +18,7 @@ urlpatterns = [
     path("subscribe/", subscribe.SubscribeView.as_view(), name="subscribe"),
     path("sign-in/", sign_in.SignInView.as_view(), name="sign-in"),
     path("sign-up/", sign_up.SignUpView.as_view(), name="sign-up"),
+    path("sign-out/", sign_out.SignOutView.as_view(), name="sign-out"),
     path(
         "reset-password/",
         reset_password.ResetPasswordView.as_view(),
