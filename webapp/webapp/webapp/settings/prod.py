@@ -45,6 +45,7 @@ PREREQ_APPS = [
     # 'crispy_forms',
     "mathfilters",
     "channels",
+    "corsheaders",
 ]
 
 PROJECT_APPS = [
@@ -55,6 +56,7 @@ PROJECT_APPS = [
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -278,6 +280,40 @@ CACHES = {
 
 # Set Hugging Face cache directory to /tmp/.cache/huggingface
 os.environ["HF_HOME"] = "/tmp/.cache/huggingface"
+
+# Allow all origins (not recommended for production)
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "https://example.com",
+#     "https://sub.example.com",
+# ]
+
+# If you need to allow CORS for specific methods
+CORS_ALLOWED_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+    "HEAD",
+]
+
+# If you need to allow specific headers
+CORS_ALLOWED_HEADERS = [
+    "content-type",
+    "authorization",
+    "x-csrftoken",
+]
+
+# Allow credentials (if your frontend needs to send cookies or authentication headers)
+CORS_ALLOW_CREDENTIALS = True
+
+# Add custom CORS headers (optional)
+CORS_EXPOSE_HEADERS = [
+    "content-type",
+    "x-custom-header",
+]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
