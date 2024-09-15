@@ -4,23 +4,23 @@
  * A Design by Jerry Wang Studio
  * Author: Jerry Wang
  */
- jQuery(document).ready(function ($) {
+jQuery(document).ready(function ($) {
 
     var lastId,
     topMenu = $("#top-navigation"),
     topMenuHeight = topMenu.outerHeight(),
-        // All list items
-        menuItems = topMenu.find("a"),
-        // Anchors corresponding to menu items
-        scrollItems = menuItems.map(function () {
-            var href = $(this).attr("href");
-            if(href.indexOf("#") === 0){
-                var item = $($(this).attr("href"));
-                if (item.length) {
-                    return item;
-                }
+    // All list items
+    menuItems = topMenu.find("a"),
+    // Anchors corresponding to menu items
+    scrollItems = menuItems.map(function () {
+        var href = $(this).attr("href");
+        if(href.indexOf("#") === 0){
+            var item = $($(this).attr("href"));
+            if (item.length) {
+                return item;
             }
-        });
+        }
+    });
 
     //Get width of container
     var containerWidth = $('.section .container').width();
@@ -68,7 +68,7 @@
     // Bind to scroll
     $(window).scroll(function () {
 
-        //Display or hide scroll to top button 
+        //Display or hide scroll to top button
         if ($(this).scrollTop() > 100) {
             $('.scrollup').fadeIn();
         } else {
@@ -141,13 +141,12 @@
                 }
             }
         });
-});
+    });
 
     /*
     Send newsletter
     **********************************************************************/
     $('#subscribe').click(function () {
-        var error = false;
         var first_name = $('input#nlfirstname').val().trim();
         var last_name = $('input#nllastname').val().trim();
         var company = $('input#nlcompany').val().trim();
@@ -333,198 +332,112 @@ contact form
 **********************************************************************/
 $("#send-mail").click(function () {
 
-        var name = $('input#name').val().trim(); // get the value of the input field
-        var error = false;
-        if (name == "" || name == " ") {
-            $('#err-name').show(500);
-            $('#err-name').delay(2000);
-            $('#err-name').animate({
-                height: 'toggle'
-            }, 500, function () {
-                // Animation complete.
-            });
-            error = true; // change the error state to true
-        }
-
-        var emailCompare = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Syntax to compare against input
-        var email = $('input#email').val().trim().toLowerCase(); // get the value of the input field
-        if (email == "" || email == " " || !emailCompare.test(email)) {
-            $('#err-email').show(500);
-            $('#err-email').delay(2000);
-            $('#err-email').animate({
-                height: 'toggle'
-            }, 500, function () {
-                // Animation complete.
-            });
-            error = true; // change the error state to true
-        }
-
-        var comment = $('textarea#comment').val().trim(); // get the value of the input field
-        if (comment == "" || comment == " ") {
-            $('#err-comment').show(500);
-            $('#err-comment').delay(2000);
-            $('#err-comment').animate({
-                height: 'toggle'
-            }, 500, function () {
-                // Animation complete.
-            });
-            error = true; // change the error state to true
-        }
-
-        if (error == false) {
-            var dataString = $('#contact-form').serialize(); // Collect data from form
-            $.ajax({
-                type: "POST",
-                url: $('#contact-form').attr('action'),
-                data: dataString,
-                timeout: 60000,  // EC2 containers responds slow, so set 60s
-                error: function (request, error) {
-                    alert("An error occurred");
-                },
-                success: function (response) {
-//                    response = $.parseJSON(response);
-                    if (response.success) {
-                        $('#successSend').show();
-                        $('#successSend').html('<strong>Well done, ' + response.name + '!</strong> Your message has been sent. We will contact you soon.');
-                        $("#name").val('');
-                        $("#email").val('');
-                        $("#comment").val('');
-                    } else {
-                        $('#error-subscribe').show();
-                    }
-                    const textarea = document.getElementById('comment');
-                    const counter = document.querySelector('.char-counter');
-                    const maxLength = textarea.getAttribute('maxlength');
-                    counter.textContent = `0 / ${maxLength}`; // Reset counter
-                }
-            });
-            return false;
-        }
-
-        return false; // stops request
-    });
-
-
-
-    //Function for show or hide portfolio desctiption.
-    $.fn.showHide = function (options) {
-        var defaults = {
-            speed: 1000,
-            easing: '',
-            changeText: 0,
-            showText: 'Show',
-            hideText: 'Hide'
-        };
-        var options = $.extend(defaults, options);
-        $(this).click(function () {
-            $('.toggleDiv').slideUp(options.speed, options.easing);
-            var toggleClick = $(this);
-            var toggleDiv = $(this).attr('rel');
-            $(toggleDiv).slideToggle(options.speed, options.easing, function () {
-                if (options.changeText == 1) {
-                    $(toggleDiv).is(":visible") ? toggleClick.text(options.hideText) : toggleClick.text(options.showText);
-                }
-            });
-            return false;
+    var name = $('input#name').val().trim(); // get the value of the input field
+    var error = false;
+    if (name == "" || name == " ") {
+        $('#err-name').show(500);
+        $('#err-name').delay(2000);
+        $('#err-name').animate({
+            height: 'toggle'
+        }, 500, function () {
+            // Animation complete.
         });
-    };
+        error = true; // change the error state to true
+    }
 
-    //Initial Show/Hide portfolio element.
-    $('div.toggleDiv').hide();
-    $('.show_hide').showHide({
-        speed: 500,
-        changeText: 0,
-        showText: 'View',
-        hideText: 'Close'
-    });
+    var emailCompare = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Syntax to compare against input
+    var email = $('input#email').val().trim().toLowerCase(); // get the value of the input field
+    if (email == "" || email == " " || !emailCompare.test(email)) {
+        $('#err-email').show(500);
+        $('#err-email').delay(2000);
+        $('#err-email').animate({
+            height: 'toggle'
+        }, 500, function () {
+            // Animation complete.
+        });
+        error = true; // change the error state to true
+    }
 
-    /************************
-    Animate elements
-    *************************/
-    
-    //Animate thumbnails 
-    jQuery('.thumbnail').one('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery(this).addClass("animated fadeInDown");
-        } else {
-            jQuery(this).removeClass("animated fadeInDown");
-        }
-    });
+    var comment = $('textarea#comment').val().trim(); // get the value of the input field
+    if (comment == "" || comment == " ") {
+        $('#err-comment').show(500);
+        $('#err-comment').delay(2000);
+        $('#err-comment').animate({
+            height: 'toggle'
+        }, 500, function () {
+            // Animation complete.
+        });
+        error = true; // change the error state to true
+    }
 
-    //Animate triangles
-    jQuery('.triangle').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery(this).addClass("animated fadeInDown");
-        } else {
-            jQuery(this).removeClass("animated fadeInDown");
-        }
-    });
-    
-    //animate first team member
-    jQuery('#first-person').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery('#first-person').addClass("animated pulse");
-        } else {
-            jQuery('#first-person').removeClass("animated pulse");
-        }
-    });
-    
-    //animate sectond team member
-    jQuery('#second-person').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery('#second-person').addClass("animated pulse");
-        } else {
-            jQuery('#second-person').removeClass("animated pulse");
-        }
-    });
+    if (error == false) {
+        var dataString = $('#contact-form').serialize(); // Collect data from form
+        $.ajax({
+            type: "POST",
+            url: $('#contact-form').attr('action'),
+            data: dataString,
+            timeout: 60000,  // EC2 containers responds slow, so set 60s
+            error: function (request, error) {
+                alert("An error occurred");
+            },
+            success: function (response) {
+//                    response = $.parseJSON(response);
+                if (response.success) {
+                    $('#successSend').show();
+                    $('#successSend').html('<strong>Well done, ' + response.name + '!</strong> Your message has been sent. We will contact you soon.');
+                    $("#name").val('');
+                    $("#email").val('');
+                    $("#comment").val('');
+                } else {
+                    $('#error-subscribe').show();
+                }
+                const textarea = document.getElementById('comment');
+                const counter = document.querySelector('.char-counter');
+                const maxLength = textarea.getAttribute('maxlength');
+                counter.textContent = `0 / ${maxLength}`; // Reset counter
+            }
+        });
+        return false;
+    }
 
-    //animate thrid team member
-    jQuery('#third-person').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery('#third-person').addClass("animated pulse");
-        } else {
-            jQuery('#third-person').removeClass("animated pulse");
-        }
-    });
-    
-    //Animate price columns
-    jQuery('.price-column, .testimonial').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery(this).addClass("animated fadeInDown");
-        } else {
-            jQuery(this).removeClass("animated fadeInDown");
-        }
-    });
-    
-    //Animate contact form
-    jQuery('.contact-form').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery('.contact-form').addClass("animated bounceIn");
-        } else {
-            jQuery('.contact-form').removeClass("animated bounceIn");
-        }
-    });
-
-    //Animate sign in form
-    jQuery('.sign-in-form').bind('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery('.sign-in-form').addClass("animated bounceIn");
-        } else {
-            jQuery('.sign-in-form').removeClass("animated bounceIn");
-        }
-    });
-
-    //Animate skill bars
-    jQuery('.skills > li > span').one('inview', function (event, visible) {
-        if (visible == true) {
-            jQuery(this).each(function () {
-                jQuery(this).animate({
-                    width: jQuery(this).attr('data-width')
-                }, 3000);
-            });
-        }
-    });
+    return false; // stops request
 });
+
+
+
+//Function for show or hide portfolio desctiption.
+$.fn.showHide = function (options) {
+    var defaults = {
+        speed: 1000,
+        easing: '',
+        changeText: 0,
+        showText: 'Show',
+        hideText: 'Hide'
+    };
+    var options = $.extend(defaults, options);
+    $(this).click(function () {
+        $('.toggleDiv').slideUp(options.speed, options.easing);
+        var toggleClick = $(this);
+        var toggleDiv = $(this).attr('rel');
+        $(toggleDiv).slideToggle(options.speed, options.easing, function () {
+            if (options.changeText == 1) {
+                $(toggleDiv).is(":visible") ? toggleClick.text(options.hideText) : toggleClick.text(options.showText);
+            }
+        });
+        return false;
+    });
+};
+
+//Initial Show/Hide portfolio element.
+$('div.toggleDiv').hide();
+$('.show_hide').showHide({
+    speed: 500,
+    changeText: 0,
+    showText: 'View',
+    hideText: 'Close'
+});
+});
+
 
 //Initialize google map for contact setion with your location.
 function initializeMap() {
@@ -561,19 +474,6 @@ function initializeMap() {
 
     infowindow.open(map, marker);
 }
-
-// for any textarea max length dynamic update
-document.addEventListener('DOMContentLoaded', function() {
-    const textarea = document.getElementById('comment');
-    const counter = document.querySelector('.char-counter');
-    const maxLength = textarea.getAttribute('maxlength');
-
-    // Update counter as the user types
-    textarea.addEventListener('input', function() {
-        const currentLength = textarea.value.length;
-        counter.textContent = `${currentLength} / ${maxLength}`;
-    });
-});
 
 // social network not available alert when click the button
 var notAvailableLinks = document.querySelectorAll('.not-available-link-about');

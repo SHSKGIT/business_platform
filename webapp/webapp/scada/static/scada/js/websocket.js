@@ -1,5 +1,5 @@
 /*
-sign up form
+purchase form
 **********************************************************************/
 $('#purchase-button').click(function () {
     var user_id = document.getElementById('user-id').getAttribute('data-user-id');  // Pass the user's ID from the template

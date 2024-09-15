@@ -59,6 +59,52 @@
             </div>
         </div>
 
+        <div id="ai" class="ai">
+            <div class="section secondary-section">
+                <div class="triangle"></div>
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="ai-form centered">
+                            <div class="title">
+                                <h1>Let's go with AI.</h1>
+                            </div>
+                            <form id="ai-form" action="{% url 'scada:ai' %}" method="post">
+                                {% csrf_token %}
+                                {% for field in ai_form %}
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            {% if field.name == 'comment' %}
+                                                <div class="textarea-container">
+                                                    {{ field }}
+                                                    <div class="char-counter">0 / {{ field.field.max_length }}</div>
+                                                </div>
+                                            {% else %}
+                                                {{ field }}
+                                            {% endif %}
+                                            <div class="error left-align" id="err-{{ field.name }}">{{ field.field.error_messages.required }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <button id="ai-button" class="button button-sp">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Box to display AI's response -->
+        <!--                    <div id="response-box" class="response-box" style="display: none;">-->
+        <!--                        <h3>AI Response:</h3>-->
+        <!--                        <p id="response-text"></p>-->
+        <!--                    </div>-->
+
+                        </div>
+                    </div>
+                    <div id="ai-response" class="alert alert-success invisible"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Include javascript -->
         <script type="text/javascript" src="{% static 'scada/js/jquery.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.mixitup.js' %}"></script>
@@ -70,8 +116,11 @@
         <script type="text/javascript" src="{% static 'scada/js/jquery.inview.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/sign_up.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/respond.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/textarea_character_count.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/animate_element.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/websocket.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/report.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/session_check.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/ai.js' %}"></script>
     </body>
 </html>
