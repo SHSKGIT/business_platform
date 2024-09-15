@@ -941,3 +941,13 @@ p {
 .fade-out {
     opacity: 0;
 }
+/* AI */
+.ai .button-sp, .ai .button-sp:visited, .ai .button-sp:focus {
+    border:none;
+    background-color:#041E42;
+    color:#FCB514;
+}
+.ai .button-sp:hover, .ai .button-sp:active {
+    background-color:#FCB514;
+    color:#041E42;
+}

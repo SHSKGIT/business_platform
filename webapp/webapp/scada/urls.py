@@ -8,6 +8,7 @@ from .views import (
     sign_out,
     generate_pdf_report,
     reset_password,
+    ai,
 )
 
 app_name = "scada"
@@ -27,4 +28,5 @@ urlpatterns = [
     path(
         "pdf-report-1/", generate_pdf_report.ReportView.as_view(), name="pdf-report-1"
     ),
+    path("ai/", ai.AiView.as_view(), name="ai"),
 ]
