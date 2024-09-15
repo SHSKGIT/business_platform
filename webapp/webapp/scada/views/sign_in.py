@@ -11,6 +11,7 @@ from ..models.auth_entity import AuthEntity
 from ..forms.contact import ContactForm
 from ..forms.subscribe import SubscribeForm
 from ..forms.sign_in import SignInForm
+from ..forms.ai import AiForm
 
 
 # =======================================================================================================================
@@ -19,8 +20,10 @@ class SignInView(View):
     def get(request):
         template = "scada/main.html"
         user_id = request.GET.get("user_id")
+        ai_form = AiForm()
         context = {
             "user_id": user_id,
+            "ai_form": ai_form,
         }
         return render(request, template, context)
 
