@@ -276,5 +276,8 @@ CACHES = {
     }
 }
 
+# Set Hugging Face cache directory to /tmp/.cache/huggingface
+os.environ["HF_HOME"] = "/tmp/.cache/huggingface"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
