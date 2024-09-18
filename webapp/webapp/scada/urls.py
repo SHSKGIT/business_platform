@@ -26,7 +26,14 @@ urlpatterns = [
         name="reset-password",
     ),
     path(
-        "pdf-report-1/", generate_pdf_report.ReportView.as_view(), name="pdf-report-1"
+        "pdf-report-1/",
+        generate_pdf_report.MonthlyReportView.as_view(),
+        name="pdf-report-1",
+    ),
+    path(
+        "pdf-report-2/",
+        generate_pdf_report.GeneralReportView.as_view(),
+        name="pdf-report-2",
     ),
     path("ai/", ai.AiView.as_view(), name="ai"),
 ]
