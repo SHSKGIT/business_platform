@@ -13,6 +13,9 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput --verbosity 2
 echo "Static files collected."
 
+# allow to use openai>=1.0.0, automatically upgrade codebase to use the 1.0.0 interface
+#openai migrate
+
 # Wait until MySQL is ready
 echo "Waiting for database connection..."
 
