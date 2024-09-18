@@ -37,13 +37,11 @@ STATIC_FILE_URLs = {
         settings.STATIC_ROOT, "scada/css/jquery.bxslider.css"
     ),
     "animate_css_url": os.path.join(settings.STATIC_ROOT, "scada/css/animate.css"),
-    "logo_url": os.path.join(
-        settings.STATIC_ROOT, "scada/images/ico/apple-touch-icon-144.png"
-    ),
+    "logo_url": os.path.join(settings.STATIC_ROOT, "scada/images/report_logo.png"),
 }
 
 
-class ReportView(View):
+class MonthlyReportView(View):
     @staticmethod
     def get(request):
         month = (datetime.now().replace(day=1) - timedelta(days=1)).strftime(
@@ -61,10 +59,12 @@ class ReportView(View):
         start_date = (datetime.now().replace(day=1) - timedelta(days=1)).replace(day=1)
         end_date = datetime.now().replace(day=1) - timedelta(days=1)
 
-        data = ReportView.generate_fake_data(start_date, end_date)
-        scatter_plot_image_path = ReportView.generate_scatter_plot(data, month, year)
-        line_plot_image_path = ReportView.generate_line_plot(data, month, year)
-        bar_plot_image_path = ReportView.generate_bar_plot(data, month, year)
+        data = MonthlyReportView.generate_fake_data(start_date, end_date)
+        scatter_plot_image_path = MonthlyReportView.generate_scatter_plot(
+            data, month, year
+        )
+        line_plot_image_path = MonthlyReportView.generate_line_plot(data, month, year)
+        bar_plot_image_path = MonthlyReportView.generate_bar_plot(data, month, year)
 
         user_id = int(request.GET.get("user_id"))
         # Query the database for the user
@@ -398,3 +398,102 @@ class ReportView(View):
         # plt.show()
 
         return image_path
+
+
+class GeneralReportView(View):
+    @staticmethod
+    def get(request):
+        report_filename = f"OED_agreement_report.pdf"
+        report_template = "scada/report_template_2.html"
+        report_title = f"OED Agreement Report"
+
+        base_data = STATIC_FILE_URLs | {
+            "report_filename": report_filename,
+            "report_template": report_template,
+            "report_title": report_title,
+            "generated_date": datetime.now().strftime("%Y-%m-%d"),
+        }
+
+        all_data = GeneralReportView.generate_fake_data(base_data)
+
+        # Render the HTML template with the report data
+        html_string = render_to_string(report_template, all_data)
+
+        # Convert the HTML string to a PDF
+        html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = f"inline; filename={report_filename}"
+
+        # Write the PDF to the response
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            html.write_pdf(target=temp_file.name)
+            response.write(temp_file.read())
+
+        return response
+
+    @staticmethod
+    def generate_fake_data(base_data):
+        # Data to populate in the report
+        data = {
+            "agreement_type": "OIL SANDS LEASE",
+            "agreement_number": "075 7595120071",
+            "status": "ACTIVE",
+            "designated_representative": "CONOCOPHILLIPS CANADA RESOURCES CORP. (ACTIVE 1001181 002)",
+            "current_area": "17,202.16",
+            "original_area": "17,169.20",
+            "term": "15 Years 0 Months 0 Days",
+            "rental_amount": "60,207.56",
+            "rental_paid_to": "December 02, 2024",
+            "monthly_invoice": "Yes",
+            "rental_default_notice": "No",
+            "original_payment": "0.00",
+            "security_type": "",
+            "offset_compensation": "No",
+            "encumbrance_count": "0",
+            "well_count": "940",
+            "cancellation": "",
+            "term_date": "December 02, 1995",
+            "original_expiry_date": "December 02, 2010",
+            "current_expiry_date": "",
+            "vintage": "CONTINUED",
+            "continuation_pending": "No",
+            "continuation_date": "December 02, 2010",
+            "transfer_pending": "No",
+            "sale_or_oc_date": "",
+            "payment_origin": "",
+            "security_deposit_amount": "0.00",
+            "last_transfer_date": "November 09, 2023",
+            "last_update_date": "November 28, 2023",
+            "oil_sands_area": "OIL SANDS AREA 1 - ATHABASCA - PETROLEUM IS DEEMED TO BE OIL SANDS BETWEEN THE TOP OF THE VIKING FORMATION AND THE BASE OF THE WOODBEND GROUP",
+        }
+
+        report_participant_data = {
+            "report_participant_data": [
+                {
+                    "client_id": "1001181",
+                    "client_name": "CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "client_status": "ACTIVE",
+                    "interest": "100.0000000",
+                },
+                {
+                    "client_id": "1001182",
+                    "client_name": "CNRL",
+                    "client_status": "ACTIVE",
+                    "interest": "101.0000000",
+                },
+                {
+                    "client_id": "1001183",
+                    "client_name": "TC Energy",
+                    "client_status": "ACTIVE",
+                    "interest": "102.0000000",
+                },
+                {
+                    "client_id": "1001184",
+                    "client_name": "Suncor Energy",
+                    "client_status": "ACTIVE",
+                    "interest": "103.0000000",
+                },
+            ]
+        }
+
+        return data | report_participant_data | base_data

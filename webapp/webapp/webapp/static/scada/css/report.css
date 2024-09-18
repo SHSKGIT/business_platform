@@ -1,14 +1,31 @@
+/*
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0px;
+    padding: 0;
     background: #fff;
     position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+*/
+@media print {
+    @page {
+        margin: 0; /* Remove default page margins */
+    }
+
+    body {
+        width: 100vw; /* Full width of the paper */
+        height: 100vh; /* Full height of the paper */
+        font-family: Arial, sans-serif;
+        position: relative;
+    }
 }
 h1 {
     text-align: center;
     margin-bottom: 0px;
 }
+/*
 table {
     width: 100%;
     border-collapse: collapse;
@@ -18,34 +35,83 @@ th, td {
     padding: 10px;
 }
 th {
-    text-align: left;
+    text-align: center;
     background-color: #f2f2f2;
 }
 td {
     text-align: right;
 }
+.td-date {
+    text-align: left;
+}
+*/
+.report-table, .report-participant-table {
+    border-collapse: collapse; /* Ensure the borders don't double up */
+    width: 100%; /* Optional: Make the table width 100% */
+}
+
+.report-table thead, .report-participant-table thead {
+    background-color: #a9a9a9;
+    height: 10px;
+    line-height: 10px; /* Align text vertically */
+    padding: 0; /* Remove any padding to minimize height */
+    font-size: 10px;
+}
+
+.report-table th, .report-table td, .report-participant-table th, .report-participant-table td {
+    border: none; /* Remove borders from table headers and cells */
+    padding: 1px; /* Optional: Add some padding for readability */
+}
+
+.report-table td, .report-participant-table td {
+    font-size: 8px;
+}
+
+.report-table th, .report-participant-table th {
+    border-bottom: 1px solid black; /* Black line below the header */
+}
+
+.report-table tbody tr:nth-child(odd), .report-participant-table tbody tr:nth-child(odd) {
+    background-color: white; /* White for odd rows */
+}
+
+.report-table tbody tr:nth-child(even), .report-participant-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Grey for even rows */
+}
+
+.td-right, .th-right {
+    text-align: right; /* Optional: Align text to the right */
+}
+
+.td-left, .th-left {
+    text-align: left; /* Optional: Align text to the left */
+}
 
 /* Style for the container holding the title and logo */
 .title-logo-container {
     display: flex;
-    align-items: center;  /* Align items vertically in the center */
+    align-items: flex-start;  /* Align items to the top */
     justify-content: flex-start;  /* Align both to the left */
-    margin-bottom: 0px;  /* Space between the title and table */
+    margin-bottom: 1px;  /* Space between the title and table */
+    height: 40px; /* Set a fixed height for the container */
 }
 
 /* Style for the title */
 .report-title {
-    font-size: 18px;  /* Adjust as per your needs */
+    font-size: 40px;  /* Adjust as per your needs */
     font-weight: bold;
-    margin-left: 0px;
-    margin-bottom: 15px;
+    margin: 0px;
+    margin-left: 3px;
+    padding: 0px;
+    line-height: 40px; /* Ensure the line height matches the logo's height */
 }
 
 /* Style for the logo */
 .report-logo {
     width: auto;
-    height: 20px;  /* Adjust the height of the logo */
-    margin-right: 0px;
+    height: 40px;  /* Adjust the height of the logo */
+    margin: 0px;
+    padding: 0px;
 }
 
 /* Style for the table */
@@ -64,18 +130,60 @@ td {
     max-width: 100%;  /* Ensures the image scales down to fit within the container */
     height: auto;  /* Maintains aspect ratio of the image */
 }
-
+/*
 .line-separator-thick {
-    border: 5px solid grey;
-}
-
-.line-separator-thin {
-    border: 1px solid grey;
-}
-
-.span-text {
-    text-align: left;
+    border: 10px solid #a9a9a9;
+}*/
+.line-separator-thick {
+    background-color: #a9a9a9;
+    color: black;
     font-size: 10px;
+    font-weight: bold;
+    padding: 1px;
+    border-radius: 0px; /* Optional: for rounded corners */
+    border-bottom: 1px solid black; /* Black line below the bar */
+    margin-top: 3px; /* Space above the black line */
+    margin-bottom: 1px; /* Space below the black line */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-text {
+    text-align: left;
+}
+
+.right-text {
+    text-align: right;
+}
+/*
+.line-separator-thin {
+    border: 1px solid #a9a9a9;
+}
+*/
+.span-text-wrapper {
+    display: flex;
+    justify-content: space-between; /* Ensures space between the two columns */
+    margin: 0 auto; /* Centers the content */
+    width: 100%; /* Adjusts the width, you can limit it as per your layout */
+    font-size: 8px;
+}
+
+.span-text-left-wrapper, .span-text-right-wrapper {
+    display: flex;
+    justify-content: space-between; /* Ensures space between the two columns */
+    margin: 0 auto; /* Centers the content */
+    width: 50%; /* Adjusts the width, you can limit it as per your layout */
+}
+
+.span-text-left {
+    text-align: left;
+    width: 50%;
+}
+
+.span-text-right {
+    text-align: left;
+    width: 50%;
 }
 
 .watermark {
@@ -105,4 +213,55 @@ td {
     bottom: 10%;
     right: 10%;
     transform: rotate(-30deg);
+}
+
+.title-logo-container-agreement {
+    display: flex; /* Flexbox to align logo and text side-by-side */
+    align-items: stretch; /* Ensures the logo and text are the same height */
+    padding: 0; /* Optional padding around the container */
+    margin: 0;
+    height: 60px;
+}
+
+.report-logo-agreement {
+    height: 60px; /* Ensures the logo height matches the text height */
+    width: auto; /* Maintain logo aspect ratio */
+}
+
+.report-title-agreement {
+    display: flex;
+    flex-direction: column; /* Stack the text lines vertically */
+    justify-content: space-between; /* Space text lines evenly */
+    flex: 1; /* Take up the remaining space next to the logo */
+    height: 60px;
+    margin-left: 3px; /* Add space between the logo and text */
+}
+
+.text-agreement-1, .text-agreement-2, .text-agreement-3, .text-agreement-4 {
+    background-color: #ffffff;
+    color: black;
+    font-size: 10px;
+    /*font-weight: bold;*/
+    padding: 0;
+    margin: 0; /* Space below the black line */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1; /* Adjust line-height to minimize spacing between lines */
+}
+
+.text-agreement-2 {
+    border-bottom: 1px solid black; /* Black line below the bar */
+}
+
+.left-text-agreement, .right-text-agreement {
+    font-size: 10px; /* Adjust font size as needed */
+}
+
+.left-text-agreement {
+    text-align: left; /* Align text to the left */
+}
+
+.right-text-agreement {
+    text-align: right; /* Align text to the right */
 }
