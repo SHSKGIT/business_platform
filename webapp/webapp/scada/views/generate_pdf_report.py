@@ -20,6 +20,7 @@ import pandas as pd
 
 
 STATIC_FILE_URLs = {
+    # "report_js_url": os.path.join(settings.STATIC_ROOT, "scada/js/report.js"),  # javascript doesn't work with WeasyPrint
     "report_css_url": os.path.join(settings.STATIC_ROOT, "scada/css/report.css"),
     "bootstrap_css_url": os.path.join(settings.STATIC_ROOT, "scada/css/bootstrap.css"),
     "bootstrap_responsive_css_url": os.path.join(
@@ -434,7 +435,7 @@ class GeneralReportView(View):
     @staticmethod
     def generate_fake_data(base_data):
         # Data to populate in the report
-        data = {
+        general_data = {
             "agreement_type": "OIL SANDS LEASE",
             "agreement_number": "075 7595120071",
             "status": "ACTIVE",
@@ -475,25 +476,1582 @@ class GeneralReportView(View):
                     "client_status": "ACTIVE",
                     "interest": "100.0000000",
                 },
+            ]
+        }
+
+        land_rights_data = {
+            "land_update_flag": "No",
+            "land_rights_data": [
                 {
-                    "client_id": "1001182",
-                    "client_name": "CNRL",
-                    "client_status": "ACTIVE",
-                    "interest": "101.0000000",
+                    "lands_rights": "00 4-05-082: 19; 20; 21; 28; 29; 30; 31; 32; 33 (ROAD WEST)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "76.80",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
                 },
                 {
-                    "client_id": "1001183",
-                    "client_name": "TC Energy",
-                    "client_status": "ACTIVE",
-                    "interest": "102.0000000",
+                    "lands_rights": "00 4-05-082: 19; 20; 21; 28; 29; 30; 31; 32; 33<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "4,608.00",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
                 },
                 {
-                    "client_id": "1001184",
-                    "client_name": "Suncor Energy",
-                    "client_status": "ACTIVE",
-                    "interest": "103.0000000",
+                    "lands_rights": "00 4-05-082: 28; 29; 30 (ROAD INTERSECTION)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "0.48",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-05-082: 28; 29; 30 (ROAD SOUTH)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "28.80",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-05-083: 04; 05; 06; 07; 08; 09; 16; 17; 18<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "4,608.00",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-05-083: 04; 05; 06; 07; 08; 09; 16; 17; 18 (ROAD WEST)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "76.80",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-05-083: 04; 05; 06; 16; 17; 18 (ROAD SOUTH)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "56.00",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-05-083: 04; 05; 06; 16; 17; 18 (ROAD INTERSECTION)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "0.96",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-06-082: 07; 08; 09; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 20; 21; 22; 23; 24; 25; 26; 27; 28; 29;<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "15,360.00",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-06-082: 08; 09; 10; 11; 12; 13; 14; 15; 16; 17; 20; 21; 22; 23; 24; 25; 26; 27; 28; 29; 32; 33; 34;<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "160.00",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-06-082: 13; 14; 15; 16; 17; 18; 25; 26; 27; 28; 29; 30 (ROAD SOUTH)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "76.80",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+                {
+                    "lands_rights": "00 4-06-082: 13; 14; 15; 16; 17; 25; 26; 27; 28; 29 (ROAD INTERSECTION)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;OIL SANDS<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BELOW THE TOP OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO THE BASE OF THE WABISKAW-MCMURRAY<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as designated in DRRZR Z2814<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key Well: 00/10-20-082-06W4/00<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interval: 724.00 - 954.00 Feet (Zone: WABISKAW-MCMURRAY)<br> \
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Type: LATEROLOG",
+                    "area": "0.80",
+                    "section_of_act": "13",
+                    "continued_to": "INDEFINITE",
+                },
+            ],
+        }
+
+        well_events_data = {
+            "well_events_data": [
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-04-083-05W4/00",
+                    "license_number": "0371926 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-09-083-05W4/00",
+                    "license_number": "0453835 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-22-083-06W4/00",
+                    "license_number": "0348909 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012208306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-23-083-06W4/00",
+                    "license_number": "0473686 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-25-082-06W4/00",
+                    "license_number": "0441585 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA012508206W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-27-083-06W4/00",
+                    "license_number": "0429080 (ISSUED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/01-34-083-06W4/00",
+                    "license_number": "0348285 (AMENDED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP. <strong>Previous UWI:</strong> 1AA013408306W400",
+                    "well_event_status": "",
+                },
+                {
+                    "well_events": "100/02-12-083-06W4/00",
+                    "license_number": "0452945 (ABANDONED)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "ABANDONED",
+                },
+                {
+                    "well_events": "100/02-13-083-06W4/00",
+                    "license_number": "0477951 (SUSPENSION)",
+                    "delimiter": "OIL SANDS WELL<br><strong>Licensee:</strong> CONOCOPHILLIPS CANADA RESOURCES CORP.",
+                    "well_event_status": "",
                 },
             ]
         }
 
-        return data | report_participant_data | base_data
+        related_agreements_data = {
+            "related_agreements_data": [
+                {
+                    "related_agreements": "RENEWAL INTO ",
+                    "date": "Dec 02, 1995",
+                    "agreement_id": "071 7174120071",
+                    "status": "CANCELLED",
+                    "area": "17,169.20",
+                    "cancellation": "RENEWAL(Dec 02, 1995)",
+                },
+                {
+                    "related_agreements": "AMENDMENT - OTHER - LAND ",
+                    "date": "Dec 02, 1995",
+                    "agreement_id": "",
+                    "status": "",
+                    "area": "0.16",
+                    "cancellation": "",
+                },
+                {
+                    "related_agreements": "AMENDMENT - OTHER - LAND ",
+                    "date": "Jul 21, 2015",
+                    "agreement_id": "",
+                    "status": "",
+                    "area": "33.12",
+                    "cancellation": "",
+                },
+            ]
+        }
+
+        crown_mineral_activities_data = {
+            "crown_mineral_activities_data": [
+                {
+                    "crown_mineral_activities": "WELL RE-ENTRY<br> \
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<strong>Wells:</strong> 100071508306W400, 100071508306W400",
+                    "status": "CANCELLED",
+                    "activity_id": "13070136",
+                    "approval_date": "Jul 04, 2013",
+                    "expiry_date": "Sep 04, 2013",
+                    "cancellation": "Sep 04, 2013 (EXPIRED-NO LICENCE)",
+                },
+                {
+                    "crown_mineral_activities": "WELL OVER HOLE<br> \
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<strong>Wells:</strong> 1AA061108307W400, 1AA081008307W400, 1AA160208307W400, 1AB051208306W400, 1AB060608306W400, 1AB141208306W400, 1AB150208307W400",
+                    "status": "REJECTED",
+                    "activity_id": "16070328",
+                    "approval_date": "Jul 19, 2016",
+                    "expiry_date": "Jul 19, 2017",
+                    "cancellation": "Sep 18, 2024",
+                },
+                {
+                    "crown_mineral_activities": "WELL OVER HOLE<br> \
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<strong>Wells:</strong> 100081308306W400, 100151208306W400, 1AA020208307W400, 1AA041308307W400, 1AA070208307W400, 1AA101108307W400, \
+                                                1AA141208307W400, 1AA161008307W400, 1AB031408307W400, 1AB040708306W400, 1AB061308306W400, 1AB071408307W400, \
+                                                1AB081508307W400, 1AB091108307W400, 1AB130608306W400, 1AB131108307W400, 1AB141008307W400",
+                    "status": "REJECTED",
+                    "activity_id": "16070329",
+                    "approval_date": "Jul 20, 2016",
+                    "expiry_date": "Jul 20, 2017",
+                    "cancellation": "Sep 18, 2024",
+                },
+            ]
+        }
+
+        global_metes_and_bounds_data = {
+            "global_metes_and_bounds_data": [
+                {
+                    "global_metes_and_bounds": """<strong>1</strong> AND ALL STATUTORY ROAD ALLOWANCES AND WHAT WOULD BE STATUTORY ROAD ALLOWANCES IF THE LANDS WERE SURVEYED
+                                            PURSUANT TO THE SURVEYS ACT, LYING WITHIN THE OUTER LIMITS OF THE ABOVE DESCRIBED LANDS
+                                            """,
+                },
+            ]
+        }
+
+        special_provisions_data = {
+            "special_provisions_data": [
+                {
+                    "special_provisions": """<strong>1</strong> THESE OIL SANDS RIGHTS ARE SUBJECT TO THE MEMORANDUM OF AGREEMENT AUTHORIZED BY ORDER IN COUNCIL 83/2002 DATED
+                                            FEBRUARY 27, 2002 AND THE REIMBURSEMENT AGREEMENT AUTHORIZED BY ORDER IN COUNCIL 251/2002 DATED MAY 29, 2002 (THE
+                                            "AGREEMENTS"), AND ALL THE PROVISIONS, TERMS AND CONDITIONS CONTAINED THEREIN. ANY PARTY PURCHASING THESE OIL SANDS
+                                            RIGHTS, IF IT IS NOT ALREADY A PARTY TO THE AGREEMENTS, MUST BECOME A PARTY TO THE AGREEMENTS AND MUST ASSUME ALL
+                                            OBLIGATIONS UNDER THE AGREEMENTS. THE CROWN RESERVES THE RIGHT TO WITHHOLD THE REGISTRATION OF ANY TRANSFER OF
+                                            THESE OILS SANDS RIGHTS UNTIL THE PURCHASER BECOMES A PARTY TO THE AGREEMENTS. THESE OIL SANDS RIGHTS MAY CEASE TO
+                                            BE SUBJECT TO THE REIMBURSEMENT AGREEMENT IF CONSTRUCTION OF THE BITUMEN PROJECT COMMENCES, OR COMMERCIAL
+                                            PRODUCTION FROM THE BITUMEN PROJECT IS ACHIEVED, BY THE DATES SPECIFIED IN ARTICLE 6 OF THE REIMBURSEMENT
+                                            AGREEMENT.\" \"
+                                            """,
+                },
+            ]
+        }
+
+        disclaimer_data = {
+            "disclaimer_data": [
+                {
+                    "disclaimer": """This Search/Report is provided on the condition and understanding that One Energy Data is in no way responsible for loss or damage arising from any errors or
+                                    omissions in this search/report and any person making use of or relying on this search/report herby releases One Energy Data or its owners from any and all
+                                    liability for such loss or damage. <strong>Contact Us:</strong> <a href="mailto:info@OneEnergyData.com">info@OneEnergyData.com</a>
+                                    """,
+                },
+            ]
+        }
+
+        return (
+            base_data
+            | general_data
+            | report_participant_data
+            | land_rights_data
+            | well_events_data
+            | related_agreements_data
+            | crown_mineral_activities_data
+            | global_metes_and_bounds_data
+            | special_provisions_data
+            | disclaimer_data
+        )

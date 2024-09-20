@@ -6,140 +6,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ report_title }}</title>
-    <link rel="stylesheet" type="text/css" href="file://{{ report_css_url }}" />
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_responsive_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ style_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_ie7_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ cslider_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bxslider_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ animate_css_url }}" />-->
+    <title>{{ report_title|safe }}</title>
+    <link rel="stylesheet" type="text/css" href="file://{{ report_css_url|safe }}" />
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_responsive_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ style_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_ie7_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ cslider_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ bxslider_css_url|safe }}" />-->
+<!--    <link rel="stylesheet" type="text/css" href="file://{{ animate_css_url|safe }}" />-->
 </head>
 <body>
-    <div class="watermark watermark-1">Confidential</div>
-    <div class="watermark watermark-2">Confidential</div>
-    <div class="watermark watermark-3">Confidential</div>
+    <div class="report-content" id="report-content">
+        <div class="watermark watermark-1">Confidential</div>
+        <div class="watermark watermark-2">Confidential</div>
+        <div class="watermark watermark-3">Confidential</div>
 
-    <div class="title-logo-container-agreement">
-        <img src="file://{{ logo_url }}" alt="Logo" class="report-logo-agreement" />
-        <div class="report-title-agreement">
-            <div class="text-agreement-1">
-                <span class="left-text-agreement">Agreement Type</span>
-                <span class="right-text-agreement">Agreement Number</span>
-            </div>
-            <div class="text-agreement-2">
-                <span class="left-text-agreement"><strong>{{ agreement_type }}</strong></span>
-                <span class="right-text-agreement"><strong>{{ agreement_number }}</strong></span>
-            </div>
-            <div class="text-agreement-3">
-                <span class="left-text-agreement">STATUS: <strong>{{ status }}</strong></span>
-            </div>
-            <div class="text-agreement-4">
-                <span class="left-text-agreement">Designated Representative: <strong>{{ designated_representative }}</strong></span>
+        <div class="title-logo-container-agreement">
+            <img src="file://{{ logo_url|safe }}" alt="Logo" class="report-logo-agreement" />
+            <div class="report-title-agreement">
+                <div class="text-agreement-1">
+                    <span class="left-text-agreement">Agreement Type</span>
+                    <span class="right-text-agreement">Agreement Number</span>
+                </div>
+                <div class="text-agreement-2">
+                    <span class="left-text-agreement"><strong>{{ agreement_type|safe }}</strong></span>
+                    <span class="right-text-agreement"><strong>{{ agreement_number|safe }}</strong></span>
+                </div>
+                <div class="text-agreement-3">
+                    <span class="left-text-agreement">STATUS: <strong>{{ status|safe }}</strong></span>
+                </div>
+                <div class="text-agreement-4">
+                    <span class="left-text-agreement">Designated Representative: <strong>{{ designated_representative|safe }}</strong></span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="line-separator-thick">
-        <span class="left-text">General Information</span>
-        <span class="right-text">Alberta Mineral Information - date as of {{ generated_date }}</span>
-    </div>
+        <div class="line-separator-thick">
+            <span class="left-text">General Information</span>
+            <span class="right-text small-size-text">Alberta Mineral Information - date as of {{ generated_date|safe }}</span>
+        </div>
 
-    <div class="span-text-wrapper">
-        <div class="span-text-left-wrapper">
-            <div class="span-text-left">
-                <span>Current Area (HA):</span><br>
-                <span>Original Area (HA):</span><br>
-                <span>Term:</span><br>
-                <span>Rental Amount:</span><br>
-                <span>Rental Paid To:</span><br>
-                <span>Monthly Invoice:</span><br>
-                <span>Rental Default Notice:</span><br>
-                <span>Original Payment:</span><br>
-                <span>Security Type:</span><br>
-                <span>Offset Compensation:</span><br>
-                <span>Encumbrance Count:</span><br>
-                <span>Well Count:</span><br>
-                <span>Cancellation:</span><br>
+        <div class="span-text-wrapper">
+            <div class="span-text-left-wrapper">
+                <div class="span-text-left">
+                    <span>Current Area (HA):</span><br>
+                    <span>Original Area (HA):</span><br>
+                    <span>Term:</span><br>
+                    <span>Rental Amount:</span><br>
+                    <span>Rental Paid To:</span><br>
+                    <span>Monthly Invoice:</span><br>
+                    <span>Rental Default Notice:</span><br>
+                    <span>Original Payment:</span><br>
+                    <span>Security Type:</span><br>
+                    <span>Offset Compensation:</span><br>
+                    <span>Encumbrance Count:</span><br>
+                    <span>Well Count:</span><br>
+                    <span>Cancellation:</span><br>
+                </div>
+                <div class="span-text-right">
+                    <span><strong>{{ current_area|safe }}</strong></span><br>
+                    <span><strong>{{ original_area|safe }}</strong></span><br>
+                    <span><strong>{{ term|safe }}</strong></span><br>
+                    <span><strong>{{ rental_amount|safe }}</strong></span><br>
+                    <span><strong>{{ rental_paid_to|safe }}</strong></span><br>
+                    <span><strong>{{ monthly_invoice|safe }}</strong></span><br>
+                    <span><strong>{{ rental_default_notice|safe }}</strong></span><br>
+                    <span><strong>{{ original_payment|safe }}</strong></span><br>
+                    <span><strong>{{ security_type|safe }}</strong></span><br>
+                    <span><strong>{{ offset_compensation|safe }}</strong></span><br>
+                    <span><strong>{{ encumbrance_count|safe }}</strong></span><br>
+                    <span><strong>{{ well_count|safe }}</strong></span><br>
+                    <span><strong>{{ cancellation|safe }}</strong></span><br>
+                </div>
             </div>
-            <div class="span-text-right">
-                <span><strong>{{ current_area }}</strong></span><br>
-                <span><strong>{{ original_area }}</strong></span><br>
-                <span><strong>{{ term }}</strong></span><br>
-                <span><strong>{{ rental_amount }}</strong></span><br>
-                <span><strong>{{ rental_paid_to }}</strong></span><br>
-                <span><strong>{{ monthly_invoice }}</strong></span><br>
-                <span><strong>{{ rental_default_notice }}</strong></span><br>
-                <span><strong>{{ original_payment }}</strong></span><br>
-                <span><strong>{{ security_type }}</strong></span><br>
-                <span><strong>{{ offset_compensation }}</strong></span><br>
-                <span><strong>{{ encumbrance_count }}</strong></span><br>
-                <span><strong>{{ well_count }}</strong></span><br>
-                <span><strong>{{ cancellation }}</strong></span><br>
+            <div class="span-text-right-wrapper">
+                <div class="span-text-left">
+                    <span>Term Date:</span><br>
+                    <span>Original Expiry Date:</span><br>
+                    <span>Current Expiry Date:</span><br>
+                    <span>Vintage:</span><br>
+                    <span>Continuation Pending:</span><br>
+                    <span>Continuation Date:</span><br>
+                    <span>Transfer Pending:</span><br>
+                    <span>Sale or O/C Date:</span><br>
+                    <span>Payment Origin:</span><br>
+                    <span>Security Deposit Amount:</span><br>
+                    <span>Last Transfer Date:</span><br>
+                    <span>Last Update Date:</span><br>
+                    <span>Oil Sands Area:</span><br>
+                </div>
+                <div class="span-text-right">
+                    <span><strong>{{ term_date|safe }}</strong></span><br>
+                    <span><strong>{{ original_expiry_date|safe }}</strong></span><br>
+                    <span><strong>{{ current_expiry_date|safe }}</strong></span><br>
+                    <span><strong>{{ vintage|safe }}</strong></span><br>
+                    <span><strong>{{ continuation_pending|safe }}</strong></span><br>
+                    <span><strong>{{ continuation_date|safe }}</strong></span><br>
+                    <span><strong>{{ transfer_pending|safe }}</strong></span><br>
+                    <span><strong>{{ sale_or_oc_date|safe }}</strong></span><br>
+                    <span><strong>{{ payment_origin|safe }}</strong></span><br>
+                    <span><strong>{{ security_deposit_amount|safe }}</strong></span><br>
+                    <span><strong>{{ last_transfer_date|safe }}</strong></span><br>
+                    <span><strong>{{ last_update_date|safe }}</strong></span><br>
+                    <span><strong>{{ oil_sands_area|safe }}</strong></span><br>
+                </div>
             </div>
         </div>
-        <div class="span-text-right-wrapper">
-            <div class="span-text-left">
-                <span>Term Date:</span><br>
-                <span>Original Expiry Date:</span><br>
-                <span>Current Expiry Date:</span><br>
-                <span>Vintage:</span><br>
-                <span>Continuation Pending:</span><br>
-                <span>Continuation Date:</span><br>
-                <span>Transfer Pending:</span><br>
-                <span>Sale or O/C Date:</span><br>
-                <span>Payment Origin:</span><br>
-                <span>Security Deposit Amount:</span><br>
-                <span>Last Transfer Date:</span><br>
-                <span>Last Update Date:</span><br>
-                <span>Oil Sands Area:</span><br>
-            </div>
-            <div class="span-text-right">
-                <span><strong>{{ term_date }}</strong></span><br>
-                <span><strong>{{ original_expiry_date }}</strong></span><br>
-                <span><strong>{{ current_expiry_date }}</strong></span><br>
-                <span><strong>{{ vintage }}</strong></span><br>
-                <span><strong>{{ continuation_pending }}</strong></span><br>
-                <span><strong>{{ continuation_date }}</strong></span><br>
-                <span><strong>{{ transfer_pending }}</strong></span><br>
-                <span><strong>{{ sale_or_oc_date }}</strong></span><br>
-                <span><strong>{{ payment_origin }}</strong></span><br>
-                <span><strong>{{ security_deposit_amount }}</strong></span><br>
-                <span><strong>{{ last_transfer_date }}</strong></span><br>
-                <span><strong>{{ last_update_date }}</strong></span><br>
-                <span><strong>{{ oil_sands_area }}</strong></span><br>
-            </div>
-        </div>
-    </div>
 
-<!--    <div class="line-separator-thick">-->
-<!--        <span class="left-text">Participants</span>-->
-<!--    </div>-->
+    <!--    <div class="line-separator-thick">-->
+    <!--        <span class="left-text">Participants</span>-->
+    <!--    </div>-->
 
-    {% if report_participant_data %}
-        <table class="report-participant-table">
+        {% if report_participant_data %}
+            <table class="report-participant-table" id="report-participant-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Participant</strong></th>
+                        <th class="th-right small-size-text">Client Name</th>
+                        <th class="th-right small-size-text">Client Status</th>
+                        <th class="th-right small-size-text">Interest</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in report_participant_data %}
+<!--                    <tr {% if forloop.counter0 != 0 and forloop.counter0|divisibleby:10000000000000000000000000 %} class="page-break" {% endif %}>-->
+                    <tr>
+                        <td class="td-left">{{ item.client_id }}</td>
+                        <td class="td-right">{{ item.client_name }}</td>
+                        <td class="td-right">{{ item.client_status }}</td>
+                        <td class="td-right">{{ item.interest }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if land_rights_data %}
+            <table class="land-rights-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Lands / Rights</strong><span class="th-right small-size-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Land Update Flag = {{ land_update_flag|safe }}</span></th>
+                        <th class="th-right small-size-text">Area</th>
+                        <th class="th-right small-size-text">Section of Act</th>
+                        <th class="th-right small-size-text">Continued To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in land_rights_data %}
+                    <tr>
+                        <td class="td-left">{{ item.lands_rights|safe }}</td>
+                        <td class="td-right">{{ item.area|safe }}</td>
+                        <td class="td-right">{{ item.section_of_act|safe }}</td>
+                        <td class="td-right">{{ item.continued_to|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if well_events_data %}
+            <table class="well-events-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Well Events</strong></th>
+                        <th class="th-left small-size-text">License Number (Status)</th>
+                        <th class="th-left small-size-text">Delimiter</th>
+                        <th class="th-right small-size-text">Well Event Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in well_events_data %}
+                    <tr>
+                        <td class="td-left">{{ item.well_events|safe }}</td>
+                        <td class="td-left">{{ item.license_number|safe }}</td>
+                        <td class="td-left">{{ item.delimiter|safe }}</td>
+                        <td class="td-right">{{ item.well_event_status|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if related_agreements_data %}
+            <table class="related-agreements-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Related Agreements</strong></th>
+                        <th class="th-left small-size-text">Date</th>
+                        <th class="th-left small-size-text">Agreement ID</th>
+                        <th class="th-right small-size-text">Status</th>
+                        <th class="th-right small-size-text">Area (HA)</th>
+                        <th class="th-right small-size-text">Cancellation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in related_agreements_data %}
+                    <tr>
+                        <td class="td-left">{{ item.related_agreements|safe }}</td>
+                        <td class="td-left">{{ item.date|safe }}</td>
+                        <td class="td-left">{{ item.agreement_id|safe }}</td>
+                        <td class="td-right">{{ item.status|safe }}</td>
+                        <td class="td-right">{{ item.area|safe }}</td>
+                        <td class="td-right">{{ item.cancellation|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if crown_mineral_activities_data %}
+            <table class="crown-mineral-activities-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Crown Mineral Activities</strong></th>
+                        <th class="th-left small-size-text">Status</th>
+                        <th class="th-right small-size-text">Activity ID</th>
+                        <th class="th-right small-size-text">Approval Date</th>
+                        <th class="th-right small-size-text">Expiry Date</th>
+                        <th class="th-right small-size-text">Cancellation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in crown_mineral_activities_data %}
+                    <tr>
+                        <td class="td-left col-width-300">{{ item.crown_mineral_activities|safe }}</td>
+                        <td class="td-left">{{ item.status|safe }}</td>
+                        <td class="td-right">{{ item.activity_id|safe }}</td>
+                        <td class="td-right">{{ item.approval_date|safe }}</td>
+                        <td class="td-right">{{ item.expiry_date|safe }}</td>
+                        <td class="td-right">{{ item.cancellation|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if global_metes_and_bounds_data %}
+            <table class="global-metes-and-bounds-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Global Metes And Bounds</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in global_metes_and_bounds_data %}
+                    <tr>
+                        <td class="td-left">{{ item.global_metes_and_bounds|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if special_provisions_data %}
+            <table class="special-provisions-table">
+                <thead>
+                    <tr>
+                        <th class="th-left"><strong>Special Provisions</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in special_provisions_data %}
+                    <tr>
+                        <td class="td-left">{{ item.special_provisions|safe }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <table class="disclaimer-table">
             <thead>
                 <tr>
-                    <th class="th-left">Participant</th>
-                    <th class="th-right">Client Name</th>
-                    <th class="th-right">Client Status</th>
-                    <th class="th-right">Interest</th>
+                    <th class="th-left"><strong>Disclaimer</strong></th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in report_participant_data %}
+                {% for item in disclaimer_data %}
                 <tr>
-                    <td class="td-left">{{ item.client_id }}</td>
-                    <td class="td-right">{{ item.client_name }}</td>
-                    <td class="td-right">{{ item.client_status }}</td>
-                    <td class="td-right">{{ item.interest }}</td>
+                    <td class="td-left">{{ item.disclaimer|safe }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% endif %}
+
+    </div>
+
+    <footer>
+<!--        <div class="footer-content">-->
+        <span>One Energy Data (date as of: {{ generated_date|safe }}) Agreement: {{ agreement_number|safe }}</span>
+<!--        </div>-->
+    </footer>
+<!--    javascript doesn't work with WeasyPrint-->
+<!--    <script type="text/javascript" src="file://{{ report_js_url|safe }}"></script>-->
+
 
 
 </body>

@@ -9,18 +9,55 @@ body {
     height: 100vh;
 }
 */
-@media print {
-    @page {
-        margin: 0; /* Remove default page margins */
+body {
+    width: 100vw; /* Full width of the paper */
+    height: 100vh; /* Full height of the paper */
+    font-family: Arial, sans-serif;
+    position: relative;
+    margin: 0px 0px 0px 0px;
+}
+
+@page {
+    size: A4; /* You can set the page size (optional) */
+    margin: 20px 20px 20px 20px;
+
+    /* page number */
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 10px;
+        font-family: Arial, sans-serif;
+        margin-right: 0px;
+        margin-bottom: 20px;
     }
 
-    body {
-        width: 100vw; /* Full width of the paper */
-        height: 100vh; /* Full height of the paper */
-        font-family: Arial, sans-serif;
-        position: relative;
-    }
 }
+
+.report-content {
+    margin: 0px 0px 0px 0px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 10px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    text-align: left;
+    align-items: center; /* Align vertically */
+    font-size: 10px;
+    border-top: 1px solid #050505;
+    z-index: 1000; /* Ensure the footer stays above other content */
+    justify-content: space-between; /* Space out the content and page number */
+}
+
+footer span {
+    display: inline-block;
+    padding: 5px 0px 0px 0px; /* Creates space between the top border and the text */
+    margin: 0px 0px 0px 0px; /* Add space above the text */
+}
+
 h1 {
     text-align: center;
     margin-bottom: 0px;
@@ -45,37 +82,57 @@ td {
     text-align: left;
 }
 */
-.report-table, .report-participant-table {
-    border-collapse: collapse; /* Ensure the borders don't double up */
-    width: 100%; /* Optional: Make the table width 100% */
+
+/* Force a break after a certain number of rows (adjust 20 as needed) */
+.page-break {
+    page-break-before: always;
 }
 
-.report-table thead, .report-participant-table thead {
+tr {
+    page-break-inside: avoid;
+}
+
+/* Optionally, avoid breaking cells with this rule */
+td, th {
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+/* Style for the table */
+.report-table, .report-participant-table, .land-rights-table, .well-events-table, .related-agreements-table, .crown-mineral-activities-table, .global-metes-and-bounds-table, .special-provisions-table, .disclaimer-table {
+    border-collapse: collapse; /* Ensure the borders don't double up */
+    width: 100%; /* Optional: Make the table width 100% */
+    margin: 0px 0px 0px 0px;
+}
+
+.report-table thead, .report-participant-table thead, .land-rights-table thead, .well-events-table thead, .related-agreements-table thead, .crown-mineral-activities-table thead, .global-metes-and-bounds-table thead, .special-provisions-table thead, .disclaimer-table thead {
     background-color: #a9a9a9;
     height: 10px;
     line-height: 10px; /* Align text vertically */
-    padding: 0; /* Remove any padding to minimize height */
+    padding: 0px; /* Remove any padding to minimize height */
     font-size: 10px;
+    font-weight: normal; /* Remove bold font */
 }
 
-.report-table th, .report-table td, .report-participant-table th, .report-participant-table td {
+.report-table th, .report-table td, .report-participant-table th, .report-participant-table td, .land-rights-table th, .land-rights-table td, .well-events-table th, .well-events-table td, .related-agreements-table th, .related-agreements-table td, .crown-mineral-activities-table th, .crown-mineral-activities-table td, .global-metes-and-bounds-table th, .global-metes-and-bounds-table td, .special-provisions-table th, .special-provisions-table td, .disclaimer-table th, .disclaimer-table td {
     border: none; /* Remove borders from table headers and cells */
     padding: 1px; /* Optional: Add some padding for readability */
+    font-weight: normal; /* Ensure table headers are not bold */
 }
 
-.report-table td, .report-participant-table td {
+.report-table td, .report-participant-table td, .land-rights-table td, .well-events-table td, .related-agreements-table td, .crown-mineral-activities-table td, .global-metes-and-bounds-table td, .special-provisions-table td, .disclaimer-table td {
     font-size: 8px;
 }
 
-.report-table th, .report-participant-table th {
+.report-table th, .report-participant-table th, .land-rights-table th, .well-events-table th, .related-agreements-table th, .crown-mineral-activities-table th, .global-metes-and-bounds-table th, .special-provisions-table th, .disclaimer-table th {
     border-bottom: 1px solid black; /* Black line below the header */
 }
 
-.report-table tbody tr:nth-child(odd), .report-participant-table tbody tr:nth-child(odd) {
+.report-table tbody tr:nth-child(odd), .report-participant-table tbody tr:nth-child(odd), .land-rights-table tbody tr:nth-child(odd), .well-events-table tbody tr:nth-child(odd), .related-agreements-table tbody tr:nth-child(odd), .crown-mineral-activities-table tbody tr:nth-child(odd), .global-metes-and-bounds-table tbody tr:nth-child(odd), .special-provisions-table tbody tr:nth-child(odd), .disclaimer-table tbody tr:nth-child(odd) {
     background-color: white; /* White for odd rows */
 }
 
-.report-table tbody tr:nth-child(even), .report-participant-table tbody tr:nth-child(even) {
+.report-table tbody tr:nth-child(even), .report-participant-table tbody tr:nth-child(even), .land-rights-table tbody tr:nth-child(even), .well-events-table tbody tr:nth-child(even), .related-agreements-table tbody tr:nth-child(even), .crown-mineral-activities-table tbody tr:nth-child(even), .global-metes-and-bounds-table tbody tr:nth-child(even), .special-provisions-table tbody tr:nth-child(even), .disclaimer-table tbody tr:nth-child(even) {
     background-color: #f2f2f2; /* Grey for even rows */
 }
 
@@ -85,6 +142,10 @@ td {
 
 .td-left, .th-left {
     text-align: left; /* Optional: Align text to the left */
+}
+
+.col-width-300 {
+    width: 300px;
 }
 
 /* Style for the container holding the title and logo */
@@ -112,12 +173,6 @@ td {
     height: 40px;  /* Adjust the height of the logo */
     margin: 0px;
     padding: 0px;
-}
-
-/* Style for the table */
-.report-table {
-    margin-left: 0;  /* Aligns the table to the same left margin as the logo and title */
-    width: 100%;  /* Ensure the table takes full width */
 }
 
 .chart-container {
@@ -215,6 +270,13 @@ td {
     transform: rotate(-30deg);
 }
 
+.watermark-1, .watermark-2, .watermark-3 {
+    color: rgba(0, 0, 0, 0.1); /* Makes the watermark semi-transparent */
+    z-index: 9999; /* Ensures the watermark is on the top layer */
+    pointer-events: none; /* Prevents interaction with the watermark */
+    user-select: none; /* Prevents users from selecting the watermark */
+}
+
 .title-logo-container-agreement {
     display: flex; /* Flexbox to align logo and text side-by-side */
     align-items: stretch; /* Ensures the logo and text are the same height */
@@ -264,4 +326,8 @@ td {
 
 .right-text-agreement {
     text-align: right; /* Align text to the right */
+}
+
+.small-size-text {
+    font-size: 8px;
 }
