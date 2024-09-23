@@ -16,24 +16,24 @@ services:
     networks:
       - service_network
   # This is MySQL
-  db:
-    image: business_platform/mysql
-    container_name: mysql_service
-    build: ./compose/mysql
-    # no need to specify environment alias
-    env_file:
-      - ./webapp/webapp/webapp/settings/.env
-    volumes:
-      - webapp_db_volume:/var/lib/mysql:rw
-      - ./compose/mysql/conf/mysql.conf:/etc/mysql/my.cnf
-      - ./compose/mysql/init:/docker-entrypoint-initdb.d/
-    ports:
-      - "3306:3306"
-    expose:
-      - "3306"
-    restart: always
-    networks:
-      - service_network
+#  db:
+#    image: business_platform/mysql
+#    container_name: mysql_service
+#    build: ./compose/mysql
+#    # no need to specify environment alias
+#    env_file:
+#      - ./webapp/webapp/webapp/settings/.env
+#    volumes:
+#      - webapp_db_volume:/var/lib/mysql:rw
+#      - ./compose/mysql/conf/mysql.conf:/etc/mysql/my.cnf
+#      - ./compose/mysql/init:/docker-entrypoint-initdb.d/
+#    ports:
+#      - "3306:3306"
+#    expose:
+#      - "3306"
+#    restart: always
+#    networks:
+#      - service_network
   # This is Django project + uWSGI server
   web:
     image: business_platform/web
@@ -53,7 +53,7 @@ services:
 #      - db
 #      - redis
     depends_on:
-      - db
+#      - db
       - redis
     environment:
       - DEBUG=False
@@ -87,7 +87,7 @@ services:
       - service_network
 volumes:
   webapp_media_volume:
-  webapp_db_volume:
+#  webapp_db_volume:
   webapp_static_volume:
   webapp_redis_volume:
 networks:
