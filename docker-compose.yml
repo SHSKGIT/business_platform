@@ -63,28 +63,28 @@ services:
     networks:
       - service_network
   # nginx container depends on django+uwsgi container only
-  nginx:
-    image: business_platform/nginx
-    container_name: nginx_service
-    build: ./compose/nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    expose:
-      - "80"
-      - "443"
-    volumes:
-      - ./webapp/webapp/webapp/static:/usr/share/nginx/html/static
-      - webapp_media_volume:/usr/share/nginx/html/media
-      - ./compose/nginx/ssl:/usr/share/nginx/ssl
-      - ./compose/nginx/log:/var/log/nginx
-#    links:
+#  nginx:
+#    image: business_platform/nginx
+#    container_name: nginx_service
+#    build: ./compose/nginx
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    expose:
+#      - "80"
+#      - "443"
+#    volumes:
+#      - ./webapp/webapp/webapp/static:/usr/share/nginx/html/static
+#      - webapp_media_volume:/usr/share/nginx/html/media
+#      - ./compose/nginx/ssl:/usr/share/nginx/ssl
+#      - ./compose/nginx/log:/var/log/nginx
+##    links:
+##      - web
+#    depends_on:
 #      - web
-    depends_on:
-      - web
-    restart: always
-    networks:
-      - service_network
+#    restart: always
+#    networks:
+#      - service_network
 volumes:
   webapp_media_volume:
 #  webapp_db_volume:
