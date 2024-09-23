@@ -19,7 +19,7 @@ echo "Static files collected."
 # Wait until MySQL is ready
 echo "Waiting for database connection..."
 
-while ! nc -z db $DATABASE_PORT; do
+while ! nc -z $DATABASE_HOST $DATABASE_PORT; do
   sleep 1 # wait for 1 second before checking again
 done
 
