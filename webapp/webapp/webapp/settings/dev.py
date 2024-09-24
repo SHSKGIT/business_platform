@@ -122,9 +122,11 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASS"),
-        "HOST": env("DATABASE_HOST"),  # Or an IP Address that your DB is hosted on
+        "USER": env("DATABASE_USER_LOCAL"),
+        "PASSWORD": env("DATABASE_PASS_LOCAL"),
+        "HOST": env(
+            "DATABASE_HOST_LOCAL"
+        ),  # Or an IP Address that your DB is hosted on
         "PORT": env("DATABASE_PORT"),
     }
 }

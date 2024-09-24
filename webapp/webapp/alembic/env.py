@@ -35,8 +35,8 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-# URL = settings.DATABASE_URL_LOCAL
-URL = settings.DATABASE_URL
+URL = settings.DATABASE_URL_LOCAL
+# URL = settings.DATABASE_URL
 engine = engine_from_config({"sqlalchemy.url": URL}, prefix="sqlalchemy.")
 
 
