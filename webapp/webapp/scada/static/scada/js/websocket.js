@@ -4,9 +4,9 @@ purchase form
 $('#purchase-button').click(function () {
     var user_id = document.getElementById('user-id').getAttribute('data-user-id');  // Pass the user's ID from the template
     // if using HTTP, websocket without SSL
-    var socket_url = 'ws://' + window.location.host + ':8002/ws/purchase/' + encodeURIComponent(user_id) + '/';
+//    var socket_url = 'ws://' + window.location.host + ':8002/ws/purchase/' + encodeURIComponent(user_id) + '/';
     // if using HTTPS, websocket with SSL
-//    var socket_url = 'wss://' + window.location.host + ':8002/ws/purchase/' + encodeURIComponent(user_id) + '/';
+    var socket_url = 'wss://' + window.location.host + ':8002/ws/purchase/' + encodeURIComponent(user_id) + '/';
     var socket = new WebSocket(socket_url);
 
     socket.onopen = function(event) {
