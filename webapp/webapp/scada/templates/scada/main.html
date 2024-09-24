@@ -32,26 +32,50 @@
     </head>
 
     <body>
-        <div id="sign-up" class="sign-up">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="#" class="brand">
+                        <img src="{% static 'scada/images/logo.png' %}" width="240" height="80" alt="Logo" />
+                        <!-- This is website logo -->
+                    </a>
+                    <!-- Navigation button, visible on small resolution -->
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <i class="icon-menu"></i>
+                    </button>
+                    <!-- Main navigation -->
+                    <div class="nav-collapse collapse pull-right">
+                        <ul class="nav" id="top-navigation">
+                            <li class="active"><a href="#report">Reports</a></li>
+                            <li><a href="#ai">AI</a></li>
+                            <li><a href="#sign-out" class="sign-out">Sign Out</a></li>
+                        </ul>
+                    </div>
+                    <!-- End main navigation -->
+                </div>
+            </div>
+        </div>
+
+        <div id="report" class="report">
             <div class="section primary-section">
-                <div class="triangle"></div>
+<!--                <div class="triangle"></div>-->
                 <div class="container">
                     <div class="title">
-                        <h1>You have signed in. New features will be updated soon.</h1>
+                        <h1>Reports</h1>
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <div id="websocket-status-message"></div>
-                            {% if user_id %}
-                                <p>Your User ID is: {{ user_id }}</p>
+<!--                            <div id="websocket-status-message"></div>-->
+<!--                            {% if user_id %}-->
+<!--                                <p>Your User ID is: {{ user_id }}</p>-->
                                 <div id="user-id" data-user-id="{{ user_id }}"></div>
-                            {% else %}
-                                <p>No User ID provided.</p>
-                            {% endif %}
-                            <button id="purchase-button" class="button button-sp">Purchase</button>
+<!--                            {% else %}-->
+<!--                                <p>No User ID provided.</p>-->
+<!--                            {% endif %}-->
+<!--                            <button id="purchase-button" class="button button-sp">Purchase</button>-->
                             <button id="monthly-report-button" class="button button-sp">Generate Monthly Report</button>
                             <button id="general-report-button" class="button button-sp">Generate General Report</button>
-                            <button class="button button-sp" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>
+<!--                            <button class="button button-sp" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>-->
                             <br><br>
 <!--                            <div class="error left" id="err-sign-in"></div>-->
                         </div>
@@ -88,7 +112,7 @@
                                 {% endfor %}
                                 <div class="control-group">
                                     <div class="controls">
-                                        <button id="ai-button" class="button button-sp">Submit</button>
+                                        <button id="ai-button" class="button button-sp">Ask AI</button>
                                     </div>
                                 </div>
                             </form>
@@ -106,6 +130,39 @@
             </div>
         </div>
 
+        <div id="sign-out" class="sign-out">
+            <div class="section primary-section">
+                <div class="triangle"></div>
+                <div class="container">
+                    <div class="title">
+                        <h1>Sign Out</h1>
+                    </div>
+                    <div class="row-fluid centered">
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="button button-sp centered" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>
+                                <br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer section start -->
+        <div class="footer">
+            <p>&copy; 2024 <a href="{% url 'scada:home' %}">One Energy Data</a>
+            <!--, <a href="http://goo.gl/NM84K2">Documentation</a></p> -->
+        </div>
+        <!-- Footer section end -->
+        <!-- ScrollUp button start -->
+        <div class="scrollup">
+            <a href="#">
+                <i class="icon-up-open"></i>
+            </a>
+        </div>
+        <!-- ScrollUp button end -->
+
         <!-- Include javascript -->
         <script type="text/javascript" src="{% static 'scada/js/jquery.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.mixitup.js' %}"></script>
@@ -115,6 +172,7 @@
         <script type="text/javascript" src="{% static 'scada/js/jquery.cslider.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.placeholder.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.inview.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/app.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/sign_up.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/respond.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/textarea_character_count.js' %}"></script>
