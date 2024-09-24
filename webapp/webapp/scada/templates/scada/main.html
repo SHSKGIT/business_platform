@@ -48,7 +48,7 @@
                         <ul class="nav" id="top-navigation">
                             <li class="active"><a href="#report">Reports</a></li>
                             <li><a href="#ai">AI</a></li>
-                            <li><a href="location.href='{% url 'scada:sign-out' %}'" class="sign-out">Sign Out</a></li>
+                            <li><a href="#sign-out" class="sign-out">Sign Out</a></li>
                         </ul>
                     </div>
                     <!-- End main navigation -->
@@ -58,17 +58,17 @@
 
         <div id="report" class="report">
             <div class="section primary-section">
-                <div class="triangle"></div>
+<!--                <div class="triangle"></div>-->
                 <div class="container">
                     <div class="title">
-                        <h1>OED Dashboard</h1>
+                        <h1>Reports</h1>
                     </div>
                     <div class="control-group">
                         <div class="controls">
 <!--                            <div id="websocket-status-message"></div>-->
 <!--                            {% if user_id %}-->
 <!--                                <p>Your User ID is: {{ user_id }}</p>-->
-<!--                                <div id="user-id" data-user-id="{{ user_id }}"></div>-->
+                                <div id="user-id" data-user-id="{{ user_id }}"></div>
 <!--                            {% else %}-->
 <!--                                <p>No User ID provided.</p>-->
 <!--                            {% endif %}-->
@@ -130,6 +130,25 @@
             </div>
         </div>
 
+        <div id="sign-out" class="sign-out">
+            <div class="section primary-section">
+                <div class="triangle"></div>
+                <div class="container">
+                    <div class="title">
+                        <h1>Sign Out</h1>
+                    </div>
+                    <div class="row-fluid centered">
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="button button-sp centered" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>
+                                <br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer section start -->
         <div class="footer">
             <p>&copy; 2024 <a href="{% url 'scada:home' %}">One Energy Data</a>
@@ -153,6 +172,7 @@
         <script type="text/javascript" src="{% static 'scada/js/jquery.cslider.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.placeholder.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/jquery.inview.js' %}"></script>
+        <script type="text/javascript" src="{% static 'scada/js/app.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/sign_up.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/respond.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/textarea_character_count.js' %}"></script>
