@@ -36,4 +36,4 @@ chmod -R 755 ./webapp
 
 uwsgi --ini ./uwsgi.ini
 
-uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT
+uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT --log-level debug > uvicorn.log 2>&1
