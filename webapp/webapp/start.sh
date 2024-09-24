@@ -6,7 +6,7 @@ export DJANGO_SETTINGS_MODULE=webapp.settings.prod
 
 # Load environment variables from the .env file
 set -a
-source /business_platform/webapp/webapp/webapp/settings/.env
+source ./webapp/settings/.env
 set +a
 
 echo "Collecting static files..."
@@ -31,9 +31,9 @@ echo "Alembic migrations finished."
 
 #python -m pip install --upgrade pip
 
-chown -R www-data:www-data /business_platform/webapp/webapp/webapp
-chmod -R 755 /business_platform/webapp/webapp/webapp
+chown -R www-data:www-data ./webapp
+chmod -R 755 ./webapp
 
-uwsgi --ini /business_platform/webapp/webapp/uwsgi.ini
+uwsgi --ini ./uwsgi.ini
 
 uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT
