@@ -64,7 +64,7 @@
                         <h1>Reports</h1>
                     </div>
                     <div class="control-group">
-                        <div class="controls">
+                        <div class="controls centered">
 <!--                            <div id="websocket-status-message"></div>-->
 <!--                            {% if user_id %}-->
 <!--                                <p>Your User ID is: {{ user_id }}</p>-->
@@ -73,11 +73,24 @@
 <!--                                <p>No User ID provided.</p>-->
 <!--                            {% endif %}-->
 <!--                            <button id="purchase-button" class="button button-sp">Purchase</button>-->
-                            <button id="monthly-report-button" class="button button-sp">Generate Monthly Report</button>
-                            <button id="general-report-button" class="button button-sp">Generate General Report</button>
+<!--                            <button id="monthly-report-button" class="button button-sp">Generate Monthly Report</button>-->
+<!--                            <button id="general-report-button" class="button button-sp">Generate General Report</button>-->
 <!--                            <button class="button button-sp" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>-->
-                            <br><br>
+<!--                            <br><br>-->
 <!--                            <div class="error left" id="err-sign-in"></div>-->
+                            <h2>Which Report Do You Want?</h2>
+<!--                            <label for="reportSelect">Reports:</label>-->
+                            <div class="generate-report-container">
+                                <select id="reportSelect" name="report" required>
+                                    <option value="" selected disabled>Please select a report</option>
+                                    <option value="Monthly Report" data-url="{% url 'scada:pdf-report-1' %}">Monthly Report</option>
+                                    <option value="General Report" data-url="{% url 'scada:pdf-report-2' %}">General Report</option>
+    <!--                                when the report view is not ready yet, data-url is not available, can temporarily display it on UI-->
+    <!--                                <option value="N/A Report">N/A Report</option>-->
+                                </select>
+                                <button type="button" id="generate_report_button" class="button button-sp">Generate</button>
+                            </div>
+                            <div class="error left" id="err-generate-report"></div>
                         </div>
                     </div>
                 </div>
@@ -91,7 +104,7 @@
                     <div class="row-fluid">
                         <div class="ai-form centered">
                             <div class="title">
-                                <h1>Let's go with AI.</h1>
+                                <h1>Let's Go With AI.</h1>
                             </div>
                             <form id="ai-form" action="{% url 'scada:ai' %}" method="post">
                                 {% csrf_token %}
