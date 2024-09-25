@@ -35,5 +35,5 @@ chown -R www-data:www-data ./webapp
 chmod -R 755 ./webapp
 
 uwsgi --ini ./uwsgi.ini
-
-nohup uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT --log-level debug > uvicorn.log 2>&1 &
+# temporarily disable for prod, due to wss not working on Plesk host. Maybe port or ssl certificate issue.
+#nohup uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT --log-level debug > uvicorn.log 2>&1 &
