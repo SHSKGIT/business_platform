@@ -951,3 +951,14 @@ p {
     background-color:#FCB514;
     color:#041E42;
 }
+/* Report Select dropdown */
+.generate-report-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Align items at the top */
+    gap: 10px; /* Space between the dropdown and the button */
+    justify-content: center;
+}
+#reportSelect, #generate_report_button {
+    height: 50px; /* Set the height of both the dropdown and button */
+}
