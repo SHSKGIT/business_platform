@@ -363,11 +363,11 @@ p {
 .primary-section .triangle {
     border-top: 40px solid #FCB514;
 }
-/* the white line underneath the title
+/* the white line underneath the title */
 .primary-section .title {
     border-bottom: 1px solid #FFF;
 }
-*/
+
 .primary-section, .primary-section .title p, .primary-section h3 {
     color: #FCB514;
 }
@@ -688,7 +688,7 @@ p {
 3.7 Contact
 ********************************************************************/
 .contact {
-    background: #FCB514;
+    background: #041E42;
 }
 .contact h1, .contact h2, .contact h3, .contact h4, .contact h5, .contact h6, .contact .section .title > p, .contact .social > li > a {
     color: #041E42;
