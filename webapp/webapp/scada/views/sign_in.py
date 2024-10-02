@@ -47,20 +47,25 @@ class SignInView(View):
             )
             dbsession.close()
 
+            if not user:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "sign_in_form_invalid_error": "Username and email don't match.",
+                    }
+                )
             if user and user.check_password(password):
-                # Password matches, proceed with sign-in
                 return JsonResponse(
                     {
                         "success": True,
                         "user_id": user.id,  # user object is not JSON serializable
                     }
                 )
-            else:
-                # Invalid credentials
+            if user and not user.check_password(password):
                 return JsonResponse(
                     {
                         "success": False,
-                        "sign_in_form_invalid_error": "Invalid username or password",
+                        "sign_in_form_invalid_error": "Username and email match, but password is wrong.",
                     }
                 )
         else:
