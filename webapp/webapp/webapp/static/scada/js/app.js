@@ -338,7 +338,7 @@ $("#reset-password-link").click(function (event) {
     window.open(
         $(this).attr('href'),
         "ResetPasswordWindow",
-        "width=600,height=550,left=100,top=100"
+        "width=600,height=600,left=100,top=100"
     );
 });
 /*

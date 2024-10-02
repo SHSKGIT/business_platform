@@ -38,11 +38,13 @@ class SignInView(View):
             # Query the database for the user
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = (
-                dbsession.query(AuthEntity)
-                .filter_by(
+                dbsession.query(AuthEntity).filter_by(
                     username=username,
                     email=sign_in_email,
                 )
+                # .filter(
+                #     AuthEntity.username.collate("utf8_bin")
+                # )  # Case-sensitive comparison
                 .one_or_none()
             )
             dbsession.close()
