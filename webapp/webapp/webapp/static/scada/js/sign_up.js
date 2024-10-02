@@ -5,6 +5,11 @@ $('#sign-up-button').click(function () {
         var error = false;
         var user_name = $('input#username').val().trim();
         var password = $('input#password').val().trim();
+        var confirm_password = $('input#confirm_password').val().trim();
+        var first_name = $('input#first_name').val().trim();
+        var last_name = $('input#last_name').val().trim();
+        var company = $('input#company').val().trim();
+        var phone = $('input#phone').val().trim();
         var email = $('input#email').val().trim();
 
         if (user_name == "" || user_name == " ") {
@@ -22,6 +27,74 @@ $('#sign-up-button').click(function () {
             $('#err-password').show(500);
             $('#err-password').delay(2000);
             $('#err-password').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        if (confirm_password == "" || confirm_password == " ") {
+            $('#err-confirm_password').show(500);
+            $('#err-confirm_password').delay(2000);
+            $('#err-confirm_password').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        if (password != confirm_password) {
+            $('#err-sign-up').html("Confirmed Password Doesn't Match Password.");
+            $('#err-sign-up').show(500);
+            $('#err-sign-up').delay(2000);
+            $('#err-sign-up').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        if (first_name == "" || first_name == " ") {
+            $('#err-first_name').show(500);
+            $('#err-first_name').delay(2000);
+            $('#err-first_name').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        if (last_name == "" || last_name == " ") {
+            $('#err-last_name').show(500);
+            $('#err-last_name').delay(2000);
+            $('#err-last_name').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        if (company == "" || company == " ") {
+            $('#err-company').show(500);
+            $('#err-company').delay(2000);
+            $('#err-company').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
+        const phoneCompare = /^(\+1\s?)?(\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/;
+        if (phone == "" || phone == " " || !phoneCompare.test(phone)) {
+            $('#err-phone').show(500);
+            $('#err-phone').delay(2000);
+            $('#err-phone').animate({
                 height: 'toggle'
             }, 500, function () {
                 // Animation complete.
