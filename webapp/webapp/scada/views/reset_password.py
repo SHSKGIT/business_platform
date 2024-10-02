@@ -28,7 +28,7 @@ class ResetPasswordView(View):
     def post(request):
         reset_password_form = ResetPasswordForm(request.POST)
         if reset_password_form.is_valid():
-            username = reset_password_form.cleaned_data["username"].lower()
+            username = reset_password_form.cleaned_data["username"]
             password = reset_password_form.cleaned_data["password"]
             email = reset_password_form.cleaned_data["email"].lower()
 
@@ -61,7 +61,7 @@ class ResetPasswordView(View):
                 return JsonResponse(
                     {
                         "success": False,
-                        "reset_password_form_invalid_error": "No matching user, try again.",
+                        "reset_password_form_invalid_error": "Username and email don't match.",
                     }
                 )
         else:
