@@ -31,13 +31,19 @@ class SignInView(View):
     def post(request):
         sign_in_form = SignInForm(request.POST)
         if sign_in_form.is_valid():
-            username = sign_in_form.cleaned_data["username"].lower()
+            username = sign_in_form.cleaned_data["username"]
             password = sign_in_form.cleaned_data["password"]
+            sign_in_email = sign_in_form.cleaned_data["sign_in_email"]
 
             # Query the database for the user
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = (
-                dbsession.query(AuthEntity).filter_by(username=username).one_or_none()
+                dbsession.query(AuthEntity)
+                .filter_by(
+                    username=username,
+                    email=sign_in_email,
+                )
+                .one_or_none()
             )
             dbsession.close()
 

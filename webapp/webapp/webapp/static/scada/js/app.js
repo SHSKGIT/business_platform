@@ -247,6 +247,7 @@ $('#sign-in-button').click(function () {
         var error = false;
         var user_name = $('input#username').val().trim();
         var password = $('input#password').val().trim();
+        var sign_in_email = $('input#sign_in_email').val().trim();
 
         var error = false;
         if (user_name == "" || user_name == " ") {
@@ -271,6 +272,18 @@ $('#sign-in-button').click(function () {
             error = true; // change the error state to true
         }
 
+        const emailCompare = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Syntax to compare against input
+        if (sign_in_email == "" || sign_in_email == " " || !emailCompare.test(sign_in_email)) {
+            $('#err-sign_in_email').show(500);
+            $('#err-sign_in_email').delay(2000);
+            $('#err-sign_in_email').animate({
+                height: 'toggle'
+            }, 500, function () {
+                // Animation complete.
+            });
+            error = true; // change the error state to true
+        }
+
         if (error === false) {
             var dataString = $('#sign-in-form').serialize(); // Collect data from form
             $.ajax({
@@ -285,6 +298,7 @@ $('#sign-in-button').click(function () {
                     if (response.success) {
                         $('#username').val('');
                         $('#password').val('');
+                        $('#sign_in_email').val('');
                         var user_id = response.user_id;
                         var actionUrl = $('#sign-in-form').attr('action');
                         actionUrl += '?user_id=' + encodeURIComponent(user_id);
@@ -313,7 +327,7 @@ $("#sign-up-link").click(function (event) {
     window.open(
         $(this).attr('href'),
         "SignUpWindow",
-        "width=600,height=550,left=100,top=100"
+        "width=600,height=800,left=100,top=100"
     );
 });
 /*
