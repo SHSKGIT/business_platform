@@ -50,7 +50,24 @@ class ProfileView(View):
             phone = profile_form.cleaned_data["phone"]
             email = profile_form.cleaned_data["email"].lower()
 
-            # check user
+            # check uniqueness of username and email
+            dbsession = next(get_dbsession())  # Get the SQLAlchemy session
+            user = (
+                dbsession.query(AuthEntity)
+                .filter_by(username=username, email=email)
+                .one_or_none()
+            )
+            dbsession.close()
+
+            if user and user.id != user_id:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "profile_form_invalid_error": "Username and email is being along with another user. Failed to update.",
+                    }
+                )
+
+            # check user self
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = dbsession.query(AuthEntity).filter_by(id=user_id).one_or_none()
 
@@ -74,6 +91,7 @@ class ProfileView(View):
                     }
                 )
 
+            dbsession.close()
             return JsonResponse(
                 {
                     "success": False,
