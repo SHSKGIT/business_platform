@@ -300,8 +300,10 @@ $('#sign-in-button').click(function () {
                         $('#password').val('');
                         $('#sign_in_email').val('');
                         var user_id = response.user_id;
+                        var username = response.username;
+                        var full_name = response.full_name;
                         var actionUrl = $('#sign-in-form').attr('action');
-                        actionUrl += '?user_id=' + encodeURIComponent(user_id);
+                        actionUrl += '?user_id=' + encodeURIComponent(user_id) + '&username=' + encodeURIComponent(username) + '&full_name=' + encodeURIComponent(full_name);
                         window.location.href = actionUrl;
                     } else {
                         $('#err-sign-in').html(response.sign_in_form_invalid_error);
@@ -339,6 +341,17 @@ $("#reset-password-link").click(function (event) {
         $(this).attr('href'),
         "ResetPasswordWindow",
         "width=600,height=600,left=100,top=100"
+    );
+});
+/*
+click profile link
+**********************************************************************/
+$("#profile-link").click(function (event) {
+    event.preventDefault(); // Prevents the default action of the link
+    window.open(
+        $(this).attr('href'),
+        "ResetPasswordWindow",
+        "width=600,height=700,left=100,top=100"
     );
 });
 /*

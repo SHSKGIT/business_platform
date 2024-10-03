@@ -9,6 +9,7 @@ from .views import (
     generate_pdf_report,
     reset_password,
     ai,
+    profile,
 )
 
 app_name = "scada"
@@ -36,4 +37,5 @@ urlpatterns = [
         name="pdf-report-2",
     ),
     path("ai/", ai.AiView.as_view(), name="ai"),
+    path("profile/<int:user_id>/", profile.ProfileView.as_view(), name="profile"),
 ]
