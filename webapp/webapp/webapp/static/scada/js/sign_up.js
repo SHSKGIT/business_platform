@@ -46,7 +46,7 @@ $('#sign-up-button').click(function () {
         }
 
         if (password != confirm_password) {
-            $('#err-sign-up').html("Confirmed Password Doesn't Match Password.");
+            $('#err-sign-up').html("Confirmed password doesn't match password.");
             $('#err-sign-up').show(500);
             $('#err-sign-up').delay(2000);
             $('#err-sign-up').animate({

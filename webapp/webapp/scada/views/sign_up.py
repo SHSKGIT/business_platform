@@ -36,7 +36,6 @@ class SignUpView(View):
 
     @staticmethod
     def post(request):
-        pass
         sign_up_form = SignUpForm(request.POST)
         if sign_up_form.is_valid():
             username = sign_up_form.cleaned_data["username"]
@@ -50,9 +49,7 @@ class SignUpView(View):
             # check user
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = (
-                dbsession.query(AuthEntity)
-                .filter_by(username=username, email=email)
-                .one_or_none()
+                dbsession.query(AuthEntity).filter_by(username=username).one_or_none()
             )
 
             if user:
@@ -62,7 +59,7 @@ class SignUpView(View):
                 return JsonResponse(
                     {
                         "success": False,
-                        "sign_up_form_invalid_error": "Username with email exists, try others.",
+                        "sign_up_form_invalid_error": "Username exists, please try others.",
                     }
                 )
 
