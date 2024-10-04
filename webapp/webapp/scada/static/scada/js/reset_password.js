@@ -6,7 +6,7 @@ $('#reset-password-button').click(function () {
         var user_name = $('input#username').val().trim();
         var password = $('input#password').val().trim();
         var confirm_password = $('input#confirm_password').val().trim();
-        var email = $('input#email').val().trim();
+//        var email = $('input#email').val().trim();
 
         if (user_name == "" || user_name == " ") {
             $('#err-username').show(500);
@@ -42,7 +42,7 @@ $('#reset-password-button').click(function () {
         }
 
         if (password != confirm_password) {
-            $('#err-reset-password').html("Confirmed Password Doesn't Match Password.");
+            $('#err-reset-password').html("Confirmed password doesn't match password.");
             $('#err-reset-password').show(500);
             $('#err-reset-password').delay(2000);
             $('#err-reset-password').animate({
@@ -53,17 +53,17 @@ $('#reset-password-button').click(function () {
             error = true; // change the error state to true
         }
 
-        const emailCompare = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Syntax to compare against input
-        if (email == "" || email == " " || !emailCompare.test(email)) {
-            $('#err-email').show(500);
-            $('#err-email').delay(2000);
-            $('#err-email').animate({
-                height: 'toggle'
-            }, 500, function () {
-                // Animation complete.
-            });
-            error = true; // change the error state to true
-        }
+//        const emailCompare = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Syntax to compare against input
+//        if (email == "" || email == " " || !emailCompare.test(email)) {
+//            $('#err-email').show(500);
+//            $('#err-email').delay(2000);
+//            $('#err-email').animate({
+//                height: 'toggle'
+//            }, 500, function () {
+//                // Animation complete.
+//            });
+//            error = true; // change the error state to true
+//        }
 
         if (error === false) {
             var dataString = $('#reset-password-form').serialize(); // Collect data from form
