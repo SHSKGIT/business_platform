@@ -30,14 +30,12 @@ class ResetPasswordView(View):
         if reset_password_form.is_valid():
             username = reset_password_form.cleaned_data["username"]
             password = reset_password_form.cleaned_data["password"]
-            email = reset_password_form.cleaned_data["email"].lower()
+            # email = reset_password_form.cleaned_data["email"].lower()
 
             # check user
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = (
-                dbsession.query(AuthEntity)
-                .filter_by(username=username, email=email)
-                .one_or_none()
+                dbsession.query(AuthEntity).filter_by(username=username).one_or_none()
             )
 
             if user:
@@ -61,7 +59,7 @@ class ResetPasswordView(View):
                 return JsonResponse(
                     {
                         "success": False,
-                        "reset_password_form_invalid_error": "Username and email don't match.",
+                        "reset_password_form_invalid_error": "Username doesn't exist.",
                     }
                 )
         else:

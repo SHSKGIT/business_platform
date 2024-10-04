@@ -22,25 +22,25 @@ class SignInForm(forms.Form):
             "min_length": "Please enter at least 1 character.",
         },
     )
-    sign_in_email = forms.EmailField(
-        label="Please enter your email",
-        max_length=200,
-        min_length=1,
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                "id": "sign_in_email",
-                "class": "span12",
-                "placeholder": "* Email",
-                "type": "email",
-            }
-        ),
-        error_messages={
-            "required": "Please enter a valid email address.",
-            "max_length": "Please enter no more than 200 characters.",
-            "min_length": "Please enter at least 1 character.",
-        },
-    )
+    # sign_in_email = forms.EmailField(
+    #     label="Please enter your email",
+    #     max_length=200,
+    #     min_length=1,
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "id": "sign_in_email",
+    #             "class": "span12",
+    #             "placeholder": "* Email",
+    #             "type": "email",
+    #         }
+    #     ),
+    #     error_messages={
+    #         "required": "Please enter a valid email address.",
+    #         "max_length": "Please enter no more than 200 characters.",
+    #         "min_length": "Please enter at least 1 character.",
+    #     },
+    # )
     password = CustomCharField(
         label="Please enter your password",
         # max_length=200,

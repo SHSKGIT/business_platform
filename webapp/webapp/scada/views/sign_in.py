@@ -41,14 +41,14 @@ class SignInView(View):
         if sign_in_form.is_valid():
             username = sign_in_form.cleaned_data["username"]
             password = sign_in_form.cleaned_data["password"]
-            sign_in_email = sign_in_form.cleaned_data["sign_in_email"]
+            # sign_in_email = sign_in_form.cleaned_data["sign_in_email"]
 
             # Query the database for the user
             dbsession = next(get_dbsession())  # Get the SQLAlchemy session
             user = (
                 dbsession.query(AuthEntity).filter_by(
                     username=username,
-                    email=sign_in_email,
+                    # email=sign_in_email,
                 )
                 # .filter(
                 #     AuthEntity.username.collate("utf8_bin")
@@ -61,7 +61,7 @@ class SignInView(View):
                 return JsonResponse(
                     {
                         "success": False,
-                        "sign_in_form_invalid_error": "Username and email don't match.",
+                        "sign_in_form_invalid_error": "Username doesn't exist.",
                     }
                 )
             if user and user.check_password(password):
@@ -83,7 +83,7 @@ class SignInView(View):
                 return JsonResponse(
                     {
                         "success": False,
-                        "sign_in_form_invalid_error": "Username and email match, but password is wrong.",
+                        "sign_in_form_invalid_error": "Username exists, but password is wrong.",
                     }
                 )
         else:
