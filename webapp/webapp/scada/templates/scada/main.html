@@ -27,6 +27,7 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'scada/images/apple-touch-icon-72.png' %}">
         <link rel="apple-touch-icon-precomposed" href="{% static 'scada/images/ico/apple-touch-icon-57.png' %}">
         <link rel="shortcut icon" href="{% static 'scada/images/ico/favicon.ico' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/common.js"></script>-->
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/util.js"></script>-->
     </head>
@@ -47,8 +48,8 @@
                     <div class="nav-collapse collapse pull-right">
                         <ul class="nav" id="top-navigation">
                             <li class="active"><a href="#report">Reports</a></li>
-                            <li><a href="#ai">AI</a></li>
-                            <li><a href="#sign-out" class="sign-out">Sign Out</a></li>
+<!--                            <li><a href="#ai">AI</a></li>-->
+                            <li><a href="{% url 'scada:sign-out' %}" class="sign-out">Sign Out</a></li>
                             <li><a href="{% url 'scada:profile' user_id=user_id %}" id="profile-link">Hi, {{ first_name }}</a></li>
                         </ul>
                     </div>
@@ -84,6 +85,7 @@
                             <div class="generate-report-container">
                                 <select id="reportSelect" name="report" required>
                                     <option value="" selected disabled>Please select a report</option>
+                                    <option value="Production Balance Report" data-url="{% url 'scada:pdf-pbr-report' %}">Production Balance Report</option>
                                     <option value="Monthly Report" data-url="{% url 'scada:pdf-report-1' %}">Monthly Report</option>
                                     <option value="General Report" data-url="{% url 'scada:pdf-report-2' %}">General Report</option>
     <!--                                when the report view is not ready yet, data-url is not available, can temporarily display it on UI-->
@@ -98,70 +100,105 @@
             </div>
         </div>
 
-        <div id="ai" class="ai">
-            <div class="section secondary-section">
-                <div class="triangle"></div>
+        <!-- pbr report section start -->
+        <div id="pbr" class="pbr">
+            <div class="section primary-section">
+<!--                <div class="triangle"></div>-->
                 <div class="container">
-                    <div class="row-fluid">
-                        <div class="ai-form centered">
-                            <div class="title">
-                                <h1>Let's Go With AI.</h1>
-                            </div>
-                            <form id="ai-form" action="{% url 'scada:ai' %}" method="post">
+<!--                    <div class="title">-->
+<!--                        <h1>Sign In</h1>-->
+<!--                    </div>-->
+                    <div class="pbr-form row-fluid centered">
+                        <div class="form-wrapper">
+                            <form id="pbr-form" action="{% url 'scada:pdf-pbr-report' %}">
                                 {% csrf_token %}
-                                {% for field in ai_form %}
+                                {% for field in pbr_form %}
                                     <div class="control-group">
                                         <div class="controls">
-                                            {% if field.name == 'comment' %}
-                                                <div class="textarea-container">
-                                                    {{ field }}
-                                                    <div class="char-counter">0 / {{ field.field.max_length }}</div>
-                                                </div>
-                                            {% else %}
-                                                {{ field }}
-                                            {% endif %}
+                                            {{ field }}
                                             <div class="error left-align" id="err-{{ field.name }}">{{ field.field.error_messages.required }}</div>
                                         </div>
                                     </div>
                                 {% endfor %}
+                                <br>
                                 <div class="control-group">
                                     <div class="controls">
-                                        <button id="ai-button" class="button button-sp">Ask AI</button>
+                                        <button id="pbr-button" class="button button-sp">Generate</button>
+                                        <div class="error left" id="err-pbr"></div>
                                     </div>
                                 </div>
                             </form>
-
-                            <!-- Box to display AI's response -->
-        <!--                    <div id="response-box" class="response-box" style="display: none;">-->
-        <!--                        <h3>AI Response:</h3>-->
-        <!--                        <p id="response-text"></p>-->
-        <!--                    </div>-->
-
-                        </div>
-                    </div>
-                    <div id="ai-response" class="alert alert-success invisible"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="sign-out" class="sign-out">
-            <div class="section primary-section">
-                <div class="triangle"></div>
-                <div class="container">
-                    <div class="title">
-                        <h1>Sign Out</h1>
-                    </div>
-                    <div class="row-fluid centered">
-                        <div class="control-group">
-                            <div class="controls">
-                                <button class="button button-sp centered" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>
-                                <br><br>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- pbr report section end -->
+
+<!--        <div id="ai" class="ai">-->
+<!--            <div class="section secondary-section">-->
+<!--                <div class="triangle"></div>-->
+<!--                <div class="container">-->
+<!--                    <div class="row-fluid">-->
+<!--                        <div class="ai-form centered">-->
+<!--                            <div class="title">-->
+<!--                                <h1>Let's Go With AI.</h1>-->
+<!--                            </div>-->
+<!--                            <form id="ai-form" action="{% url 'scada:ai' %}" method="post">-->
+<!--                                {% csrf_token %}-->
+<!--                                {% for field in ai_form %}-->
+<!--                                    <div class="control-group">-->
+<!--                                        <div class="controls">-->
+<!--                                            {% if field.name == 'comment' %}-->
+<!--                                                <div class="textarea-container">-->
+<!--                                                    {{ field }}-->
+<!--                                                    <div class="char-counter">0 / {{ field.field.max_length }}</div>-->
+<!--                                                </div>-->
+<!--                                            {% else %}-->
+<!--                                                {{ field }}-->
+<!--                                            {% endif %}-->
+<!--                                            <div class="error left-align" id="err-{{ field.name }}">{{ field.field.error_messages.required }}</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                {% endfor %}-->
+<!--                                <div class="control-group">-->
+<!--                                    <div class="controls">-->
+<!--                                        <button id="ai-button" class="button button-sp">Ask AI</button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </form>-->
+
+<!--                            &lt;!&ndash; Box to display AI's response &ndash;&gt;-->
+<!--        &lt;!&ndash;                    <div id="response-box" class="response-box" style="display: none;">&ndash;&gt;-->
+<!--        &lt;!&ndash;                        <h3>AI Response:</h3>&ndash;&gt;-->
+<!--        &lt;!&ndash;                        <p id="response-text"></p>&ndash;&gt;-->
+<!--        &lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div id="ai-response" class="alert alert-success invisible"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div id="sign-out" class="sign-out">-->
+<!--            <div class="section primary-section">-->
+<!--                <div class="triangle"></div>-->
+<!--                <div class="container">-->
+<!--                    <div class="title">-->
+<!--                        <h1>Sign Out</h1>-->
+<!--                    </div>-->
+<!--                    <div class="row-fluid centered">-->
+<!--                        <div class="control-group">-->
+<!--                            <div class="controls">-->
+<!--                                <button class="button button-sp centered" onclick="location.href='{% url 'scada:sign-out' %}'">Sign Out</button>-->
+<!--                                <br><br>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Footer section start -->
 <!--        <div class="footer">-->
@@ -188,11 +225,12 @@
         <script type="text/javascript" src="{% static 'scada/js/app.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/sign_up.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/respond.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'scada/js/textarea_character_count.js' %}"></script>
+<!--        <script type="text/javascript" src="{% static 'scada/js/textarea_character_count.js' %}"></script>-->
         <script type="text/javascript" src="{% static 'scada/js/animate_element.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/websocket.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/report.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/session_check.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/ai.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     </body>
 </html>

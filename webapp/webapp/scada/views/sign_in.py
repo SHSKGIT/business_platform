@@ -12,6 +12,7 @@ from ..forms.contact import ContactForm
 from ..forms.subscribe import SubscribeForm
 from ..forms.sign_in import SignInForm
 from ..forms.ai import AiForm
+from ..forms.pbr import PBRForm
 
 
 # =======================================================================================================================
@@ -26,6 +27,7 @@ class SignInView(View):
         # is_admin = request.GET.get("is_admin")
         # is_active = request.GET.get("is_active")
         ai_form = AiForm()
+        pbr_form = PBRForm()
         context = {
             "user_id": user_id,
             # "username": username,
@@ -34,6 +36,7 @@ class SignInView(View):
             # "is_admin": is_admin,
             # "is_active": is_active,
             "ai_form": ai_form,
+            "pbr_form": pbr_form,
         }
         return render(request, template, context)
 
