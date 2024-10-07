@@ -128,6 +128,7 @@ $('#profile-button').click(function () {
                 success: function (response) {
                     if (response.success) {
                         alert("You have successfully updated profile. This window will close.");
+                        window.opener.updateFirstName(first_name);
                         window.close();
                     } else {
 //                        alert("An error occurred");

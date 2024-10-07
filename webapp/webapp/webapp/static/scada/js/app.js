@@ -300,10 +300,9 @@ $('#sign-in-button').click(function () {
                         $('#password').val('');
 //                        $('#sign_in_email').val('');
                         var user_id = response.user_id;
-                        var username = response.username;
-                        var full_name = response.full_name;
+                        var first_name = response.first_name;
                         var actionUrl = $('#sign-in-form').attr('action');
-                        actionUrl += '?user_id=' + encodeURIComponent(user_id) + '&username=' + encodeURIComponent(username) + '&full_name=' + encodeURIComponent(full_name);
+                        actionUrl += '?user_id=' + encodeURIComponent(user_id) + '&first_name=' + encodeURIComponent(first_name);
                         window.location.href = actionUrl;
                     } else {
                         $('#err-sign-in').html(response.sign_in_form_invalid_error);
@@ -536,3 +535,13 @@ notAvailableLinks.forEach(function(link) {
         });
     });
 });
+
+function updateFirstName(newFirstName) {
+    document.getElementById('profile-link').textContent = "Hi, " + newFirstName;
+    // Get the current URL
+    let currentUrl = new URL(window.location.href);
+    // Update the 'first_name' query parameter
+    currentUrl.searchParams.set('first_name', newFirstName);
+    // Use the history API to update the URL without reloading the page
+    window.history.pushState({}, '', currentUrl);
+}

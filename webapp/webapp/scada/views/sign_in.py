@@ -20,17 +20,19 @@ class SignInView(View):
     def get(request):
         template = "scada/main.html"
         user_id = request.GET.get("user_id")
-        username = request.GET.get("username")
-        full_name = request.GET.get("full_name")
-        is_admin = request.GET.get("is_admin")
-        is_active = request.GET.get("is_active")
+        # username = request.GET.get("username")
+        first_name = request.GET.get("first_name")
+        # full_name = request.GET.get("full_name")
+        # is_admin = request.GET.get("is_admin")
+        # is_active = request.GET.get("is_active")
         ai_form = AiForm()
         context = {
             "user_id": user_id,
-            "username": username,
-            "full_name": full_name,
-            "is_admin": is_admin,
-            "is_active": is_active,
+            # "username": username,
+            "first_name": first_name,
+            # "full_name": full_name,
+            # "is_admin": is_admin,
+            # "is_active": is_active,
             "ai_form": ai_form,
         }
         return render(request, template, context)
