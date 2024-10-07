@@ -7,7 +7,7 @@ import os
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "webapp.settings.dev"
 
-engine = create_engine(settings.DATABASE_URL_LOCAL)
+engine = create_engine(settings.DATABASE_URL_LOCAL, pool_recycle=3600)
 
 # Create a scoped session
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
