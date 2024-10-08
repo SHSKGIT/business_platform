@@ -28,6 +28,7 @@
         <link rel="apple-touch-icon-precomposed" href="{% static 'scada/images/ico/apple-touch-icon-57.png' %}">
         <link rel="shortcut icon" href="{% static 'scada/images/ico/favicon.ico' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'scada/css/dashboard.css' %}" />
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/common.js"></script>-->
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/util.js"></script>-->
     </head>
@@ -115,6 +116,7 @@
                                 {% for field in pbr_form %}
                                     <div class="control-group">
                                         <div class="controls">
+                                            <label for="{{ field.id_for_label }}" class="custom-label-class">{{ field.label }}</label>
                                             {{ field }}
                                             <div class="error left-align" id="err-{{ field.name }}">{{ field.field.error_messages.required }}</div>
                                         </div>
