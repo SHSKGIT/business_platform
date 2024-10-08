@@ -119,6 +119,7 @@ $('#pbr-button').click(function () {
         var pbr_battery_code = $('input#pbr_battery_code').val().trim();
         var pbr_start_date = $('input#pbr_start_date').val().trim();
         var pbr_end_date = $('input#pbr_end_date').val().trim();
+        var today = new Date();
 
         if (pbr_battery_code == "" || pbr_battery_code == " ") {
             $('#err-pbr_battery_code').show(500);
@@ -151,6 +152,21 @@ $('#pbr-button').click(function () {
                 // Animation complete.
             });
             error = true; // change the error state to true
+        }
+
+        if (new Date(pbr_start_date) > today) {
+            show_error_animation("#err-pbr_start_date", "Start date must be before today.");
+            error = true;
+        }
+
+        if (new Date(pbr_end_date) > today) {
+            show_error_animation("#err-pbr_end_date", "End date must be before today.");
+            error = true;
+        }
+
+        if (pbr_start_date > pbr_end_date) {
+            show_error_animation("#err-pbr", "Start date must be ahead of end date.");
+            error = true;
         }
 
         if (error === false) {
