@@ -155,17 +155,17 @@ $('#pbr-button').click(function () {
         }
 
         if (new Date(pbr_start_date) > today) {
-            show_error_animation("#err-pbr_start_date", "Start date must be before today.");
+            show_error_animation("#err-pbr_start_date", "Start date must be <= today.");
             error = true;
         }
 
         if (new Date(pbr_end_date) > today) {
-            show_error_animation("#err-pbr_end_date", "End date must be before today.");
+            show_error_animation("#err-pbr_end_date", "End date must be <= today.");
             error = true;
         }
 
         if (pbr_start_date > pbr_end_date) {
-            show_error_animation("#err-pbr", "Start date must be ahead of end date.");
+            show_error_animation("#err-pbr", "Start date must be <= end date.");
             error = true;
         }
 

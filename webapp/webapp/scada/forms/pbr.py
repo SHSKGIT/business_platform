@@ -4,7 +4,7 @@ from .custom_fields import CustomCharField
 
 class PBRForm(forms.Form):
     pbr_battery_code = CustomCharField(
-        label="Please enter battery code",
+        label="* Battery Code",
         max_length=200,
         min_length=1,
         required=True,
@@ -24,13 +24,13 @@ class PBRForm(forms.Form):
     )
     # Date field for selecting the start date
     pbr_start_date = forms.DateField(
-        label="Please select start date",
+        label="* From",
         required=True,
         widget=forms.DateInput(
             attrs={
                 "id": "pbr_start_date",
                 "class": "flatpickr span12",
-                "placeholder": "YYYY-MM-DD",  # Add placeholder for date format
+                "placeholder": "* Start Date (YYYY-MM-DD)",  # Add placeholder for date format
                 "type": "date",  # HTML5 date input type
             }
         ),
@@ -40,13 +40,13 @@ class PBRForm(forms.Form):
     )
     # Date field for selecting the end date
     pbr_end_date = forms.DateField(
-        label="Please select end date",
+        label="* To",
         required=True,
         widget=forms.DateInput(
             attrs={
                 "id": "pbr_end_date",
                 "class": "flatpickr span12",
-                "placeholder": "YYYY-MM-DD",  # Add placeholder for date format
+                "placeholder": "* End Date (YYYY-MM-DD)",  # Add placeholder for date format
                 "type": "date",  # HTML5 date input type
             }
         ),
