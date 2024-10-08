@@ -174,10 +174,18 @@ $('#pbr-button').click(function () {
             const reportSelect = document.getElementById('reportSelect');
             const selectedOption = reportSelect.options[reportSelect.selectedIndex];
 
-            var dataString = $('#pbr-form').serialize(); // Collect data from form
+            var formDataArray = $('#pbr-form').serializeArray(); // Get form data as an array
+            var formDataJson = {}; // Create an empty JSON object
+            // Loop through the form data array and add each field to the JSON object
+            $.each(formDataArray, function (i, field) {
+                formDataJson[field.name] = field.value; // Add key-value pair to the JSON object
+            });
+
+//            var dataString = $('#pbr-form').serialize(); // Collect data from form
             const reportUrl = selectedOption.getAttribute('data-url');
             if (reportUrl) {
-                const URL = reportUrl + "?user_id=" + user_id + "&" + dataString;
+//                const URL = reportUrl + "?user_id=" + user_id + "&" + dataString;
+                const URL = reportUrl + "?user_id=" + user_id + "&pbr_battery_code=" + formDataJson["pbr_battery_code"] + "&pbr_start_date=" + formDataJson["pbr_start_date"] + "&pbr_end_date=" + formDataJson["pbr_end_date"];
                 $.ajax({
                     type: 'GET',
                     url: URL,
