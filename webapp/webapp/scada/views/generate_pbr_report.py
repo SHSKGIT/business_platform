@@ -13,10 +13,12 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 import os
+import math
 import random
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
+import numpy as np
 
 
 STATIC_FILE_URLs = {
@@ -72,7 +74,9 @@ class PBRReportView(View):
             datetime.strptime(pbr_start_date, "%Y-%m-%d"),
             datetime.strptime(pbr_end_date, "%Y-%m-%d"),
         )
-        # bar_plot_image_path = PBRReportView.generate_bar_plot(data, month, year)
+        oil_bar_plot_image_path = PBRReportView.generate_bar_plot(
+            oil_table_data, "oil", pbr_start_date, pbr_end_date
+        )
 
         STATIC_FILE_URLs.update(
             {
@@ -89,7 +93,7 @@ class PBRReportView(View):
                 "water_table_data": water_table_data,
                 # "scatter_plot_url": scatter_plot_image_path,
                 # "line_plot_url": line_plot_image_path,
-                # "bar_plot_url": bar_plot_image_path,
+                "oil_bar_plot_url": oil_bar_plot_image_path,
             }
         )
 
@@ -109,7 +113,7 @@ class PBRReportView(View):
         # remove scatter plot image file to save space
         # os.remove(scatter_plot_image_path)
         # os.remove(line_plot_image_path)
-        # os.remove(bar_plot_image_path)
+        os.remove(oil_bar_plot_image_path)
 
         return response
 
@@ -123,6 +127,8 @@ class PBRReportView(View):
                 "volume": "590.4",
                 "adj_total": "(590.4)",
                 "notes": "SUBTRACT",
+                "plot_x_name": "INVCL",
+                "adj_total_minus": "Y",
             },
             {
                 "activity": "INVOP",
@@ -130,6 +136,7 @@ class PBRReportView(View):
                 "volume": "600.2",
                 "adj_total": "(600.20)",
                 "notes": "ADD",
+                "plot_x_name": "INVOP",
             },
             {
                 "activity": "LDINJ",
@@ -137,6 +144,8 @@ class PBRReportView(View):
                 "volume": "925.8",
                 "adj_total": "(925.80)",
                 "notes": "SUBTRACT",
+                "plot_x_name": "LDINJ",
+                "adj_total_minus": "Y",
             },
             {
                 "activity": "LDINVCL",
@@ -144,6 +153,7 @@ class PBRReportView(View):
                 "volume": "114.5",
                 "adj_total": "",
                 "notes": "IGNORE",
+                "plot_x_name": "LDINVCL",
             },
             {
                 "activity": "LDINVOP",
@@ -151,6 +161,7 @@ class PBRReportView(View):
                 "volume": "121.2",
                 "adj_total": "",
                 "notes": "IGNORE",
+                "plot_x_name": "LDINVOP",
             },
             {
                 "activity": "LDREC",
@@ -158,6 +169,7 @@ class PBRReportView(View):
                 "volume": "932.5",
                 "adj_total": "(932.50)",
                 "notes": "ADD",
+                "plot_x_name": "LDREC",
             },
             {
                 "activity": "PROD",
@@ -165,6 +177,7 @@ class PBRReportView(View):
                 "volume": "15098.9",
                 "adj_total": "(15098.90)",
                 "notes": "ADD",
+                "plot_x_name": "PROD",
             },
             {
                 "activity": "REC",
@@ -172,6 +185,7 @@ class PBRReportView(View):
                 "volume": "426.6",
                 "adj_total": "(426.60)",
                 "notes": "ADD",
+                "plot_x_name": "REC-OIL",
             },
             {
                 "activity": "REC",
@@ -179,6 +193,7 @@ class PBRReportView(View):
                 "volume": "",
                 "adj_total": "(805.60)",
                 "notes": "ADD",
+                "plot_x_name": "REC-CS",
             },
             {
                 "activity": "ROYALTY",
@@ -186,6 +201,7 @@ class PBRReportView(View):
                 "volume": "2766.1",
                 "adj_total": "",
                 "notes": "IGNORE",
+                "plot_x_name": "ROYALTY",
             },
             {
                 "activity": "",
@@ -193,6 +209,7 @@ class PBRReportView(View):
                 "volume": "",
                 "adj_total": "",
                 "notes": "",
+                "plot_x_name": "",
             },
             {
                 "activity": "DISP",
@@ -200,6 +217,7 @@ class PBRReportView(View):
                 "volume": "16347.6",
                 "adj_total": "16347.6",
                 "notes": "",
+                "plot_x_name": "DISP",
             },
         ]
 
@@ -348,100 +366,174 @@ class PBRReportView(View):
         return data
 
     @staticmethod
-    def generate_bar_plot(data, month, year):
-        # Convert to DataFrame
-        df = pd.DataFrame(data)
-        df["Date"] = pd.to_datetime(df["Date"])  # Convert the 'Date' column to datetime
+    def generate_bar_plot(data, product, start_date, end_date):
+        # Extract valid data
+        activities = [row["plot_x_name"] for row in data]
+        for row in data:
+            if row["adj_total"]:
+                row["adj_total"] = float(
+                    row["adj_total"].replace("(", "").replace(")", "")
+                )
+            else:
+                row["adj_total"] = float(0)
+
+        adj_totals = [
+            row["adj_total"] * -1 if "adj_total_minus" in row else row["adj_total"]
+            for row in data
+        ]
+
+        # Determine colors based on adj_total values
+        # colors = ["red" if total < 0 else "green" for total in adj_totals]
+        colors = ["red" if "adj_total_minus" in row else "green" for row in data]
+        # Ensure "DISP" is black
+        if "DISP" in activities:
+            disp_index = activities.index("DISP")
+            colors[disp_index] = "black"
 
         # Plotting
-        fig, ax = plt.subplots(figsize=(30, 15))
-
-        # Bar width
-        bar_width = 0.25
-
-        # Plot each variable
-        ax.bar(
-            df["Date"],
-            df["Oil"],
-            color="r",
-            width=bar_width,
-            edgecolor="black",
-            label="Oil",
-        )
-        ax.bar(
-            df["Date"],
-            df["Condy"],
-            color="g",
-            width=bar_width,
-            edgecolor="black",
-            label="Condy",
-        )
-        ax.bar(
-            df["Date"],
-            df["Water"],
-            color="b",
-            width=bar_width,
-            edgecolor="black",
-            label="Water",
+        fig, ax = plt.subplots(figsize=(10, 6))
+        x_positions = np.arange(len(activities))
+        bar_width = 0.5
+        bars = ax.bar(
+            x_positions, adj_totals, color=colors, width=bar_width, align="edge"
         )
 
-        # Set x-axis limits to match the data range
-        ax.set_xlim(df["Date"].min(), df["Date"].max())
+        ax.set_xticks(x_positions)
 
-        # Format date on x-axis
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-        ax.xaxis.set_major_locator(mdates.DayLocator())
-        fig.autofmt_xdate()  # Auto-format the date labels to prevent overlap
+        # Place the x-axis at y=0
+        ax.axhline(0, color="grey", linewidth=1)
 
-        # Customize plot
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Values")
-        ax.set_title(f"Bar Plot of Oil, Condy, and Water in {month}/{year}")
-        ax.legend()
+        # ===============================================
+        # Set y scale with step of 2000
+        max_val = max(adj_totals)
+        min_val = min(adj_totals)
+        ax.set_yticks(
+            np.arange(
+                PBRReportView.nearest_multiple(min_val, 2000),
+                PBRReportView.nearest_multiple(max_val, 2000) + 2000,
+                2000,
+            )
+        )
 
-        # Add labels for each point
-        for i in range(len(df)):
-            # Oil points
+        # Set the color for y-ticks and labels
+        ax.tick_params(axis="y", colors="grey")
+
+        # Remove x-axis labels and place them on top of each bar
+        # ax.set_xticks([])
+        for i, bar in enumerate(bars):
+            # Determine the height for positioning
+            height = bar.get_height()
+
+            # Positioning activity names
             ax.text(
-                df["Date"].iloc[i],
-                df["Oil"].iloc[i],
-                f'{df["Oil"].iloc[i]}',
+                bar.get_x() + bar.get_width() / 2,
+                PBRReportView.nearest_multiple(max_val, 2000),
+                activities[i],
+                ha="center",
+                va="bottom",
                 fontsize=10,
-                color="r",
-                ha="left",
+                color="grey",
             )
 
-            # Condy points
-            ax.text(
-                df["Date"].iloc[i],
-                df["Condy"].iloc[i],
-                f'{df["Condy"].iloc[i]}',
-                fontsize=10,
-                color="g",
-                ha="left",
-            )
+            if height < 0:  # If adj_total is negative
+                # Position below the bar
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    height - 300,  # Positioning the label below the bar
+                    f"{adj_totals[i]:,.2f}",
+                    ha="center",
+                    va="top",  # Align to the top of the specified y position
+                    fontsize=10,  # Font size for the activity labels
+                    color="grey",
+                )
+            else:
+                if adj_totals[i] != float(0):
+                    ax.text(
+                        bar.get_x() + bar.get_width() / 2,
+                        height + 300,  # Slightly lower than the activity name
+                        f"{adj_totals[i]:,.2f}",  # Formatting the total with commas and 2 decimal points
+                        ha="center",
+                        va="bottom",
+                        fontsize=10,  # Font size for the adj_total values
+                        color="grey",
+                    )
 
-            # Water points
-            ax.text(
-                df["Date"].iloc[i],
-                df["Water"].iloc[i],
-                f'{df["Water"].iloc[i]}',
-                fontsize=10,
-                color="b",
-                ha="left",
-            )
+        # Set the visibility of the x-axis label to false
+        # ax.xaxis.set_visible(False)
 
-        # Rotate and format the x-axis labels
-        plt.xticks(rotation=45)
+        # Set y-axis label with LaTeX for superscript
+        ax.set_ylabel(r"Total Volume (M$^3$)", fontsize=10, color="grey")
+
+        # Set tick parameters for larger font size
+        ax.tick_params(axis="y", labelsize=10)
+
+        # Enable minor ticks explicitly
+        # ax.minorticks_on()
+        # ax.tick_params(axis="y", which="minor", left=False)
+        # ax.tick_params(axis="x", which="minor", bottom=True)
+        # Add vertical light grey gridlines (splitter) between bars
+        ax.set_xticks(np.arange(len(activities)))  # Major ticks at bar positions
+        ax.set_xticks(
+            np.arange(0.75, len(activities), 1), minor=True
+        )  # Minor ticks between bars
+
+        ax.grid(
+            True,
+            which="minor",
+            axis="x",
+            color="grey",
+            linestyle="--",
+            linewidth=0.7,
+        )  # Grey splitter lines
+
+        # Move the y-axis to the right
+        ax.set_xlim(left=-0.25)  # Move the x-axis limits to the left by 0.25
+        ax.spines["left"].set_position(
+            ("outward", 0)
+        )  # Move the y-axis outward (to the right)
+
+        # Remove the x-axis labels
+        ax.set_xticks([])
+
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.spines["bottom"].set_visible(False)
+
+        # Adding an outer frame around the entire plot
+        fig.patch.set_linewidth(1)
+        fig.patch.set_edgecolor("grey")
+        fig.patch.set_facecolor("white")  # Set face color for better contrast
+
+        # Adjust the layout to create space for the outer frame
+        # plt.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.2)
+
+        # Set title
+        plt.title(f"OIL BALANCE", color="grey", fontweight="bold", fontsize=16, pad=20)
+
         plt.tight_layout()  # Adjust layout to not cut off labels
 
         # Save the plot as an image file
         image_path = os.path.join(
             settings.STATIC_ROOT,
-            f'scada/images/pbr_report_bar_plot_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.png',
+            f'scada/images/pbr_report_{product}_bar_plot_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.png',
         )
         plt.savefig(f"{image_path}")
 
         # plt.show()
 
         return image_path
+
+    @staticmethod
+    def nearest_multiple(value, multiple):
+        if value >= 0:
+            # Calculate the nearest negative multiple
+            nearest = math.ceil(value / multiple) * multiple
+            if nearest <= value:
+                nearest += multiple
+        else:
+            # Calculate the nearest negative multiple
+            nearest = math.floor(value / -multiple) * -multiple
+            if nearest >= value:
+                nearest -= multiple
+
+        return nearest
