@@ -102,7 +102,7 @@ td, th {
 .report-table {
     border-collapse: collapse; /* Ensure the borders don't double up */
     width: 100%; /* Optional: Make the table width 100% */
-    margin: 0px 0px 0px 0px;
+    margin: 0px 0px 10px 0px;
     border: 2px solid black; /* Solid border around the table */
 }
 

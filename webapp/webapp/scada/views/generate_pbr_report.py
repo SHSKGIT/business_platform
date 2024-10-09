@@ -64,6 +64,14 @@ class PBRReportView(View):
             datetime.strptime(pbr_start_date, "%Y-%m-%d"),
             datetime.strptime(pbr_end_date, "%Y-%m-%d"),
         )
+        gas_table_data = PBRReportView.generate_gas_table_data(
+            datetime.strptime(pbr_start_date, "%Y-%m-%d"),
+            datetime.strptime(pbr_end_date, "%Y-%m-%d"),
+        )
+        water_table_data = PBRReportView.generate_water_table_data(
+            datetime.strptime(pbr_start_date, "%Y-%m-%d"),
+            datetime.strptime(pbr_end_date, "%Y-%m-%d"),
+        )
         # bar_plot_image_path = PBRReportView.generate_bar_plot(data, month, year)
 
         STATIC_FILE_URLs.update(
@@ -77,6 +85,8 @@ class PBRReportView(View):
                 "report_title": report_title,
                 "battery_code": pbr_battery_code,
                 "oil_table_data": oil_table_data,
+                "gas_table_data": gas_table_data,
+                "water_table_data": water_table_data,
                 # "scatter_plot_url": scatter_plot_image_path,
                 # "line_plot_url": line_plot_image_path,
                 # "bar_plot_url": bar_plot_image_path,
@@ -189,6 +199,148 @@ class PBRReportView(View):
                 "product": "OIL",
                 "volume": "16347.6",
                 "adj_total": "16347.6",
+                "notes": "",
+            },
+        ]
+
+        return data
+
+    @staticmethod
+    def generate_gas_table_data(start_date, end_date):
+        # Data to populate in the report
+        data = [
+            {
+                "activity": "FLARE",
+                "product": "GAS",
+                "volume": "7",
+                "adj_total": "(7.00)",
+                "notes": "SUBTRACT",
+            },
+            {
+                "activity": "FUEL",
+                "product": "GAS",
+                "volume": "405",
+                "adj_total": "(405.00)",
+                "notes": "SUBTRACT",
+            },
+            {
+                "activity": "PROD",
+                "product": "GAS",
+                "volume": "20977.6",
+                "adj_total": "(20977.60)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "PURREC",
+                "product": "GAS",
+                "volume": "9.1",
+                "adj_total": "(9.10)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "REC",
+                "product": "GAS",
+                "volume": "2743.7",
+                "adj_total": "(2743.70)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "VENT",
+                "product": "GAS",
+                "volume": "19.2",
+                "adj_total": "(19.20)",
+                "notes": "SUBTRACT",
+            },
+            {
+                "activity": "",
+                "product": "",
+                "volume": "",
+                "adj_total": "",
+                "notes": "",
+            },
+            {
+                "activity": "DISP",
+                "product": "GAS",
+                "volume": "23299.2",
+                "adj_total": "23299.2",
+                "notes": "",
+            },
+        ]
+
+        return data
+
+    @staticmethod
+    def generate_water_table_data(start_date, end_date):
+        # Data to populate in the report
+        data = [
+            {
+                "activity": "INVCL",
+                "product": "WATER",
+                "volume": "361.9",
+                "adj_total": "(361.90)",
+                "notes": "SUBTRACT",
+            },
+            {
+                "activity": "INVOP",
+                "product": "WATER",
+                "volume": "342.1",
+                "adj_total": "(342.10)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "LDINJ",
+                "product": "WATER",
+                "volume": "154.5",
+                "adj_total": "(154.50)",
+                "notes": "SUBTRACT",
+            },
+            {
+                "activity": "LDINVCL",
+                "product": "WATER",
+                "volume": "182221.2",
+                "adj_total": "",
+                "notes": "IGNORE",
+            },
+            {
+                "activity": "LDINVOP",
+                "product": "WATER",
+                "volume": "184056.2",
+                "adj_total": "",
+                "notes": "IGNORE",
+            },
+            {
+                "activity": "LDREC",
+                "product": "WATER",
+                "volume": "1989.5",
+                "adj_total": "(1989.50)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "PROD",
+                "product": "WATER",
+                "volume": "4510.3",
+                "adj_total": "(4510.30)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "REC",
+                "product": "WATER",
+                "volume": "132.1",
+                "adj_total": "(132.10)",
+                "notes": "ADD",
+            },
+            {
+                "activity": "",
+                "product": "",
+                "volume": "",
+                "adj_total": "",
+                "notes": "",
+            },
+            {
+                "activity": "DISP",
+                "product": "WATER",
+                "volume": "6457.6",
+                "adj_total": "6457.6",
                 "notes": "",
             },
         ]
