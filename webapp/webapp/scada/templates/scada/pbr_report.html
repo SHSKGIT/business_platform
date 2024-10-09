@@ -70,6 +70,70 @@
     </table>
     {% endif %}
 
+    {% if gas_table_data %}
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th class="th-left"><strong>{{ battery_code }}</strong></th>
+                <th class="th-left oil-cell"><strong>GAS</strong></th>
+                <th class="th-left"><strong>PETRINEX</strong></th>
+                <th class="th-left formular_cell"><strong>FORMULA</strong></th>
+                <th class="th-left"></th>
+            </tr>
+            <tr>
+                <th class="th-left"><strong>ACTIVITY</strong></th>
+                <th class="th-left"><strong>PRODUCT</strong></th>
+                <th class="th-left"><strong>VOLUME</strong></th>
+                <th class="th-left"><strong>ADJ TOTAL</strong></th>
+                <th class="th-left"><strong>NOTES</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in gas_table_data %}
+            <tr class="{% if forloop.last %}highlight-last-row{% endif %}">
+                <td class="td-left">{{ item.activity }}</td>
+                <td class="th-left">{{ item.product }}</td>
+                <td class="td-right">{{ item.volume }}</td>
+                <td class="td-right">{{ item.adj_total }}</td>
+                <td class="th-left">{{ item.notes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if water_table_data %}
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th class="th-left"><strong>{{ battery_code }}</strong></th>
+                <th class="th-left oil-cell"><strong>WATER</strong></th>
+                <th class="th-left"><strong>PETRINEX</strong></th>
+                <th class="th-left formular_cell"><strong>FORMULA</strong></th>
+                <th class="th-left"></th>
+            </tr>
+            <tr>
+                <th class="th-left"><strong>ACTIVITY</strong></th>
+                <th class="th-left"><strong>PRODUCT</strong></th>
+                <th class="th-left"><strong>VOLUME</strong></th>
+                <th class="th-left"><strong>ADJ TOTAL</strong></th>
+                <th class="th-left"><strong>NOTES</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in water_table_data %}
+            <tr class="{% if forloop.last %}highlight-last-row{% endif %}">
+                <td class="td-left">{{ item.activity }}</td>
+                <td class="th-left">{{ item.product }}</td>
+                <td class="td-right">{{ item.volume }}</td>
+                <td class="td-right">{{ item.adj_total }}</td>
+                <td class="th-left">{{ item.notes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
 <!--    <div class="line-separator-thick">Plot Information</div>-->
 
 <!--    <div class="chart-container">-->
