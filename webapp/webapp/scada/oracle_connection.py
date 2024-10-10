@@ -10,7 +10,7 @@ from django.conf import settings
 
 
 def oracle_connection():
-    cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH_LOCAL"))
+    cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH"))
     # Establish a connection to the Oracle database
     dsn = cx_Oracle.makedsn(
         settings.DATABASES["oracle"]["HOST"],
