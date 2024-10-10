@@ -9,8 +9,16 @@ import cx_Oracle
 from django.conf import settings
 
 
+# Global variable to track if the Oracle client has been initialized
+oracle_client_initialized = False
+
+
 def oracle_connection():
-    cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH_LOCAL"))
+    global oracle_client_initialized
+
+    if not oracle_client_initialized:
+        cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH_LOCAL"))
+        oracle_client_initialized = True
     # Establish a connection to the Oracle database
     dsn = cx_Oracle.makedsn(
         settings.DATABASES["oracle"]["HOST"],
