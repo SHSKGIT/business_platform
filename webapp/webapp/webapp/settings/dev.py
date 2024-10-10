@@ -128,7 +128,15 @@ DATABASES = {
             "DATABASE_HOST_LOCAL"
         ),  # Or an IP Address that your DB is hosted on
         "PORT": env("DATABASE_PORT"),
-    }
+    },
+    "oracle": {
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": env("ORACLE_DATABASE_NAME"),
+        "USER": env("ORACLE_DATABASE_USER"),
+        "PASSWORD": env("ORACLE_DATABASE_PASS"),
+        "HOST": env("ORACLE_DATABASE_HOST"),
+        "PORT": env("ORACLE_DATABASE_PORT"),
+    },
 }
 
 DATABASE_URL_LOCAL = (

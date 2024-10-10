@@ -6,6 +6,8 @@ from django.templatetags.static import static
 from ..sqlalchemy_setup import get_dbsession
 from ..models.auth_entity import AuthEntity
 
+from ..oracle_connection import fetch_data_from_oracle
+
 from weasyprint import HTML
 import tempfile
 
@@ -119,6 +121,11 @@ class PBRReportView(View):
 
     @staticmethod
     def generate_oil_table_data(start_date, end_date):
+        query = """
+                    SELECT NAME FROM v$database
+                """
+        data = fetch_data_from_oracle(query)
+
         # Data to populate in the report
         data = [
             {
