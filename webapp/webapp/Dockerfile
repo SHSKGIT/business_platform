@@ -4,7 +4,7 @@ MAINTAINER "YUNXIAO WANG"
 
 ENV PYTHONUNBUFFERED=1
 # Set environment variables for oracle
-ENV ORACLE_HOME=/opt/oracle/instantclient_19_24
+ENV ORACLE_HOME=/opt/oracle/instantclient_23_5
 ENV PATH=$ORACLE_HOME:$PATH
 ENV LD_LIBRARY_PATH=$ORACLE_HOME
 
@@ -20,9 +20,9 @@ COPY . .
 RUN apt-get update && apt-get install -y libaio1 wget unzip
 
 # Download and install Oracle Instant Client
-RUN wget https://download.oracle.com/otn_software/linux/instantclient/1924000/instantclient-basic-linux.arm64-19.24.0.0.0dbru.zip && \
-    unzip instantclient-basic-linux.arm64-19.24.0.0.0dbru.zip -d /opt/oracle && \
-    rm instantclient-basic-linux.arm64-19.24.0.0.0dbru.zip
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/2350000/instantclient-basic-linux.x64-23.5.0.24.07.zip && \
+    unzip instantclient-basic-linux.x64-23.5.0.24.07.zip -d /opt/oracle && \
+    rm instantclient-basic-linux.x64-23.5.0.24.07.zip
 
 # update pip version. The python interpreter location is up to your computer.
 # RUN python -m pip install --upgrade pip

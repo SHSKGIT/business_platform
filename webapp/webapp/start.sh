@@ -36,5 +36,6 @@ chmod -R 755 /business_platform/webapp/webapp/webapp
 
 uwsgi --ini /business_platform/webapp/webapp/uwsgi.ini
 
-uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT
+# unsupported on linux/amd64
+#uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT
 #uvicorn webapp.asgi:application --host $ASGI_HOST --port $ASGI_PORT --ssl-keyfile /business_platform/webapp/webapp/webapp/ssl/ssl_private.key --ssl-certfile /business_platform/webapp/webapp/webapp/ssl/ssl_certificate.crt
