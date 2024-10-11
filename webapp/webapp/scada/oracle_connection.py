@@ -17,7 +17,7 @@ def oracle_connection():
     global oracle_client_initialized
 
     if not oracle_client_initialized:
-        cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH_LOCAL"))
+        cx_Oracle.init_oracle_client(lib_dir=env("LD_LIBRARY_PATH"))
         oracle_client_initialized = True
     # Establish a connection to the Oracle database
     dsn = cx_Oracle.makedsn(

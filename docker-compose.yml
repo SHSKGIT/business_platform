@@ -3,6 +3,7 @@ services:
   redis:
     image: business_platform/redis
     container_name: redis_service
+    platform: linux/amd64
     build: ./compose/redis
     command: ["redis-server", "/etc/redis/redis.conf"]  # start redis service after redis container runs
     volumes:
@@ -19,6 +20,7 @@ services:
   db:
     image: business_platform/mysql
     container_name: mysql_service
+    platform: linux/amd64
     build: ./compose/mysql
     # no need to specify environment alias
     env_file:
@@ -38,6 +40,7 @@ services:
   web:
     image: business_platform/web
     container_name: webapp_service
+    platform: linux/amd64
     build: ./webapp/webapp
     ports:
       - "8001:8001"
@@ -66,6 +69,7 @@ services:
   nginx:
     image: business_platform/nginx
     container_name: nginx_service
+    platform: linux/amd64
     build: ./compose/nginx
     ports:
       - "80:80"
