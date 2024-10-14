@@ -372,3 +372,11 @@ td, th {
 .small-size-text {
     font-size: 8px;
 }
+
+.bg-green {
+    background-color: #AFE1AF;
+}
+
+.bg-red {
+    background-color: #FA8072;
+}

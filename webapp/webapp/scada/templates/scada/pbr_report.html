@@ -62,7 +62,15 @@
                 <td class="td-left">{{ item.activity }}</td>
                 <td class="th-left">{{ item.product }}</td>
                 <td class="td-right">{{ item.volume }}</td>
-                <td class="td-right">{{ item.adj_total }}</td>
+                <td class="td-right
+                    {% if item.notes == 'ADD' %}bg-green{% endif %}
+                    {% if item.notes == 'SUBTRACT' %}bg-red{% endif %}">
+                        {% if item.activity == 'PROD' %}
+                            <strong>{{ item.adj_total }}</strong>
+                        {% else %}
+                            {{ item.adj_total }}
+                        {% endif %}
+                </td>
                 <td class="th-left">{{ item.notes }}</td>
             </tr>
             {% endfor %}
@@ -94,7 +102,15 @@
                 <td class="td-left">{{ item.activity }}</td>
                 <td class="th-left">{{ item.product }}</td>
                 <td class="td-right">{{ item.volume }}</td>
-                <td class="td-right">{{ item.adj_total }}</td>
+                <td class="td-right
+                    {% if item.notes == 'ADD' %}bg-green{% endif %}
+                    {% if item.notes == 'SUBTRACT' %}bg-red{% endif %}">
+                        {% if item.activity == 'PROD' %}
+                            <strong>{{ item.adj_total }}</strong>
+                        {% else %}
+                            {{ item.adj_total }}
+                        {% endif %}
+                </td>
                 <td class="th-left">{{ item.notes }}</td>
             </tr>
             {% endfor %}
@@ -126,7 +142,15 @@
                 <td class="td-left">{{ item.activity }}</td>
                 <td class="th-left">{{ item.product }}</td>
                 <td class="td-right">{{ item.volume }}</td>
-                <td class="td-right">{{ item.adj_total }}</td>
+                <td class="td-right
+                    {% if item.notes == 'ADD' %}bg-green{% endif %}
+                    {% if item.notes == 'SUBTRACT' %}bg-red{% endif %}">
+                        {% if item.activity == 'PROD' %}
+                            <strong>{{ item.adj_total }}</strong>
+                        {% else %}
+                            {{ item.adj_total }}
+                        {% endif %}
+                </td>
                 <td class="th-left">{{ item.notes }}</td>
             </tr>
             {% endfor %}
@@ -147,6 +171,16 @@
     <div class="chart-container">
 <!--        <h1 class="report-title">Bar Plot</h1>-->
         <img src="file://{{ oil_bar_plot_url }}" alt="Oil Bar Plot" class="bar-plot">
+    </div>
+
+    <div class="chart-container">
+<!--        <h1 class="report-title">Bar Plot</h1>-->
+        <img src="file://{{ gas_bar_plot_url }}" alt="Gas Bar Plot" class="bar-plot">
+    </div>
+
+    <div class="chart-container">
+<!--        <h1 class="report-title">Bar Plot</h1>-->
+        <img src="file://{{ water_bar_plot_url }}" alt="Water Bar Plot" class="bar-plot">
     </div>
 </body>
 </html>
