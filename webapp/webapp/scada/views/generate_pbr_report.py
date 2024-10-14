@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import pandas as pd
 import numpy as np
+from decimal import Decimal
 
 
 STATIC_FILE_URLs = {
@@ -51,6 +52,8 @@ class PBRReportView(View):
     def get(request):
         user_id = request.GET.get("user_id")
         pbr_battery_code = request.GET.get("pbr_battery_code")
+        pbr_battery_code_list = pbr_battery_code.split(",")
+        pbr_battery_code_string = ", ".join(pbr_battery_code_list)
         pbr_start_date = request.GET.get("pbr_start_date")
         pbr_end_date = request.GET.get("pbr_end_date")
 
@@ -65,19 +68,29 @@ class PBRReportView(View):
         dbsession.close()
 
         oil_table_data = PBRReportView.generate_oil_table_data(
-            datetime.strptime(pbr_start_date, "%Y-%m-%d"),
-            datetime.strptime(pbr_end_date, "%Y-%m-%d"),
+            pbr_battery_code_string,
+            pbr_start_date,
+            pbr_end_date,
         )
         gas_table_data = PBRReportView.generate_gas_table_data(
-            datetime.strptime(pbr_start_date, "%Y-%m-%d"),
-            datetime.strptime(pbr_end_date, "%Y-%m-%d"),
+            pbr_battery_code_string,
+            pbr_start_date,
+            pbr_end_date,
         )
         water_table_data = PBRReportView.generate_water_table_data(
-            datetime.strptime(pbr_start_date, "%Y-%m-%d"),
-            datetime.strptime(pbr_end_date, "%Y-%m-%d"),
+            pbr_battery_code_string,
+            pbr_start_date,
+            pbr_end_date,
         )
+
         oil_bar_plot_image_path = PBRReportView.generate_bar_plot(
             oil_table_data, "oil", pbr_start_date, pbr_end_date
+        )
+        gas_bar_plot_image_path = PBRReportView.generate_bar_plot(
+            gas_table_data, "gas", pbr_start_date, pbr_end_date
+        )
+        water_bar_plot_image_path = PBRReportView.generate_bar_plot(
+            water_table_data, "water", pbr_start_date, pbr_end_date
         )
 
         STATIC_FILE_URLs.update(
@@ -96,6 +109,8 @@ class PBRReportView(View):
                 # "scatter_plot_url": scatter_plot_image_path,
                 # "line_plot_url": line_plot_image_path,
                 "oil_bar_plot_url": oil_bar_plot_image_path,
+                "gas_bar_plot_url": gas_bar_plot_image_path,
+                "water_bar_plot_url": water_bar_plot_image_path,
             }
         )
 
@@ -120,96 +135,64 @@ class PBRReportView(View):
         return response
 
     @staticmethod
-    def generate_oil_table_data(start_date, end_date):
-        query = """
-                    SELECT NAME FROM v$database
+    def generate_oil_table_data(pbr_battery_code, start_date, end_date):
+        query = f"""
+                    SELECT ACTIVITY_ID, 
+                            PRODUCT_ID,
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                    FROM PETRINEX_VOLUMETRIC_DATA
+                    WHERE PRODUCT_ID IN ('OIL', 'C5-SP')
+                        AND FACILITY_ID in ('{pbr_battery_code}')
+                        AND ACTIVITY_ID IN ('INVCL', 'INVOP', 'LDINJ', 'LDINVCL', 'LDINVOP', 'LDREC', 'PROD', 'REC', 'ROYALTY', 'DISP') 
+                        AND PRODUCTION_MONTH BETWEEN TO_DATE('{start_date}', 'YYYY-MM-DD') AND TO_DATE('{end_date}', 'YYYY-MM-DD')
+                    GROUP BY ACTIVITY_ID, PRODUCT_ID
+                    ORDER BY ACTIVITY_ID
                 """
-        data = fetch_all_from_oracle(query)
+        db_data = fetch_all_from_oracle(query)
+        # [
+        #     ("DISP", "OIL", 16347.6),
+        #     ("INVCL", "OIL", 590.4),
+        #     ("INVOP", "OIL", 600.2),
+        #     ("LDINJ", "OIL", 925.8),
+        #     ("LDINVCL", "OIL", 114.5),
+        #     ("LDINVOP", "OIL", 121.2),
+        #     ("LDREC", "OIL", 932.5),
+        #     ("PROD", "OIL", 15098.9),
+        #     ("REC", "C5-SP", 805.6),
+        #     ("REC", "OIL", 426.6),
+        #     ("ROYALTY", "OIL", 2766.1),
+        # ]
 
-        # Data to populate in the report
-        data = [
-            {
-                "activity": "INVCL",
-                "product": "OIL",
-                "volume": "590.4",
-                "adj_total": "(590.4)",
-                "notes": "SUBTRACT",
-                "plot_x_name": "INVCL",
-                "adj_total_minus": "Y",
-            },
-            {
-                "activity": "INVOP",
-                "product": "OIL",
-                "volume": "600.2",
-                "adj_total": "(600.20)",
-                "notes": "ADD",
-                "plot_x_name": "INVOP",
-            },
-            {
-                "activity": "LDINJ",
-                "product": "OIL",
-                "volume": "925.8",
-                "adj_total": "(925.80)",
-                "notes": "SUBTRACT",
-                "plot_x_name": "LDINJ",
-                "adj_total_minus": "Y",
-            },
-            {
-                "activity": "LDINVCL",
-                "product": "OIL",
-                "volume": "114.5",
-                "adj_total": "",
-                "notes": "IGNORE",
-                "plot_x_name": "LDINVCL",
-            },
-            {
-                "activity": "LDINVOP",
-                "product": "OIL",
-                "volume": "121.2",
-                "adj_total": "",
-                "notes": "IGNORE",
-                "plot_x_name": "LDINVOP",
-            },
-            {
-                "activity": "LDREC",
-                "product": "OIL",
-                "volume": "932.5",
-                "adj_total": "(932.50)",
-                "notes": "ADD",
-                "plot_x_name": "LDREC",
-            },
-            {
-                "activity": "PROD",
-                "product": "OIL",
-                "volume": "15098.9",
-                "adj_total": "(15098.90)",
-                "notes": "ADD",
-                "plot_x_name": "PROD",
-            },
-            {
-                "activity": "REC",
-                "product": "OIL",
-                "volume": "426.6",
-                "adj_total": "(426.60)",
-                "notes": "ADD",
-                "plot_x_name": "REC-OIL",
-            },
-            {
-                "activity": "REC",
-                "product": "C5-SP",
-                "volume": "",
-                "adj_total": "(805.60)",
-                "notes": "ADD",
-                "plot_x_name": "REC-CS",
-            },
-            {
-                "activity": "ROYALTY",
-                "product": "OIL",
-                "volume": "2766.1",
-                "adj_total": "",
-                "notes": "IGNORE",
-                "plot_x_name": "ROYALTY",
-            },
+        data = []
+        for row in db_data:
+            data.append(
+                {
+                    "activity": row[0],
+                    "product": row[1],
+                    "volume": "" if row[1] == "C5-SP" else row[2],
+                    "adj_total": ""
+                    if row[0] in ("LDINVCL", "LDINVOP", "ROYALTY")
+                    else "{:.2f}".format(row[2]),
+                    "notes": "SUBTRACT"
+                    if row[0] in ("INVCL", "LDINJ")
+                    else "IGNORE"
+                    if row[0] in ("LDINVCL", "LDINVOP", "ROYALTY")
+                    else ""
+                    if row[0] in ("DISP",)
+                    else "ADD",
+                    "plot_x_name": row[0],
+                    "value": row[2],
+                }
+            )
+
+        for row in data:
+            if row["notes"] == "SUBTRACT":
+                row["value"] = -row["value"]
+                row["adj_total"] = f'({row["adj_total"]})'
+            if row["activity"] in ("LDINVCL", "LDINVOP", "ROYALTY"):
+                row["value"] = float(0)
+
+        data.append(
             {
                 "activity": "",
                 "product": "",
@@ -217,158 +200,127 @@ class PBRReportView(View):
                 "adj_total": "",
                 "notes": "",
                 "plot_x_name": "",
-            },
-            {
-                "activity": "DISP",
-                "product": "OIL",
-                "volume": "16347.6",
-                "adj_total": "16347.6",
-                "notes": "",
-                "plot_x_name": "DISP",
-            },
-        ]
+                "value": float(0),
+            }
+        )
+
+        data.append(data.pop(0))
 
         return data
 
     @staticmethod
-    def generate_gas_table_data(start_date, end_date):
-        # Data to populate in the report
-        data = [
-            {
-                "activity": "FLARE",
-                "product": "GAS",
-                "volume": "7",
-                "adj_total": "(7.00)",
-                "notes": "SUBTRACT",
-            },
-            {
-                "activity": "FUEL",
-                "product": "GAS",
-                "volume": "405",
-                "adj_total": "(405.00)",
-                "notes": "SUBTRACT",
-            },
-            {
-                "activity": "PROD",
-                "product": "GAS",
-                "volume": "20977.6",
-                "adj_total": "(20977.60)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "PURREC",
-                "product": "GAS",
-                "volume": "9.1",
-                "adj_total": "(9.10)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "REC",
-                "product": "GAS",
-                "volume": "2743.7",
-                "adj_total": "(2743.70)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "VENT",
-                "product": "GAS",
-                "volume": "19.2",
-                "adj_total": "(19.20)",
-                "notes": "SUBTRACT",
-            },
+    def generate_gas_table_data(pbr_battery_code, start_date, end_date):
+        query = f"""
+                    SELECT ACTIVITY_ID, 
+                            PRODUCT_ID,
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                    FROM PETRINEX_VOLUMETRIC_DATA
+                    WHERE PRODUCT_ID IN ('GAS')
+                        AND FACILITY_ID in ('{pbr_battery_code}')
+                        AND ACTIVITY_ID IN ('FLARE', 'FUEL', 'PROD', 'PURREC', 'REC', 'VENT', 'DISP')
+                        AND PRODUCTION_MONTH BETWEEN TO_DATE('{start_date}', 'YYYY-MM-DD') AND TO_DATE('{end_date}', 'YYYY-MM-DD')
+                    GROUP BY ACTIVITY_ID, PRODUCT_ID
+                    ORDER BY ACTIVITY_ID
+                """
+        db_data = fetch_all_from_oracle(query)
+
+        data = []
+        for row in db_data:
+            data.append(
+                {
+                    "activity": row[0],
+                    "product": row[1],
+                    "volume": row[2],
+                    "adj_total": "{:.2f}".format(row[2]),
+                    "notes": "SUBTRACT"
+                    if row[0] in ("FLARE", "FUEL", "VENT")
+                    else ""
+                    if row[0] in ("DISP",)
+                    else "ADD",
+                    "plot_x_name": row[0],
+                    "value": row[2],
+                }
+            )
+
+        for row in data:
+            if row["notes"] == "SUBTRACT":
+                row["value"] = -row["value"]
+                row["adj_total"] = f'({row["adj_total"]})'
+
+        data.append(
             {
                 "activity": "",
                 "product": "",
                 "volume": "",
                 "adj_total": "",
                 "notes": "",
-            },
-            {
-                "activity": "DISP",
-                "product": "GAS",
-                "volume": "23299.2",
-                "adj_total": "23299.2",
-                "notes": "",
-            },
-        ]
+                "plot_x_name": "",
+                "value": float(0),
+            }
+        )
+
+        data.append(data.pop(0))
 
         return data
 
     @staticmethod
-    def generate_water_table_data(start_date, end_date):
-        # Data to populate in the report
-        data = [
-            {
-                "activity": "INVCL",
-                "product": "WATER",
-                "volume": "361.9",
-                "adj_total": "(361.90)",
-                "notes": "SUBTRACT",
-            },
-            {
-                "activity": "INVOP",
-                "product": "WATER",
-                "volume": "342.1",
-                "adj_total": "(342.10)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "LDINJ",
-                "product": "WATER",
-                "volume": "154.5",
-                "adj_total": "(154.50)",
-                "notes": "SUBTRACT",
-            },
-            {
-                "activity": "LDINVCL",
-                "product": "WATER",
-                "volume": "182221.2",
-                "adj_total": "",
-                "notes": "IGNORE",
-            },
-            {
-                "activity": "LDINVOP",
-                "product": "WATER",
-                "volume": "184056.2",
-                "adj_total": "",
-                "notes": "IGNORE",
-            },
-            {
-                "activity": "LDREC",
-                "product": "WATER",
-                "volume": "1989.5",
-                "adj_total": "(1989.50)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "PROD",
-                "product": "WATER",
-                "volume": "4510.3",
-                "adj_total": "(4510.30)",
-                "notes": "ADD",
-            },
-            {
-                "activity": "REC",
-                "product": "WATER",
-                "volume": "132.1",
-                "adj_total": "(132.10)",
-                "notes": "ADD",
-            },
+    def generate_water_table_data(pbr_battery_code, start_date, end_date):
+        query = f"""
+                    SELECT ACTIVITY_ID, 
+                            PRODUCT_ID,
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                    FROM PETRINEX_VOLUMETRIC_DATA
+                    WHERE PRODUCT_ID IN ('WATER')
+                        AND FACILITY_ID in ('{pbr_battery_code}')
+                        AND ACTIVITY_ID IN ('INVCL', 'INVOP', 'LDINJ', 'LDINVCL', 'LDINVOP', 'LDREC', 'PROD', 'REC', 'DISP')
+                        AND PRODUCTION_MONTH BETWEEN TO_DATE('{start_date}', 'YYYY-MM-DD') AND TO_DATE('{end_date}', 'YYYY-MM-DD')
+                    GROUP BY ACTIVITY_ID, PRODUCT_ID
+                    ORDER BY ACTIVITY_ID
+                """
+        db_data = fetch_all_from_oracle(query)
+
+        data = []
+        for row in db_data:
+            data.append(
+                {
+                    "activity": row[0],
+                    "product": row[1],
+                    "volume": row[2],
+                    "adj_total": ""
+                    if row[0] in ("LDINVCL", "LDINVOP")
+                    else "{:.2f}".format(row[2]),
+                    "notes": "SUBTRACT"
+                    if row[0] in ("INVCL", "LDINJ")
+                    else "IGNORE"
+                    if row[0] in ("LDINVCL", "LDINVOP")
+                    else ""
+                    if row[0] in ("DISP",)
+                    else "ADD",
+                    "plot_x_name": row[0],
+                    "value": row[2],
+                }
+            )
+
+        for row in data:
+            if row["notes"] == "SUBTRACT":
+                row["value"] = -row["value"]
+                row["adj_total"] = f'({row["adj_total"]})'
+            if row["activity"] in ("LDINVCL", "LDINVOP"):
+                row["value"] = float(0)
+
+        data.append(
             {
                 "activity": "",
                 "product": "",
                 "volume": "",
                 "adj_total": "",
                 "notes": "",
-            },
-            {
-                "activity": "DISP",
-                "product": "WATER",
-                "volume": "6457.6",
-                "adj_total": "6457.6",
-                "notes": "",
-            },
-        ]
+                "plot_x_name": "",
+                "value": float(0),
+            }
+        )
+
+        data.append(data.pop(0))
 
         return data
 
@@ -376,22 +328,11 @@ class PBRReportView(View):
     def generate_bar_plot(data, product, start_date, end_date):
         # Extract valid data
         activities = [row["plot_x_name"] for row in data]
-        for row in data:
-            if row["adj_total"]:
-                row["adj_total"] = float(
-                    row["adj_total"].replace("(", "").replace(")", "")
-                )
-            else:
-                row["adj_total"] = float(0)
 
-        adj_totals = [
-            row["adj_total"] * -1 if "adj_total_minus" in row else row["adj_total"]
-            for row in data
-        ]
+        adj_totals = [row["value"] for row in data]
 
         # Determine colors based on adj_total values
-        # colors = ["red" if total < 0 else "green" for total in adj_totals]
-        colors = ["red" if "adj_total_minus" in row else "green" for row in data]
+        colors = ["red" if row["notes"] == "SUBTRACT" else "green" for row in data]
         # Ensure "DISP" is black
         if "DISP" in activities:
             disp_index = activities.index("DISP")
@@ -408,7 +349,7 @@ class PBRReportView(View):
         ax.set_xticks(x_positions)
 
         # Place the x-axis at y=0
-        ax.axhline(0, color="grey", linewidth=1)
+        ax.axhline(0, color="#E5E4E2", linewidth=0.5)
 
         # ===============================================
         # Set y scale with step of 2000
@@ -446,7 +387,7 @@ class PBRReportView(View):
                 # Position below the bar
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
-                    height - 300,  # Positioning the label below the bar
+                    height - 200,  # Positioning the label below the bar
                     f"{adj_totals[i]:,.2f}",
                     ha="center",
                     va="top",  # Align to the top of the specified y position
@@ -457,7 +398,7 @@ class PBRReportView(View):
                 if adj_totals[i] != float(0):
                     ax.text(
                         bar.get_x() + bar.get_width() / 2,
-                        height + 300,  # Slightly lower than the activity name
+                        height + 200,  # Slightly lower than the activity name
                         f"{adj_totals[i]:,.2f}",  # Formatting the total with commas and 2 decimal points
                         ha="center",
                         va="bottom",
@@ -469,7 +410,10 @@ class PBRReportView(View):
         # ax.xaxis.set_visible(False)
 
         # Set y-axis label with LaTeX for superscript
-        ax.set_ylabel(r"Total Volume (M$^3$)", fontsize=10, color="grey")
+        if product in ("oil", "water"):
+            ax.set_ylabel(r"Total Volume (M$^3$)", fontsize=10, color="grey")
+        elif product in ("gas",):
+            ax.set_ylabel(r"Total Volume (E$^3$M$^3$)", fontsize=10, color="grey")
 
         # Set tick parameters for larger font size
         ax.tick_params(axis="y", labelsize=10)
@@ -515,7 +459,13 @@ class PBRReportView(View):
         # plt.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.2)
 
         # Set title
-        plt.title(f"OIL BALANCE", color="grey", fontweight="bold", fontsize=16, pad=20)
+        plt.title(
+            f"{product.upper()} BALANCE",
+            color="grey",
+            fontweight="bold",
+            fontsize=16,
+            pad=20,
+        )
 
         plt.tight_layout()  # Adjust layout to not cut off labels
 
