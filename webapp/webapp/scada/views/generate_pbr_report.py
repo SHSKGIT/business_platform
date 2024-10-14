@@ -191,6 +191,10 @@ class PBRReportView(View):
                 row["adj_total"] = f'({row["adj_total"]})'
             if row["activity"] in ("LDINVCL", "LDINVOP", "ROYALTY"):
                 row["value"] = float(0)
+            if row["activity"] == "REC" and row["product"] == "OIL":
+                row["plot_x_name"] = "REC-OIL"
+            if row["activity"] == "REC" and row["product"] == "C5-SP":
+                row["plot_x_name"] = "REC-C5"
 
         data.append(
             {
