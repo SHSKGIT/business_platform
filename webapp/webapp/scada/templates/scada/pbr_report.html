@@ -8,19 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ report_title }}</title>
     <link rel="stylesheet" type="text/css" href="file://{{ report_css_url }}" />
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bootstrap_responsive_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ style_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ pluton_ie7_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ cslider_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ bxslider_css_url }}" />-->
-<!--    <link rel="stylesheet" type="text/css" href="file://{{ animate_css_url }}" />-->
 </head>
 <body>
-<!--    <div class="watermark watermark-1">Confidential</div>-->
-<!--    <div class="watermark watermark-2">Confidential</div>-->
-<!--    <div class="watermark watermark-3">Confidential</div>-->
     <div class="title-logo-container">
         <img src="file://{{ logo_url }}" alt="Logo" class="report-logo" />
         <div class="span-text">
@@ -31,12 +20,7 @@
         </div>
     </div>
 
-<!--    <div class="line-separator-thick">General Information</div>-->
-
     <h1 class="report-title">{{ report_title }}</h1>
-
-<!--    <hr class="line-separator-thick">-->
-<!--    <div class="line-separator-thick">Detail Information</div>-->
 
     {% if oil_table_data %}
     <table class="report-table">
@@ -158,28 +142,15 @@
     </table>
     {% endif %}
 
-<!--    <div class="line-separator-thick">Plot Information</div>-->
-
-<!--    <div class="chart-container">-->
-<!--        <h1 class="report-title">Scatter Plot</h1>-->
-<!--        <img src="file://{{ scatter_plot_url }}" alt="Scatter Plot" class="scatter-plot">-->
-<!--    </div>-->
-<!--    <div class="chart-container">-->
-<!--        <h1 class="report-title">Line Plot</h1>-->
-<!--        <img src="file://{{ line_plot_url }}" alt="Line Plot" class="line-plot">-->
-<!--    </div>-->
     <div class="chart-container">
-<!--        <h1 class="report-title">Bar Plot</h1>-->
         <img src="file://{{ oil_bar_plot_url }}" alt="Oil Bar Plot" class="bar-plot">
     </div>
 
     <div class="chart-container">
-<!--        <h1 class="report-title">Bar Plot</h1>-->
         <img src="file://{{ gas_bar_plot_url }}" alt="Gas Bar Plot" class="bar-plot">
     </div>
 
     <div class="chart-container">
-<!--        <h1 class="report-title">Bar Plot</h1>-->
         <img src="file://{{ water_bar_plot_url }}" alt="Water Bar Plot" class="bar-plot">
     </div>
 </body>
