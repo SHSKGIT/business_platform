@@ -186,14 +186,26 @@ $('#pbr-button').click(function () {
             if (reportUrl) {
 //                const URL = reportUrl + "?user_id=" + user_id + "&" + dataString;
                 const URL = reportUrl + "?user_id=" + user_id + "&pbr_battery_code=" + formDataJson["pbr_battery_code"] + "&pbr_start_date=" + formDataJson["pbr_start_date"] + "&pbr_end_date=" + formDataJson["pbr_end_date"];
+                // Hide the "Generate" text and show the spinner
+                $('#generate-button-text').text('Generating...');
+
+                // Disable the button to prevent multiple clicks
+                $('#pbr-button').prop('disabled', true);
+
                 $.ajax({
                     type: 'GET',
                     url: URL,
                     timeout: 60000,  // 60s
                     error: function (request, error) {
+                        $('#generate-button-text').text('Generate');
+                        $('#pbr-button').prop('disabled', false);
+
                         alert("An error occurred");
                     },
                     success: function (response) {
+                        $('#generate-button-text').text('Generate');
+                        $('#pbr-button').prop('disabled', false);
+
                         var newWindow = window.open(URL, '_blank');
                         if (newWindow) {
                             newWindow.focus();  // Ensure the new window is brought to the front
