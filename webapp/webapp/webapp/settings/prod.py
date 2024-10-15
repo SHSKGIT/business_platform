@@ -266,12 +266,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://18.144.65.184",
 ]
 
-# Set session to expire after 5 minutes (300 seconds)
-SESSION_COOKIE_AGE = 300
+# Set session to expire after 3 minutes (180 seconds)
+SESSION_COOKIE_AGE = 180
 # Expire session on browser close
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Ensure session data is cleared after expiration
-SESSION_SAVE_EVERY_REQUEST = False
+SESSION_SAVE_EVERY_REQUEST = True
 # Configure session engine to use Redis
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
