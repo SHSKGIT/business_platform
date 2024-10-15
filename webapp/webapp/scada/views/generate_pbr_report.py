@@ -61,10 +61,9 @@ class PBRReportView(View):
         report_template = "scada/pbr_report.html"
         report_title = f"Production Balance Report"
 
-        user_id = int(request.GET.get("user_id"))
         # Query the database for the user
         dbsession = next(get_dbsession())  # Get the SQLAlchemy session
-        user = dbsession.query(AuthEntity).filter_by(id=user_id).one_or_none()
+        user = dbsession.query(AuthEntity).filter_by(id=int(user_id)).one_or_none()
         dbsession.close()
 
         oil_table_data = PBRReportView.generate_oil_table_data(
@@ -106,8 +105,6 @@ class PBRReportView(View):
                 "oil_table_data": oil_table_data,
                 "gas_table_data": gas_table_data,
                 "water_table_data": water_table_data,
-                # "scatter_plot_url": scatter_plot_image_path,
-                # "line_plot_url": line_plot_image_path,
                 "oil_bar_plot_url": oil_bar_plot_image_path,
                 "gas_bar_plot_url": gas_bar_plot_image_path,
                 "water_bar_plot_url": water_bar_plot_image_path,
@@ -127,10 +124,10 @@ class PBRReportView(View):
             html.write_pdf(target=temp_file.name)
             response.write(temp_file.read())
 
-        # remove scatter plot image file to save space
-        # os.remove(scatter_plot_image_path)
-        # os.remove(line_plot_image_path)
+        # remove plot image file to save space
         os.remove(oil_bar_plot_image_path)
+        os.remove(gas_bar_plot_image_path)
+        os.remove(water_bar_plot_image_path)
 
         return response
 
