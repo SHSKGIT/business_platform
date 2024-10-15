@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 import os
+import io
 import math
 import random
 import matplotlib.pyplot as plt
@@ -22,6 +23,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 import numpy as np
 from decimal import Decimal
+from base64 import b64encode
 
 
 STATIC_FILE_URLs = {
@@ -91,6 +93,12 @@ class PBRReportView(View):
         water_bar_plot_image_path = PBRReportView.generate_bar_plot(
             water_table_data, "water", pbr_start_date, pbr_end_date
         )
+        # Convert the in-memory images to base64 strings
+        oil_image_base64 = b64encode(oil_bar_plot_image_path.getvalue()).decode("utf-8")
+        gas_image_base64 = b64encode(gas_bar_plot_image_path.getvalue()).decode("utf-8")
+        water_image_base64 = b64encode(water_bar_plot_image_path.getvalue()).decode(
+            "utf-8"
+        )
 
         STATIC_FILE_URLs.update(
             {
@@ -105,9 +113,9 @@ class PBRReportView(View):
                 "oil_table_data": oil_table_data,
                 "gas_table_data": gas_table_data,
                 "water_table_data": water_table_data,
-                "oil_bar_plot_url": oil_bar_plot_image_path,
-                "gas_bar_plot_url": gas_bar_plot_image_path,
-                "water_bar_plot_url": water_bar_plot_image_path,
+                "oil_bar_plot_url": f"data:image/png;base64,{oil_image_base64}",
+                "gas_bar_plot_url": f"data:image/png;base64,{gas_image_base64}",
+                "water_bar_plot_url": f"data:image/png;base64,{water_image_base64}",
             }
         )
 
@@ -125,9 +133,9 @@ class PBRReportView(View):
             response.write(temp_file.read())
 
         # remove plot image file to save space
-        os.remove(oil_bar_plot_image_path)
-        os.remove(gas_bar_plot_image_path)
-        os.remove(water_bar_plot_image_path)
+        # os.remove(oil_bar_plot_image_path)
+        # os.remove(gas_bar_plot_image_path)
+        # os.remove(water_bar_plot_image_path)
 
         return response
 
@@ -470,16 +478,24 @@ class PBRReportView(View):
 
         plt.tight_layout()  # Adjust layout to not cut off labels
 
-        # Save the plot as an image file
-        image_path = os.path.join(
-            settings.STATIC_ROOT,
-            f'scada/images/pbr_report_{product}_bar_plot_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.png',
-        )
-        plt.savefig(f"{image_path}")
+        # # Save the plot as an image file
+        # image_path = os.path.join(
+        #     settings.STATIC_ROOT,
+        #     f'scada/images/pbr_report_{product}_bar_plot_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.png',
+        # )
+        # plt.savefig(f"{image_path}")
+        #
+        # # plt.show()
+        #
+        # return image_path
 
-        # plt.show()
+        # Save the plot to an in-memory buffer
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)  # Rewind the buffer to the beginning so it can be read later
 
-        return image_path
+        # Return the buffer
+        return buffer
 
     @staticmethod
     def nearest_multiple(value, multiple):
