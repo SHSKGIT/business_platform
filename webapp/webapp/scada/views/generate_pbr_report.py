@@ -58,6 +58,7 @@ class PBRReportView(View):
         pbr_battery_code_string = ", ".join(pbr_battery_code_list)
         pbr_start_date = request.GET.get("pbr_start_date")
         pbr_end_date = request.GET.get("pbr_end_date")
+        unit = request.GET.get("unit")
 
         if not PBRReportView.check_facility_id(pbr_battery_code_string):
             return JsonResponse(
@@ -78,30 +79,25 @@ class PBRReportView(View):
         dbsession.close()
 
         oil_table_data = PBRReportView.generate_oil_table_data(
-            pbr_battery_code_string,
-            pbr_start_date,
-            pbr_end_date,
+            pbr_battery_code_string, pbr_start_date, pbr_end_date, unit
         )
         gas_table_data = PBRReportView.generate_gas_table_data(
-            pbr_battery_code_string,
-            pbr_start_date,
-            pbr_end_date,
+            pbr_battery_code_string, pbr_start_date, pbr_end_date, unit
         )
         water_table_data = PBRReportView.generate_water_table_data(
-            pbr_battery_code_string,
-            pbr_start_date,
-            pbr_end_date,
+            pbr_battery_code_string, pbr_start_date, pbr_end_date, unit
         )
 
         oil_bar_plot_image_path = PBRReportView.generate_bar_plot(
-            oil_table_data, "oil", pbr_start_date, pbr_end_date
+            oil_table_data, "oil", pbr_start_date, pbr_end_date, unit
         )
         gas_bar_plot_image_path = PBRReportView.generate_bar_plot(
-            gas_table_data, "gas", pbr_start_date, pbr_end_date
+            gas_table_data, "gas", pbr_start_date, pbr_end_date, unit
         )
         water_bar_plot_image_path = PBRReportView.generate_bar_plot(
-            water_table_data, "water", pbr_start_date, pbr_end_date
+            water_table_data, "water", pbr_start_date, pbr_end_date, unit
         )
+
         # Convert the in-memory images to base64 strings
         oil_image_base64 = b64encode(oil_bar_plot_image_path.getvalue()).decode("utf-8")
         gas_image_base64 = b64encode(gas_bar_plot_image_path.getvalue()).decode("utf-8")
@@ -125,6 +121,7 @@ class PBRReportView(View):
                 "oil_bar_plot_url": f"data:image/png;base64,{oil_image_base64}",
                 "gas_bar_plot_url": f"data:image/png;base64,{gas_image_base64}",
                 "water_bar_plot_url": f"data:image/png;base64,{water_image_base64}",
+                "unit": unit.capitalize(),
             }
         )
 
@@ -162,11 +159,18 @@ class PBRReportView(View):
         return False
 
     @staticmethod
-    def generate_oil_table_data(pbr_battery_code, start_date, end_date):
+    def convert_from_metric_to_imperial(data):
+        return data
+
+    @staticmethod
+    def generate_oil_table_data(pbr_battery_code, start_date, end_date, unit):
+        multiple = 1.0
+        if unit == "imperial":
+            multiple = 264.172  # US gallon
         query = f"""
                     SELECT ACTIVITY_ID, 
                             PRODUCT_ID,
-                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1) * {multiple}) AS total_volume
                     FROM PETRINEX_VOLUMETRIC_DATA
                     WHERE PRODUCT_ID IN ('OIL', 'C5-SP')
                         AND FACILITY_ID in ('{pbr_battery_code}')
@@ -240,11 +244,14 @@ class PBRReportView(View):
         return data
 
     @staticmethod
-    def generate_gas_table_data(pbr_battery_code, start_date, end_date):
+    def generate_gas_table_data(pbr_battery_code, start_date, end_date, unit):
+        multiple = 1.0
+        if unit == "imperial":
+            multiple = 264.172  # US gallon
         query = f"""
                     SELECT ACTIVITY_ID, 
                             PRODUCT_ID,
-                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1) * {multiple}) AS total_volume
                     FROM PETRINEX_VOLUMETRIC_DATA
                     WHERE PRODUCT_ID IN ('GAS')
                         AND FACILITY_ID in ('{pbr_battery_code}')
@@ -295,11 +302,14 @@ class PBRReportView(View):
         return data
 
     @staticmethod
-    def generate_water_table_data(pbr_battery_code, start_date, end_date):
+    def generate_water_table_data(pbr_battery_code, start_date, end_date, unit):
+        multiple = 1.0
+        if unit == "imperial":
+            multiple = 264.172  # US gallon
         query = f"""
                     SELECT ACTIVITY_ID, 
                             PRODUCT_ID,
-                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1)) AS total_volume
+                            SUM(TO_NUMBER(REPLACE(VOLUME, '.', '')) / POWER(10, LENGTH(SUBSTR(VOLUME, INSTR(VOLUME, '.'))) - 1) * {multiple}) AS total_volume
                     FROM PETRINEX_VOLUMETRIC_DATA
                     WHERE PRODUCT_ID IN ('WATER')
                         AND FACILITY_ID in ('{pbr_battery_code}')
@@ -356,7 +366,7 @@ class PBRReportView(View):
         return data
 
     @staticmethod
-    def generate_bar_plot(data, product, start_date, end_date):
+    def generate_bar_plot(data, product, start_date, end_date, unit):
         # Extract valid data
         activities = [row["plot_x_name"] for row in data]
 
@@ -383,14 +393,18 @@ class PBRReportView(View):
         ax.axhline(0, color="#E5E4E2", linewidth=0.5)
 
         # ===============================================
-        # Set y scale with step of 2000
+        multiple = 2000
+        if unit == "imperial":
+            multiple = multiple * 264.172
+
+        # Set y scale with step of multiple
         max_val = max(adj_totals)
         min_val = min(adj_totals)
         ax.set_yticks(
             np.arange(
-                PBRReportView.nearest_multiple(min_val, 2000),
-                PBRReportView.nearest_multiple(max_val, 2000) + 2000,
-                2000,
+                PBRReportView.nearest_multiple(min_val, multiple),
+                PBRReportView.nearest_multiple(max_val, multiple) + multiple,
+                multiple,
             )
         )
 
@@ -406,7 +420,7 @@ class PBRReportView(View):
             # Positioning activity names
             ax.text(
                 bar.get_x() + bar.get_width() / 2,
-                PBRReportView.nearest_multiple(max_val, 2000),
+                PBRReportView.nearest_multiple(max_val, multiple),
                 activities[i],
                 ha="center",
                 va="bottom",
@@ -442,9 +456,15 @@ class PBRReportView(View):
 
         # Set y-axis label with LaTeX for superscript
         if product in ("oil", "water"):
-            ax.set_ylabel(r"Total Volume (M$^3$)", fontsize=10, color="grey")
+            if unit == "metric":
+                ax.set_ylabel(r"Total Volume (M$^3$)", fontsize=10, color="grey")
+            else:
+                ax.set_ylabel(r"Total Volume (U.S. Gallons)", fontsize=10, color="grey")
         elif product in ("gas",):
-            ax.set_ylabel(r"Total Volume (E$^3$M$^3$)", fontsize=10, color="grey")
+            if unit == "metric":
+                ax.set_ylabel(r"Total Volume (E$^3$M$^3$)", fontsize=10, color="grey")
+            else:
+                ax.set_ylabel(r"Total Volume (U.S. Gallons)", fontsize=10, color="grey")
 
         # Set tick parameters for larger font size
         ax.tick_params(axis="y", labelsize=10)

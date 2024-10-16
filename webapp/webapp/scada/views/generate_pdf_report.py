@@ -38,7 +38,9 @@ STATIC_FILE_URLs = {
         settings.STATIC_ROOT, "scada/css/jquery.bxslider.css"
     ),
     "animate_css_url": os.path.join(settings.STATIC_ROOT, "scada/css/animate.css"),
-    "logo_url": os.path.join(settings.STATIC_ROOT, "scada/images/report_logo.png"),
+    "logo_url": os.path.join(
+        settings.STATIC_ROOT, "scada/images/report_logo(backup).png"
+    ),
 }
 
 
