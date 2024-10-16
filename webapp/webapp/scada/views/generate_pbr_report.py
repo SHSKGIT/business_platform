@@ -1,7 +1,7 @@
-from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views import View
 from django.templatetags.static import static
+from django.http import HttpResponse, JsonResponse
 
 from ..sqlalchemy_setup import get_dbsession
 from ..models.auth_entity import AuthEntity
@@ -58,6 +58,15 @@ class PBRReportView(View):
         pbr_battery_code_string = ", ".join(pbr_battery_code_list)
         pbr_start_date = request.GET.get("pbr_start_date")
         pbr_end_date = request.GET.get("pbr_end_date")
+
+        if not PBRReportView.check_facility_id(pbr_battery_code_string):
+            return JsonResponse(
+                {
+                    "success": True,
+                    "facility_id_available": False,
+                    "error": "Facility ID is not available. Please check your typing.",
+                }
+            )
 
         report_filename = f"OED_PBR_REPORT({pbr_start_date}-{pbr_end_date}).pdf"
         report_template = "scada/pbr_report.html"
@@ -126,18 +135,31 @@ class PBRReportView(View):
         html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
         response = HttpResponse(content_type="application/pdf")
         response["Content-Disposition"] = f"inline; filename={report_filename}"
+        response["facility_id_available"] = True  # Optional header
 
         # Write the PDF to the response
         with tempfile.NamedTemporaryFile(delete=True) as temp_file:
             html.write_pdf(target=temp_file.name)
+            temp_file.seek(0)  # Ensure the pointer is at the beginning
             response.write(temp_file.read())
 
-        # remove plot image file to save space
-        # os.remove(oil_bar_plot_image_path)
-        # os.remove(gas_bar_plot_image_path)
-        # os.remove(water_bar_plot_image_path)
-
         return response
+
+    @staticmethod
+    def check_facility_id(pbr_battery_code):
+        query = f"""
+                    SELECT DISTINCT FACILITY_ID as facility_id,
+                            COUNT(FACILITY_ID)
+                    FROM PETRINEX_VOLUMETRIC_DATA
+                    WHERE lower(FACILITY_ID)=lower('{pbr_battery_code}')
+                    GROUP BY FACILITY_ID
+                    ORDER BY FACILITY_ID ASC
+                """
+        db_data = fetch_all_from_oracle(query)
+        if db_data and len(db_data) == 1:
+            return True
+
+        return False
 
     @staticmethod
     def generate_oil_table_data(pbr_battery_code, start_date, end_date):
