@@ -1,0 +1,9 @@
+/* Using more specific selectors */
+.pbr .select2-container .select2-results__option {
+    color: darkblue !important; /* Set text color for dropdown options */
+}
+
+.pbr .select2-container .select2-results__option--highlighted {
+    background-color: #d1e0e0 !important; /* Background color for highlighted option */
+    color: darkblue !important; /* Ensure highlighted text is dark blue */
+}

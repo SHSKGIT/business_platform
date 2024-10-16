@@ -11,6 +11,7 @@ from .views import (
     reset_password,
     ai,
     profile,
+    search_facility_ids,
 )
 
 app_name = "scada"
@@ -44,4 +45,9 @@ urlpatterns = [
     ),
     path("ai/", ai.AiView.as_view(), name="ai"),
     path("profile/<int:user_id>/", profile.ProfileView.as_view(), name="profile"),
+    path(
+        "search-facility-ids/",
+        search_facility_ids.SearchFacilityIdsView.as_view(),
+        name="search_facility_ids",
+    ),
 ]
