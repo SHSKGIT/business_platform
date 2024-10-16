@@ -181,7 +181,7 @@ td, th {
     align-items: flex-start;  /* Align items to the top */
     justify-content: flex-start;  /* Align both to the left */
     margin-bottom: 1px;  /* Space between the title and table */
-    height: 40px; /* Set a fixed height for the container */
+    height: 50px; /* Set a fixed height for the container */
 }
 
 /* Style for the title */
@@ -206,7 +206,7 @@ td, th {
 /* Style for the logo */
 .report-logo {
     width: auto;
-    height: 40px;  /* Adjust the height of the logo */
+    height: 50px;  /* Adjust the height of the logo */
     margin: 0px;
     padding: 0px;
 }
