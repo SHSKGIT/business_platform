@@ -4,6 +4,11 @@ from ..oracle_connection import fetch_one_from_oracle, fetch_all_from_oracle
 
 
 class PBRForm(forms.Form):
+    UNIT_CHOICES = [
+        ("metric", "Metric"),
+        ("imperial", "Imperial"),
+    ]
+
     pbr_battery_code = CustomCharField(
         label="* Facility ID",
         max_length=200,
@@ -53,6 +58,21 @@ class PBRForm(forms.Form):
         ),
         error_messages={
             "required": "Please select a valid end date.",
+        },
+    )
+    unit = forms.ChoiceField(
+        label="* Unit",
+        choices=UNIT_CHOICES,
+        initial="metric",  # Set default value to Metric
+        required=True,
+        widget=forms.Select(
+            attrs={
+                "id": "unit",
+                "class": "span12",
+            }
+        ),
+        error_messages={
+            "required": "Please select a unit.",
         },
     )
 

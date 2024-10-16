@@ -185,7 +185,7 @@ $('#pbr-button').click(function () {
             const reportUrl = selectedOption.getAttribute('data-url');
             if (reportUrl) {
 //                const URL = reportUrl + "?user_id=" + user_id + "&" + dataString;
-                const URL = reportUrl + "?user_id=" + user_id + "&pbr_battery_code=" + formDataJson["pbr_battery_code"] + "&pbr_start_date=" + formDataJson["pbr_start_date"] + "&pbr_end_date=" + formDataJson["pbr_end_date"];
+                const URL = reportUrl + "?user_id=" + user_id + "&pbr_battery_code=" + formDataJson["pbr_battery_code"] + "&pbr_start_date=" + formDataJson["pbr_start_date"] + "&pbr_end_date=" + formDataJson["pbr_end_date"] + "&unit=" + formDataJson["unit"];
                 // Hide the "Generate" text and show the spinner
                 $('#generate-button-text').text('Generating...');
 
