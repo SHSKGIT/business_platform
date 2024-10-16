@@ -1,10 +1,11 @@
 from django import forms
 from .custom_fields import CustomCharField
+from ..oracle_connection import fetch_one_from_oracle, fetch_all_from_oracle
 
 
 class PBRForm(forms.Form):
     pbr_battery_code = CustomCharField(
-        label="* Battery Code",
+        label="* Facility ID",
         max_length=200,
         min_length=1,
         required=True,
@@ -12,12 +13,12 @@ class PBRForm(forms.Form):
             attrs={
                 "id": "pbr_battery_code",
                 "class": "span12",
-                "placeholder": "* Battery Code",
+                "placeholder": "* Facility ID",
                 "type": "text",
             }
         ),
         error_messages={
-            "required": "Please enter battery code.",
+            "required": "Please select a facility ID.",
             "max_length": "Please enter no more than 200 characters.",
             "min_length": "Please enter at least 1 character.",
         },
@@ -54,3 +55,16 @@ class PBRForm(forms.Form):
             "required": "Please select a valid end date.",
         },
     )
+
+    # def __init__(self, *args, **kwargs):
+    #     super(PBRForm, self).__init__(*args, **kwargs)
+    #     # Fetch data from the BatteryCode model and populate the dropdown
+    #     query = f"""
+    #                 SELECT DISTINCT FACILITY_ID
+    #                 FROM PETRINEX_VOLUMETRIC_DATA
+    #                 ORDER BY FACILITY_ID
+    #             """
+    #
+    #     battery_code_choices = fetch_all_from_oracle(query)
+    #     battery_code_choices.insert(0, ("", "Select a facility ID"))
+    #     self.fields["pbr_battery_code"].choices = battery_code_choices

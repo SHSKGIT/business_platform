@@ -206,6 +206,12 @@ $('#pbr-button').click(function () {
                         $('#generate-button-text').text('Generate');
                         $('#pbr-button').prop('disabled', false);
 
+                        if (response.facility_id_available == false) {
+                            alert(response.error);
+//                            show_error_animation("#err-pbr", response.error);
+                            return;
+                        }
+
                         var newWindow = window.open(URL, '_blank');
                         if (newWindow) {
                             newWindow.focus();  // Ensure the new window is brought to the front
@@ -223,3 +229,33 @@ $('#pbr-button').click(function () {
 
         return false;
 });
+
+//$(document).ready(function() {
+//    var URL = '/scada/search-facility-ids/';
+//    $('#pbr_battery_code').select2({
+//        placeholder: 'Select a facility ID',
+//        ajax: {
+//            url: URL,
+//            dataType: 'json',
+//            delay: 250,
+//            data: function(params) {
+//                return {
+//                    term: params.term
+//                };
+//            },
+//            processResults: function(data) {
+//                return {
+//                    results: $.map(data, function(item) {
+//                        return {
+//                            id: item.id,
+//                            text: item.label
+//                        };
+//                    })
+//                };
+//            },
+//            cache: true
+//        },
+//        minimumInputLength: 2,
+//    });
+//
+//});
