@@ -428,9 +428,11 @@ class PBRReportView(View):
         min_val = min(adj_totals)
         ax.set_yticks(
             np.arange(
-                PBRReportView.nearest_multiple(min_val, multiple),
-                PBRReportView.nearest_multiple(max_val, multiple) + multiple,
-                multiple,
+                int(PBRReportView.nearest_multiple(min_val, multiple)),
+                int(PBRReportView.nearest_multiple(max_val, multiple) + multiple)
+                if unit == "metric"
+                else int(PBRReportView.nearest_multiple(max_val, multiple)),
+                int(multiple),
             )
         )
 
@@ -446,7 +448,7 @@ class PBRReportView(View):
             # Positioning activity names
             ax.text(
                 bar.get_x() + bar.get_width() / 2,
-                PBRReportView.nearest_multiple(max_val, multiple),
+                int(PBRReportView.nearest_multiple(max_val, multiple)),
                 activities[i],
                 ha="center",
                 va="bottom",
