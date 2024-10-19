@@ -29,9 +29,8 @@
         <link rel="shortcut icon" href="{% static 'scada/images/ico/favicon.ico' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link rel="stylesheet" type="text/css" href="{% static 'scada/css/dashboard.css' %}" />
-<!--        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />-->
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="{% static 'scada/css/selector.css' %}" />
+<!--        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />-->
+<!--        <link rel="stylesheet" type="text/css" href="{% static 'scada/css/selector.css' %}" />-->
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/common.js"></script>-->
     <!--        <script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/57/13/util.js"></script>-->
     </head>
@@ -52,7 +51,10 @@
                     <div class="nav-collapse collapse pull-right">
                         <ul class="nav" id="top-navigation">
                             <li class="active"><a href="#report">Reports</a></li>
-<!--                            <li><a href="#ai">AI</a></li>-->
+                            <li><a href="javascript:void(0);"
+                               onclick="window.open('{% url 'scada:update_facilities' user_id=user_id %}', '_blank', 'width=600,height=850');">
+                               My Facilities
+                            </a></li>
                             <li><a href="{% url 'scada:sign-out' %}" class="sign-out">Sign Out</a></li>
                             <li><a href="{% url 'scada:profile' user_id=user_id %}" id="profile-link">Hi, {{ first_name }}</a></li>
                         </ul>
@@ -128,6 +130,9 @@
                                 <br>
                                 <div class="control-group">
                                     <div class="controls">
+<!--                                        <button id="add-facility-button" class="button button-sp" onclick="window.open('{% url 'scada:update_facilities' user_id=user_id %}', '_blank', 'width=600,height=850');">-->
+<!--                                            <span id="add-facility-button-text">My Facilities</span>-->
+<!--                                        </button>-->
                                         <button id="pbr-button" class="button button-sp">
                                             <span id="generate-button-text">Generate</span>
                                         </button>
@@ -240,8 +245,7 @@
         <script type="text/javascript" src="{% static 'scada/js/session_check.js' %}"></script>
         <script type="text/javascript" src="{% static 'scada/js/ai.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<!--        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>-->
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
 
     </body>
 </html>

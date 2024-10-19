@@ -112,25 +112,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*
-Sign in form
+generate pbr report
 **********************************************************************/
 $('#pbr-button').click(function () {
         var error = false;
-        var pbr_battery_code = $('input#pbr_battery_code').val().trim();
+//        var pbr_battery_code = $('input#pbr_battery_code').val();
+        const reportSelect = document.getElementById('pbr_battery_code');
+        const selectedOption = reportSelect.options[reportSelect.selectedIndex];
+
+        if (selectedOption.value === "" || selectedOption.value === " " || selectedOption.value === undefined) {
+            show_error_animation("#err-pbr_battery_code", "Please select a facility id.");
+            error = true; // change the error state to true
+        }
+
         var pbr_start_date = $('input#pbr_start_date').val().trim();
         var pbr_end_date = $('input#pbr_end_date').val().trim();
         var today = new Date();
-
-        if (pbr_battery_code == "" || pbr_battery_code == " ") {
-            $('#err-pbr_battery_code').show(500);
-            $('#err-pbr_battery_code').delay(2000);
-            $('#err-pbr_battery_code').animate({
-                height: 'toggle'
-            }, 500, function () {
-                // Animation complete.
-            });
-            error = true; // change the error state to true
-        }
 
         if (pbr_start_date == "" || pbr_start_date == " ") {
             $('#err-pbr_start_date').show(500);
@@ -255,7 +252,126 @@ $('#pbr-button').click(function () {
 //            },
 //            cache: true
 //        },
-//        minimumInputLength: 2,
+//        minimumInputLength: 4,
+//    });
+//});
+
+//$(document).ready(function() {
+//    var URL = '/scada/search-facility-ids/';
+//    $("#pbr_battery_code").select2({
+//        ajax: {
+//            url: URL,
+//            dataType: 'json',
+//            delay: 250,
+//            data: function (params) {
+//                return {
+//                    term: params.term,  // Search term entered by the user
+//                    page: params.page || 1,  // Pagination page
+//                    size: 20  // Size per page
+//                };
+//            },
+//            processResults: function (data, params) {
+//                params.page = params.page || 1;
+//
+//                return {
+//                    results: data.results.map(function (facility) {
+//                    return {
+//                            id: facility.id,       // The ID for the facility
+//                            text: facility.label   // The label for the dropdown
+//                        };
+//                    }),
+//                    pagination: {
+//                        more: data.pagination.has_next  // If there are more pages
+//                    }
+//                };
+//            },
+//            cache: true
+//        },
+//        placeholder: "Input at least 4 characters.",
+//        minimumInputLength: 4,
+//    });
+//});
+
+//$(document).ready(function() {
+//    var URL = '/scada/search-facility-ids/';
+//    var allResults = [];
+//    var currentPage = 0;
+//    var pageSize = 20;
+//
+//    // Load initial results
+//    function loadResults(term) {
+//        $.ajax({
+//            url: URL,
+//            dataType: 'json',
+//            data: { term: term },
+//            success: function(data) {
+//                allResults = data.results;
+//                displayResults();
+//            }
+//        });
+//    }
+//
+//    function displayResults() {
+//        var start = currentPage * pageSize;
+//        var end = start + pageSize;
+//        var paginatedResults = allResults.slice(start, end);
+//
+//        $("#pbr_battery_code").empty();
+//        paginatedResults.forEach(function(item) {
+//            $("#pbr_battery_code").append(new Option(item.label, item.id));
+//        });
+//
+//        // Update pagination buttons
+//        $("#paginationInfo").text(`Showing ${start + 1} to ${Math.min(end, allResults.length)} of ${allResults.length}`);
+//        $("#prevButton").prop("disabled", currentPage === 0);
+//        $("#nextButton").prop("disabled", end >= allResults.length);
+//    }
+//
+//    $("#pbr_battery_code").select2({
+//        placeholder: "Input at least 4 characters.",
+//        minimumInputLength: 4,
+//        ajax: {
+//            url: URL,
+//            dataType: 'json',
+//            delay: 250,
+//            data: function (params) {
+//                return {
+//                    term: params.term,  // Search term entered by the user
+//                };
+//            },
+//            processResults: function (data) {
+//                return {
+//                    results: data.results,
+//                };
+//            },
+//            cache: true
+//        }
+//    }).on("select2:select", function(e) {
+//        // Handle selection
 //    });
 //
+//    // Previous Button Click
+//    $("#prevButton").click(function() {
+//        if (currentPage > 0) {
+//            currentPage--;
+//            displayResults();
+//        }
+//    });
+//
+//    // Next Button Click
+//    $("#nextButton").click(function() {
+//        if ((currentPage + 1) * pageSize < allResults.length) {
+//            currentPage++;
+//            displayResults();
+//        }
+//    });
+//
+//    // Initial load
+//    loadResults('');
+//
+//    // Search handling
+//    $("#pbr_battery_code").on("select2:search", function(e) {
+//        currentPage = 0; // Reset to first page on new search
+//        loadResults(e.target.value); // Load results based on search term
+//    });
 //});
