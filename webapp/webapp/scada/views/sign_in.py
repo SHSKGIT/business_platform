@@ -27,7 +27,7 @@ class SignInView(View):
         # is_admin = request.GET.get("is_admin")
         # is_active = request.GET.get("is_active")
         ai_form = AiForm()
-        pbr_form = PBRForm()
+        pbr_form = PBRForm(user_id=user_id)
         context = {
             "user_id": user_id,
             # "username": username,

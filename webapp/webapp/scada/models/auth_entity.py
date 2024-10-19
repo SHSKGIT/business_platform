@@ -29,6 +29,11 @@ class AuthEntity(Base):
     is_admin = Column(Boolean, nullable=False, default=False)
     is_active = Column(Boolean, nullable=False, default=True)
 
+    # Establishing a relationship to Facility with a back reference
+    facilities = relationship(
+        "Facility", back_populates="users"
+    )  # Access facilities from AuthEntity
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
