@@ -12,6 +12,8 @@ from .views import (
     ai,
     profile,
     search_facility_ids,
+    update_facilities,
+    get_facilities,
 )
 
 app_name = "scada"
@@ -45,9 +47,29 @@ urlpatterns = [
     ),
     path("ai/", ai.AiView.as_view(), name="ai"),
     path("profile/<int:user_id>/", profile.ProfileView.as_view(), name="profile"),
+    # path(
+    #     "search-facility-ids/",
+    #     search_facility_ids.SearchFacilityIdsView.as_view(),
+    #     name="search_facility_ids",
+    # ),
     path(
-        "search-facility-ids/",
-        search_facility_ids.SearchFacilityIdsView.as_view(),
-        name="search_facility_ids",
+        "get-facilities/",
+        get_facilities.GetFacilitiesView.as_view(),
+        name="get_facilities",
+    ),
+    path(
+        "update-facilities/<int:user_id>/",
+        update_facilities.UpdateFacilitiesView.as_view(),
+        name="update_facilities",
+    ),
+    path(
+        "add-facilities/",
+        update_facilities.AddFacilitiesView.as_view(),
+        name="add_facilities",
+    ),
+    path(
+        "remove-facilities/",
+        update_facilities.RemoveFacilitiesView.as_view(),
+        name="remove_facilities",
     ),
 ]

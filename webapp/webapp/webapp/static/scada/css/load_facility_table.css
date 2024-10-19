@@ -1,0 +1,51 @@
+/* Basic table styling */
+.table-container {
+    width: 100%;
+    max-height: 600px; /* Set the desired height for scrollable frame */
+    overflow-y: auto;  /* Vertical scroll */
+    border: 1px solid #ccc;
+}
+
+.facility-table {
+    width: 100%; /* Makes the table occupy full width */
+    border-collapse: collapse; /* Merges borders */
+}
+
+.facility-table th, .facility-table td {
+    border: 1px solid #ddd; /* Adds a border to table cells */
+    padding: 0px; /* Adds padding for spacing */
+}
+
+.facility-table th {
+    width: 80%;
+}
+
+.facility-table td {
+    width: 20%;
+}
+
+.align-left {
+    text-align: left; /* Aligns text to the left */
+}
+
+.align-right {
+    text-align: right; /* Aligns text to the right */
+}
+
+.facility-table th {
+    background-color: #f2f2f2; /* Light gray background for header */
+    color: #333; /* Dark text color for header */
+}
+
+.action-button {
+    padding: 5px 10px; /* Button padding */
+    background-color: #424949; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.action-button:hover {
+    background-color: #0b2138; /* Darker shade on hover */
+}
