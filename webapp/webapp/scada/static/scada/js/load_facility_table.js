@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             actionButton.disabled = false;
                             facility.action = action === 'Add' ? 'Remove' : 'Add';
                             actionButton.textContent = facility.action;
+
+                            sort_facilities();
                         } else {
                             actionButton.disabled = true;
                             actionButton.textContent = facility.action;
@@ -72,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Hide the loading message once loaded
             loadingMessage.style.display = 'none';
+
+            sort_facilities();
         })
         .catch(error => {
             show_error_animation("#err-update-facilities", 'Error fetching facilities:' + error);
@@ -95,5 +99,64 @@ function show_error_animation(element, error_message) {
         height: 'toggle'
     }, 500, function () {
         // Animation complete.
+    });
+}
+
+// Add event listener to the filter input
+document.getElementById('facility-filter').addEventListener('input', function() {
+    const filterInput = document.getElementById('facility-filter');
+    const tableRows = document.querySelectorAll('#facility-body tr');
+    const filterValue = filterInput.value.toLowerCase();
+
+    tableRows.forEach(function(row) {
+        const facilityId = row.cells[0].textContent.toLowerCase(); // Get the Facility ID from the first cell
+        if (facilityId.includes(filterValue)) {
+            row.style.display = ''; // Show row if it matches
+        } else {
+            row.style.display = 'none'; // Hide row if it doesn't match
+        }
+    });
+
+    sort_facilities();
+});
+
+function sort_facilities() {
+    const tableBody = document.getElementById('facility-body');
+    const tableRows = Array.from(tableBody.querySelectorAll('tr'));
+
+    // Separate into "Remove" and "Add" groups
+    const removeRows = [];
+    const addRows = [];
+
+    tableRows.forEach(function(row) {
+        const actionButton = row.cells[1].querySelector('button').textContent;
+
+        if (actionButton === 'Remove') {
+            removeRows.push(row);
+        } else if (actionButton === 'Add') {
+            addRows.push(row);
+        }
+    });
+
+    // Function to sort rows alphanumerically by facility ID (first cell content)
+    const alphanumericSort = (a, b) => {
+        const idA = a.cells[0].textContent.toLowerCase();
+        const idB = b.cells[0].textContent.toLowerCase();
+        return idA.localeCompare(idB);
+    };
+
+    // Sort both groups alphanumerically
+    removeRows.sort(alphanumericSort);
+    addRows.sort(alphanumericSort);
+
+    // Clear the table body
+    tableBody.innerHTML = '';
+
+    // Append the sorted "Remove" rows first, followed by "Add" rows
+    removeRows.forEach(function(row) {
+        tableBody.appendChild(row);
+    });
+    addRows.forEach(function(row) {
+        tableBody.appendChild(row);
     });
 }
