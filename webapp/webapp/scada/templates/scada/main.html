@@ -52,7 +52,7 @@
                         <ul class="nav" id="top-navigation">
                             <li class="active"><a href="#report">Reports</a></li>
                             <li><a href="javascript:void(0);"
-                               onclick="window.open('{% url 'scada:update_facilities' user_id=user_id %}', '_blank', 'width=600,height=850');">
+                               onclick="openMyFacilities({{ user_id }});">
                                My Facilities
                             </a></li>
                             <li><a href="{% url 'scada:sign-out' %}" class="sign-out">Sign Out</a></li>
