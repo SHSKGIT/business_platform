@@ -16,10 +16,6 @@
     padding: 0px; /* Adds padding for spacing */
 }
 
-.facility-table th {
-    width: 80%;
-}
-
 .facility-table td {
     width: 20%;
 }
@@ -33,8 +29,11 @@
 }
 
 .facility-table th {
+    width: 80%;
     background-color: #f2f2f2; /* Light gray background for header */
     color: #333; /* Dark text color for header */
+    position: sticky; /* Use sticky positioning */
+    top: 0; /* Stick to the top */
 }
 
 .action-button {
@@ -48,4 +47,9 @@
 
 .action-button:hover {
     background-color: #0b2138; /* Darker shade on hover */
+}
+
+.filter-input {
+    width: 100%;
+    box-sizing: border-box;
 }
