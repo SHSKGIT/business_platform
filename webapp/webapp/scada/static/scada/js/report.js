@@ -227,6 +227,52 @@ $('#pbr-button').click(function () {
         return false;
 });
 
+function openMyFacilities(userId) {
+    const url = "/scada/update-facilities/" + userId + "/";
+    let myFacilitiesWindow;
+    myFacilitiesWindow = window.open(url, '_blank', 'width=600,height=850');
+
+    function checkClosed() {
+        if (myFacilitiesWindow.closed) {
+            alert('Click "OK" and refresh this page to get updated facilities.');
+            location.reload(); // Refresh the page after alert is closed
+//            ReloadFacilitiesDropdown(userId); // Reload facilities when the window is closed
+        } else {
+            setTimeout(checkClosed, 1000); // Check again after 1 second
+        }
+    }
+
+    setTimeout(checkClosed, 1000);
+}
+
+//function ReloadFacilitiesDropdown(userId) {
+//    const URL = "/scada/reload-facilities/?user_id=" + userId; // Adjust URL to your endpoint
+//
+//    fetch(URL)
+//        .then(response => response.json())
+//        .then(data => {
+//            const batteryCodeSelect = document.querySelector('select[name="pbr_battery_code"]');
+//            batteryCodeSelect.innerHTML = ''; // Clear existing options
+//
+//            // Create the default option
+//            const defaultOption = document.createElement('option');
+//            defaultOption.value = '';
+//            defaultOption.textContent = 'Select a facility ID';
+//            batteryCodeSelect.appendChild(defaultOption);
+//
+//            // Populate the dropdown with the new options
+//            data.facilities.forEach(facility => {
+//                const option = document.createElement('option');
+//                option.value = facility.id; // Adjust based on your data structure
+//                option.textContent = facility.id; // Adjust based on your data structure
+//                batteryCodeSelect.appendChild(option);
+//            });
+//        })
+//        .catch(error => {
+//            show_error_animation("#err-pbr", "Error loading battery code dropdown: " + error);
+//        });
+//}
+
 //$(document).ready(function() {
 //    var URL = '/scada/search-facility-ids/';
 //    $('#pbr_battery_code').select2({
