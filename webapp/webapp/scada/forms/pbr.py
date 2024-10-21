@@ -13,7 +13,7 @@ class PBRForm(forms.Form):
     ]
 
     pbr_battery_code = forms.ChoiceField(
-        label="* Facility ID",
+        label='* Facility ID (If empty, click "My Facilities")',
         required=True,
         widget=forms.Select(
             attrs={
@@ -89,6 +89,9 @@ class PBRForm(forms.Form):
             battery_code_choices = [
                 (facility[0], facility[0]) for facility in battery_code_choices
             ]
+
+            # Sort the list alphanumerically by the facility ID (the first element in each tuple)
+            battery_code_choices.sort(key=lambda x: x[0].lower())
 
             battery_code_choices.insert(0, ("", "Select a facility ID"))
             self.fields["pbr_battery_code"].choices = battery_code_choices
