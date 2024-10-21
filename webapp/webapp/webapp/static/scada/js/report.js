@@ -241,7 +241,7 @@ function openMyFacilities(userId) {
 
 // This function will be called when the popup is closed
 function onPopupClosed() {
-    alert('Click "OK" to refresh the page and get updated facilities in dropdown.');
+    alert('Click "OK" or "Close" to refresh the page and get updated facilities in dropdown.');
     location.reload(); // Refresh the page after the alert is closed
 }
 
