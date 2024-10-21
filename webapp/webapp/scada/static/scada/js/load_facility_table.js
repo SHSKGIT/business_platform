@@ -1,3 +1,5 @@
+let isTableLoading = true;
+
 document.addEventListener('DOMContentLoaded', function() {
     const facilityBody = document.getElementById('facility-body');
 
@@ -75,10 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Hide the loading message once loaded
             loadingMessage.style.display = 'none';
 
+            // Set loading flag to false after the table is fully loaded
+            isTableLoading = false;
+
             sort_facilities();
         })
         .catch(error => {
             show_error_animation("#err-update-facilities", 'Error fetching facilities:' + error);
+            isTableLoading = false; // Reset the loading flag on error
         });
 });
 
@@ -160,3 +166,25 @@ function sort_facilities() {
         tableBody.appendChild(row);
     });
 }
+
+window.onbeforeunload = function(event) {
+    if (window.opener && typeof window.opener.onPopupClosed === 'function') {
+        window.opener.onPopupClosed();
+    }
+}
+//window.onbeforeunload = function(event) {
+//    // Check if the document is fully loaded
+//    if (!isTableLoading) {
+//        // Communicate to the parent window that the popup is being closed
+//        if (window.opener && typeof window.opener.onPopupClosed === 'function') {
+//            window.opener.onPopupClosed();
+//        }
+//    } else {
+//        // This message will be shown in a confirmation dialog by the browser
+//        event.preventDefault();
+//        const message = "The page is still loading. Please wait patiently.";
+//        event.returnValue = message; // This sets the returnValue to show a confirmation dialog
+//        return message; // Return the message to prompt the confirmation dialog
+//    }
+//};
+

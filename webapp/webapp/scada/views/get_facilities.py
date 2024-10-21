@@ -53,22 +53,22 @@ class GetFacilitiesView(View):
         pass
 
 
-class ReloadFacilitiesView(View):
-    @staticmethod
-    def get(request):
-        user_id = request.GET.get("user_id", None)
-
-        dbsession = next(get_dbsession())
-        user_facilities = (
-            dbsession.query(Facility.facility_id).filter_by(user_id=user_id).all()
-        )
-        dbsession.close()
-
-        # Convert the list of tuples (because .all() returns a list of tuples)
-        user_facilities = [(facility[0], facility[0]) for facility in user_facilities]
-
-        return JsonResponse({"facilities": user_facilities})
-
-    @staticmethod
-    def post(request):
-        pass
+# class ReloadFacilitiesView(View):
+#     @staticmethod
+#     def get(request):
+#         user_id = request.GET.get("user_id", None)
+#
+#         dbsession = next(get_dbsession())
+#         user_facilities = (
+#             dbsession.query(Facility.facility_id).filter_by(user_id=user_id).all()
+#         )
+#         dbsession.close()
+#
+#         # Convert the list of tuples (because .all() returns a list of tuples)
+#         user_facilities = [(facility[0], facility[0]) for facility in user_facilities]
+#
+#         return JsonResponse({"facilities": user_facilities})
+#
+#     @staticmethod
+#     def post(request):
+#         pass

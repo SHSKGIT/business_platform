@@ -228,21 +228,21 @@ $('#pbr-button').click(function () {
 });
 
 function openMyFacilities(userId) {
-    const url = "/scada/update-facilities/" + userId + "/";
-    let myFacilitiesWindow;
-    myFacilitiesWindow = window.open(url, '_blank', 'width=600,height=850');
+    const message = '"My Facilities" window may take about 15s to load, please do NOT close the window while loading. Click "OK" to pop up the window and load.';
 
-    function checkClosed() {
-        if (myFacilitiesWindow.closed) {
-            alert('Click "OK" and refresh this page to get updated facilities.');
-            location.reload(); // Refresh the page after alert is closed
-//            ReloadFacilitiesDropdown(userId); // Reload facilities when the window is closed
-        } else {
-            setTimeout(checkClosed, 1000); // Check again after 1 second
-        }
+    // Use the confirm dialog
+    const userConfirmed = confirm(message);
+
+    if (userConfirmed) {
+        const url = "/scada/update-facilities/" + userId + "/";
+        window.open(url, '_blank', 'width=600,height=850');
     }
+}
 
-    setTimeout(checkClosed, 1000);
+// This function will be called when the popup is closed
+function onPopupClosed() {
+    alert('Click "OK" to refresh the page and get updated facilities in dropdown.');
+    location.reload(); // Refresh the page after the alert is closed
 }
 
 //function ReloadFacilitiesDropdown(userId) {
