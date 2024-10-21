@@ -72,9 +72,9 @@ urlpatterns = [
         update_facilities.RemoveFacilitiesView.as_view(),
         name="remove_facilities",
     ),
-    path(
-        "reload-facilities/",
-        get_facilities.ReloadFacilitiesView.as_view(),
-        name="reload_facilities",
-    ),
+    # path(
+    #     "reload-facilities/",
+    #     get_facilities.ReloadFacilitiesView.as_view(),
+    #     name="reload_facilities",
+    # ),
 ]
